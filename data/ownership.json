@@ -10,6 +10,10 @@
 	"FRA": { "owner": "FRA", "controller": "FRA" },
 	"GBR": { "owner": "GBR", "controller": "GBR" },
 	"JPN": { "owner": "JPN", "controller": "JPN" },
-	"BRA": { "owner": "BRA", "controller": "BRA" }
+	"BRA": { "owner": "BRA", "controller": "BRA" },
+	"POL": { "owner": "POL", "controller": "POL" },
+	"UKR": { "owner": "UKR", "controller": "UKR" },
+	"TUR": { "owner": "TUR", "controller": "TUR" },
+	"IRN": { "owner": "IRN", "controller": "IRN" }
   }
 }
