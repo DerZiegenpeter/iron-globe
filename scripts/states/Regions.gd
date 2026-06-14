@@ -2,25 +2,20 @@ extends Node3D
 
 @export var radius: float = 1000.0
 @export var max_features: int = 1000
-@export var fill_alpha: float = 0.22
+@export var border_color: Color = Color(0.0, 1.0, 0.4)
+@export var border_emission: float = 3.5
+
+# === SEHR AGGRESSIVE TEXTGRÖSSE ===
+@export var text_scale: float = 22.0          # Stark erhöht
+@export var min_font_size: int = 60
+@export var max_font_size: int = 420
 
 @onready var polygons_container: Node3D = get_node("../Polygons")
-@onready var game_data: Node = get_node_or_null("/root/GameData")
 
-var region_polygons: Array = []
-var fill_material: ShaderMaterial
+var region_data: Array = []
 
 func _ready():
-	_create_material()
 	load_regions()
-
-func _create_material():
-	fill_material = ShaderMaterial.new()
-	var shader = load("res://shaders/region_fill.gdshader")
-	if shader:
-		fill_material.shader = shader
-	else:
-		print("Shader nicht gefunden!")
 
 func load_regions():
 	var file_path = "res://data/states.geojson"
@@ -34,55 +29,80 @@ func load_regions():
 	file.close()
 	
 	var features = json.data.get("features", [])
-	print("Lade ", features.size(), " Regionen...")
+	print("Lade ", features.size(), " Regionen mit riesiger Schrift...")
 
-	region_polygons.clear()
+	region_data.clear()
 	
-	for i in features.size():
-		if i >= max_features: break
+	for idx in features.size():
+		if idx >= max_features: break
 		
-		var feature = features[i]
+		var feature = features[idx]
 		var props = feature.get("properties", {})
 		var geometry = feature.get("geometry", {})
 		
-		var region_id = i + 1
-		var region_name = props.get("NAME", props.get("name", "Region " + str(region_id)))
-		
-		var nation_color = Color(0.3, 0.55, 0.9, fill_alpha)
-		if game_data and game_data.has_method("get_province_info"):
-			var info = game_data.get_province_info(region_id, region_name)
-			if typeof(info) == TYPE_DICTIONARY and info.has("color"):
-				nation_color = Color(info.color)
-				nation_color.a = fill_alpha
+		var region_id = idx + 1
+		var region_name = props.get("NAME", props.get("name", ""))
+		if region_name == "": continue
 		
 		var rings = _extract_rings(geometry)
 		if rings.is_empty(): continue
 		
-		var mesh_instance = MeshInstance3D.new()
-		mesh_instance.name = "Region_%04d" % i
-		polygons_container.add_child(mesh_instance)
+		# GRÜNE GRENZEN
+		var border_node = MeshInstance3D.new()
+		border_node.name = "Border_%04d" % idx
+		polygons_container.add_child(border_node)
 		
-		var immediate = ImmediateMesh.new()
-		mesh_instance.mesh = immediate
+		var border_st = SurfaceTool.new()
+		border_st.begin(Mesh.PRIMITIVE_LINES)
 		
-		var mat = fill_material.duplicate()
-		mat.set_shader_parameter("country_color", nation_color)
-		mat.set_shader_parameter("emission", 1.0)
-		mesh_instance.material_override = mat
-		
-		immediate.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 		for ring in rings:
-			_triangulate_ring_better(immediate, ring)
-		immediate.surface_end()
+			for j in range(ring.size()):
+				var p1 = lat_lon_to_vector3(ring[j][1], ring[j][0], radius)
+				var p2 = lat_lon_to_vector3(ring[(j + 1) % ring.size()][1], ring[(j + 1) % ring.size()][0], radius)
+				border_st.add_vertex(p1)
+				border_st.add_vertex(p2)
 		
-		region_polygons.append({
+		border_node.mesh = border_st.commit()
+		
+		var border_mat = StandardMaterial3D.new()
+		border_mat.albedo_color = border_color
+		border_mat.emission_enabled = true
+		border_mat.emission = border_color * border_emission
+		border_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		border_node.material_override = border_mat
+		
+		# RIESIGE LÄNDERNAMEN
+		var text_node = Label3D.new()
+		text_node.text = region_name
+		text_node.font = load("res://fonts/Schluber.otf")
+		text_node.font_size = 90
+		text_node.outline_size = 16
+		text_node.modulate = Color(0.3, 1.0, 0.4)
+		text_node.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		text_node.no_depth_test = true
+		text_node.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		text_node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		
+		# Sehr aggressive Größenberechnung
+		var diameter = _get_3d_diameter(rings)
+		var font_size = clamp(int(diameter * text_scale), min_font_size, max_font_size)
+		text_node.font_size = font_size
+		
+		# Nahe an der Oberfläche
+		var center = _get_ring_center(rings[0])
+		var surface_pos = lat_lon_to_vector3(center.y, center.x, radius)
+		text_node.position = surface_pos * 1.004
+		
+		polygons_container.add_child(text_node)
+		
+		region_data.append({
 			"id": region_id,
 			"name": region_name,
-			"color": nation_color,
-			"mesh": mesh_instance
+			"border": border_node,
+			"label": text_node
 		})
 	
-	print("✅ ", region_polygons.size(), " Regionen geladen.")
+	print("✅ ", region_data.size(), " Regionen geladen.")
 
 func _extract_rings(geometry: Dictionary) -> Array:
 	var rings = []
@@ -96,15 +116,27 @@ func _extract_rings(geometry: Dictionary) -> Array:
 		if coords.size() > 0: rings.append(coords[0])
 	return rings
 
-func _triangulate_ring_better(immediate: ImmediateMesh, ring: Array):
-	if ring.size() < 3: return
-	var v0 = lat_lon_to_vector3(ring[0][1], ring[0][0], radius)
-	for j in range(1, ring.size() - 1):
-		var v1 = lat_lon_to_vector3(ring[j][1], ring[j][0], radius)
-		var v2 = lat_lon_to_vector3(ring[j+1][1], ring[j+1][0], radius)
-		immediate.surface_add_vertex(v0)
-		immediate.surface_add_vertex(v1)
-		immediate.surface_add_vertex(v2)
+func _get_ring_center(ring: Array) -> Vector2:
+	var sum = Vector2.ZERO
+	for p in ring:
+		sum += Vector2(p[0], p[1])
+	return sum / ring.size()
+
+func _get_3d_diameter(rings: Array) -> float:
+	var min_pos = Vector3(INF, INF, INF)
+	var max_pos = Vector3(-INF, -INF, -INF)
+	
+	for ring in rings:
+		for p in ring:
+			var v = lat_lon_to_vector3(p[1], p[0], radius)
+			min_pos.x = min(min_pos.x, v.x)
+			min_pos.y = min(min_pos.y, v.y)
+			min_pos.z = min(min_pos.z, v.z)
+			max_pos.x = max(max_pos.x, v.x)
+			max_pos.y = max(max_pos.y, v.y)
+			max_pos.z = max(max_pos.z, v.z)
+	
+	return (max_pos - min_pos).length()
 
 func lat_lon_to_vector3(lat: float, lon: float, r: float) -> Vector3:
 	var lat_rad = deg_to_rad(lat)

@@ -1,7 +1,7 @@
 extends Node
 
-var nations: Dictionary = {}                    # "IND" → volle Nation-Daten
-var province_to_owner: Dictionary = {}          # int ID → "IND"
+var nations: Dictionary = {}                    # code → full nation data
+var province_to_owner: Dictionary = {}          # province_id → owner_code (z.B. "IND")
 var province_to_controller: Dictionary = {}
 
 func _ready():
@@ -21,7 +21,7 @@ func load_nations():
 	
 	var data = json.data.get("nations", [])
 	for n in data:
-		var code = str(n.get("short_name", n.get("code", n.get("id", "")))).to_upper().strip_edges()
+		var code = str(n.get("id", n.get("short_name", n.get("code", "")))).to_upper().strip_edges()
 		if code != "":
 			nations[code] = n
 			print("Nation geladen: ", code, " → ", n.get("name", ""))
@@ -53,18 +53,20 @@ func load_ownership():
 	
 	print("✅ Ownership geladen: ", province_to_owner.size(), " Provinzen")
 
-func get_province_info(province_id: int, region_name: String = "") -> String:
+func get_province_info(province_id: int, region_name: String = "") -> Dictionary:
 	if province_id <= 0:
-		return "ID: %s | Name: %s | Besitzer: Unbekannt" % [province_id, region_name]
+		return {"province_id": province_id, "name": region_name, "owner": "Unbekannt", "color": "#555555"}
 	
 	var owner_code = province_to_owner.get(province_id, "NEU")
 	var nation = nations.get(owner_code, {})
 	
 	var owner_name = nation.get("name", "Unbekannt")
+	var color_hex = nation.get("color", "#555555")
 	
-	return """=== Provinz Info ===
-ID:          %d
-Name:        %s
-Owner:       %s (%s)
-Controller:  %s (%s)
-""" % [province_id, region_name, owner_name, owner_code, owner_name, owner_code]
+	return {
+		"province_id": province_id,
+		"name": region_name,
+		"owner": owner_name,
+		"owner_code": owner_code,
+		"color": color_hex
+	}
