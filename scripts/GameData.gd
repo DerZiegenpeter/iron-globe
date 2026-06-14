@@ -1,36 +1,32 @@
 extends Node
 
-var nations: Dictionary = {}                    # "IDN" → Nation
-var current_owner: Dictionary = {}              # province_id (Zahl als String) → nation_id
+var nations: Dictionary = {}
+var current_owner: Dictionary = {}
 var current_controller: Dictionary = {}
 
 func _ready():
 	load_nations()
-	load_ownership_from_states()   # NEU: direkt aus states.json lesen
+	load_ownership_from_states()
 
 func load_nations():
 	var path = "res://data/nations.json"
 	if not FileAccess.file_exists(path):
 		print("❌ nations.json nicht gefunden!")
 		return
-	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json = JSON.new()
 	json.parse(file.get_as_text())
 	file.close()
 	
 	for nation in json.data.get("nations", []):
-		var nid = str(nation.get("id")).replace("_", "")   # _ entfernen
-		nations[nid] = nation
+		nations[str(nation.id)] = nation
 	print("✅ Nationen geladen: ", nations.size())
 
-# NEU: Owner/Controller direkt aus states.json laden
 func load_ownership_from_states():
 	var path = "res://data/states.json"
 	if not FileAccess.file_exists(path):
 		print("❌ states.json nicht gefunden!")
 		return
-	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json = JSON.new()
 	json.parse(file.get_as_text())
@@ -39,11 +35,11 @@ func load_ownership_from_states():
 	var states = json.data.get("states", [])
 	for state in states:
 		var pid = str(state.get("id"))
-		var owner_id = str(state.get("owner", state.get("nation", "NONE"))).replace("_", "")
-		var controller_id = str(state.get("controller", owner_id)).replace("_", "")
+		var owner_id = str(state.get("owner", state.get("nation_id", "NONE"))).replace("_", "")
+		var ctrl_id = str(state.get("controller", owner_id)).replace("_", "")
 		
 		current_owner[pid] = owner_id
-		current_controller[pid] = controller_id
+		current_controller[pid] = ctrl_id
 	
 	print("✅ Ownership aus states.json geladen: ", current_owner.size(), " Provinzen")
 
@@ -64,6 +60,6 @@ func get_click_info(province_id: Variant, region_name: String = "") -> String:
 	return """=== Provinz Info ===
 ID:          %s
 Name:        %s
-Owner:       %s (%s)
-Controller:  %s (%s)
-""" % [str(province_id), region_name, owner.get("name"), owner.get("short_name", "?"), ctrl.get("name"), ctrl.get("short_name", "?")]
+Owner:       %s
+Controller:  %s
+""" % [str(province_id), region_name, owner.get("name"), ctrl.get("name")]

@@ -31,7 +31,7 @@ mesh = SubResource("SphereMesh_0xm2m")
 [node name="Regions" type="Node3D" parent="." unique_id=1833489443]
 script = ExtResource("1_ig7tw")
 max_features = 10000
-line_color = Color(1, 0, 0, 1)
+line_color = Color(0.6103795, 0.9302687, 0.57701945, 1)
 
 [node name="Polygons" type="Node3D" parent="." unique_id=73081054]
 
