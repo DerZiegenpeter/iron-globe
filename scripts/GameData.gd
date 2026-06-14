@@ -50,11 +50,11 @@ func _default_nation() -> Dictionary:
 	return {"id": "NONE", "name": "Unbekannt", "color": "#888888"}
 
 func get_click_info(province_id: Variant, region_name: String = "") -> String:
-	var owner = get_nation(province_id)
-	var ctrl = get_controller(province_id)
+	var owner_data = get_nation(province_id)
+	var ctrl_data = get_controller(province_id)
 	return """=== Provinz Info ===
 ID:          %s
 Name:        %s
 Owner:       %s
 Controller:  %s
-""" % [str(province_id), region_name, owner.get("name"), ctrl.get("name")]
+""" % [str(province_id), region_name, owner_data.get("name"), ctrl_data.get("name")]
