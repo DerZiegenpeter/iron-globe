@@ -1,7 +1,7 @@
 extends Node
 
-var nations: Dictionary = {}           # "IND" → Nation
-var province_to_owner: Dictionary = {}     # int ID → "IND"
+var nations: Dictionary = {}                    # "IND" → volle Nation-Daten
+var province_to_owner: Dictionary = {}          # int ID → "IND"
 var province_to_controller: Dictionary = {}
 
 func _ready():
@@ -13,15 +13,19 @@ func load_nations():
 	if not FileAccess.file_exists(path):
 		print("❌ nations.json nicht gefunden!")
 		return
+	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json = JSON.new()
 	json.parse(file.get_as_text())
 	file.close()
 	
-	for n in json.data.get("nations", []):
-		var code = n.get("short_name", "")
-		if code:
-			nations[code.to_upper()] = n
+	var data = json.data.get("nations", [])
+	for n in data:
+		var code = str(n.get("short_name", n.get("code", n.get("id", "")))).to_upper().strip_edges()
+		if code != "":
+			nations[code] = n
+			print("Nation geladen: ", code, " → ", n.get("name", ""))
+	
 	print("✅ Nationen geladen: ", nations.size())
 
 func load_ownership():
@@ -29,6 +33,7 @@ func load_ownership():
 	if not FileAccess.file_exists(path):
 		print("❌ ownership.json nicht gefunden!")
 		return
+	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json = JSON.new()
 	json.parse(file.get_as_text())
@@ -40,21 +45,26 @@ func load_ownership():
 	for entry in json.data.get("ownership", []):
 		var pid = entry.get("id", 0) as int
 		if pid <= 0: continue
-		province_to_owner[pid] = entry.get("owner", "NEU")
-		province_to_controller[pid] = entry.get("controller", entry.get("owner", "NEU"))
+		var owner = str(entry.get("owner", "NEU")).to_upper()
+		var controller = str(entry.get("controller", owner)).to_upper()
+		
+		province_to_owner[pid] = owner
+		province_to_controller[pid] = controller
 	
 	print("✅ Ownership geladen: ", province_to_owner.size(), " Provinzen")
 
 func get_province_info(province_id: int, region_name: String = "") -> String:
 	if province_id <= 0:
-		return "=== Provinz Info ===\nID: %s\nName: %s\nOwner: Unbekannt\nController: Unbekannt" % [province_id, region_name]
+		return "ID: %s | Name: %s | Besitzer: Unbekannt" % [province_id, region_name]
 	
 	var owner_code = province_to_owner.get(province_id, "NEU")
 	var nation = nations.get(owner_code, {})
 	
+	var owner_name = nation.get("name", "Unbekannt")
+	
 	return """=== Provinz Info ===
-ID:          %s
+ID:          %d
 Name:        %s
 Owner:       %s (%s)
 Controller:  %s (%s)
-""" % [province_id, region_name, nation.get("name", "Unbekannt"), owner_code, nation.get("name", "Unbekannt"), owner_code]
+""" % [province_id, region_name, owner_name, owner_code, owner_name, owner_code]
