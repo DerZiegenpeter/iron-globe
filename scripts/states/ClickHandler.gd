@@ -20,17 +20,18 @@ func _input(event: InputEvent):
 	
 	var hit_region = find_region_at(lat_lon)
 	if hit_region:
-		var rid = str(hit_region.id)   # Das ist der entscheidende Teil
-		print("✅ GETROFFEN: ", hit_region.name, " (ID: ", rid, ")")
+		var raw_id = str(hit_region.id)
+		var clean_id = raw_id.replace("_", "").strip_edges()  # Normalisierung
+		print("✅ GETROFFEN: ", hit_region.name, " (Raw ID: ", raw_id, " → Clean ID: ", clean_id, ")")
 		
 		if game_data:
-			print(game_data.get_click_info(rid, hit_region.name))
+			print(game_data.get_click_info(clean_id, hit_region.name))
 		else:
 			print("   ⚠️ GameData nicht gefunden!")
 	else:
 		print("Nichts getroffen")
 
-# ==================== HILFSFUNKTIONEN ====================
+# ==================== HILFSFUNKTIONEN (unverändert) ====================
 func intersect_ray_sphere(ray_origin: Vector3, ray_dir: Vector3, sphere_center: Vector3, sphere_radius: float) -> Variant:
 	var oc = ray_origin - sphere_center
 	var a = ray_dir.dot(ray_dir)
