@@ -1,8 +1,8 @@
 extends Node
 
-var nations: Dictionary = {}
-var current_owner: Dictionary = {}
-var current_controller: Dictionary = {}
+var nations: Dictionary = {}           # "IND" → Nation
+var province_to_owner: Dictionary = {}     # int ID → "IND"
+var province_to_controller: Dictionary = {}
 
 func _ready():
 	load_nations()
@@ -18,8 +18,10 @@ func load_nations():
 	json.parse(file.get_as_text())
 	file.close()
 	
-	for nation in json.data.get("nations", []):
-		nations[str(nation.id)] = nation
+	for n in json.data.get("nations", []):
+		var code = n.get("short_name", "")
+		if code:
+			nations[code.to_upper()] = n
 	print("✅ Nationen geladen: ", nations.size())
 
 func load_ownership():
@@ -32,29 +34,27 @@ func load_ownership():
 	json.parse(file.get_as_text())
 	file.close()
 	
-	var data = json.data.get("ownership", {})
-	for pid in data:
-		current_owner[pid] = data[pid].owner
-		current_controller[pid] = data[pid].controller
-	print("✅ Ownership geladen: ", current_owner.size(), " Provinzen")
+	province_to_owner.clear()
+	province_to_controller.clear()
+	
+	for entry in json.data.get("ownership", []):
+		var pid = entry.get("id", 0) as int
+		if pid <= 0: continue
+		province_to_owner[pid] = entry.get("owner", "NEU")
+		province_to_controller[pid] = entry.get("controller", entry.get("owner", "NEU"))
+	
+	print("✅ Ownership geladen: ", province_to_owner.size(), " Provinzen")
 
-func get_nation(pid: Variant) -> Dictionary:
-	var nation_id = str(current_owner.get(str(pid), "NONE"))
-	return nations.get(nation_id, _default_nation())
-
-func get_controller(pid: Variant) -> Dictionary:
-	var nation_id = str(current_controller.get(str(pid), current_owner.get(str(pid), "NONE")))
-	return nations.get(nation_id, _default_nation())
-
-func _default_nation() -> Dictionary:
-	return {"id": "NONE", "name": "Unbekannt", "color": "#888888"}
-
-func get_click_info(province_id: Variant, region_name: String = "") -> String:
-	var owner_data = get_nation(province_id)
-	var ctrl_data = get_controller(province_id)
+func get_province_info(province_id: int, region_name: String = "") -> String:
+	if province_id <= 0:
+		return "=== Provinz Info ===\nID: %s\nName: %s\nOwner: Unbekannt\nController: Unbekannt" % [province_id, region_name]
+	
+	var owner_code = province_to_owner.get(province_id, "NEU")
+	var nation = nations.get(owner_code, {})
+	
 	return """=== Provinz Info ===
 ID:          %s
 Name:        %s
-Owner:       %s
-Controller:  %s
-""" % [str(province_id), region_name, owner_data.get("name"), ctrl_data.get("name")]
+Owner:       %s (%s)
+Controller:  %s (%s)
+""" % [province_id, region_name, nation.get("name", "Unbekannt"), owner_code, nation.get("name", "Unbekannt"), owner_code]

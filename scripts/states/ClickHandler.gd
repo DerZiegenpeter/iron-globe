@@ -1,8 +1,10 @@
+# ClickHandler.gd
 extends Node3D
 
-@onready var regions_node: Node3D = get_node("../Regions")
+@onready var regions_node: Node3D = get_node_or_null("../Regions")
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
-@onready var game_data = get_node_or_null("/root/GameData")
+
+@onready var game_data: Node = get_node_or_null("/root/GameData")
 
 func _input(event: InputEvent):
 	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
@@ -11,27 +13,32 @@ func _input(event: InputEvent):
 	var ray_origin = camera.project_ray_origin(event.position)
 	var ray_dir = camera.project_ray_normal(event.position)
 	
-	var intersection = intersect_ray_sphere(ray_origin, ray_dir, Vector3.ZERO, regions_node.radius if regions_node else 1000.0)
-	if intersection == null:
+	var hit_point = intersect_ray_sphere(ray_origin, ray_dir, Vector3.ZERO, regions_node.radius if regions_node else 1000.0)
+	if hit_point == null:
+		print("Nichts getroffen")
 		return
 	
-	var hit_point = intersection
 	var lat_lon = vector3_to_lat_lon(hit_point)
-	
 	var hit_region = find_region_at(lat_lon)
+	
 	if hit_region:
-		var raw_id = str(hit_region.id)
-		var clean_id = raw_id.replace("_", "").strip_edges()  # Normalisierung
-		print("✅ GETROFFEN: ", hit_region.name, " (Raw ID: ", raw_id, " → Clean ID: ", clean_id, ")")
+		var raw_id = hit_region.get("id")          # Kann "IND" oder Zahl sein
+		var region_name = hit_region.get("name", "Unbekannt")
 		
-		if game_data:
-			print(game_data.get_click_info(clean_id, hit_region.name))
+		print("✅ GETROFFEN: ", region_name, " | Raw ID: ", raw_id)
+		
+		if game_data and game_data.has_method("get_province_info_by_code"):
+			var info = game_data.get_province_info_by_code(str(raw_id))
+			print("   Name: ", region_name)
+			print("   Besitzer: ", info.get("owner", "Unbekannt"), " (", info.get("owner_code", "NEU"), ")")
+			print("   Controller: ", info.get("controller_name", "Unbekannt"), " (", info.get("controller", "NEU"), ")")
 		else:
 			print("   ⚠️ GameData nicht gefunden!")
 	else:
-		print("Nichts getroffen")
+		print("Keine Region gefunden")
 
-# ==================== HILFSFUNKTIONEN (unverändert) ====================
+# ==================== HILFSFUNKTIONEN ====================
+
 func intersect_ray_sphere(ray_origin: Vector3, ray_dir: Vector3, sphere_center: Vector3, sphere_radius: float) -> Variant:
 	var oc = ray_origin - sphere_center
 	var a = ray_dir.dot(ray_dir)
@@ -39,23 +46,25 @@ func intersect_ray_sphere(ray_origin: Vector3, ray_dir: Vector3, sphere_center: 
 	var c = oc.dot(oc) - sphere_radius * sphere_radius
 	var discriminant = b * b - 4 * a * c
 	if discriminant < 0: return null
-	var t = (-b - sqrt(discriminant)) / (2.0 * a)
-	if t > 0: return ray_origin + ray_dir * t
-	t = (-b + sqrt(discriminant)) / (2.0 * a)
-	if t > 0: return ray_origin + ray_dir * t
+	var t1 = (-b - sqrt(discriminant)) / (2.0 * a)
+	var t2 = (-b + sqrt(discriminant)) / (2.0 * a)
+	if t1 > 0: return ray_origin + ray_dir * t1
+	if t2 > 0: return ray_origin + ray_dir * t2
 	return null
 
 func vector3_to_lat_lon(pos: Vector3) -> Dictionary:
-	var lat = rad_to_deg(asin(pos.y / pos.length()))
-	var lon = rad_to_deg(atan2(pos.x, pos.z))
+	var normalized = pos.normalized()
+	var lat = rad_to_deg(asin(normalized.y))
+	var lon = rad_to_deg(atan2(normalized.x, normalized.z))
 	return {"lat": lat, "lon": lon}
 
 func find_region_at(lat_lon: Dictionary) -> Variant:
 	if not regions_node: return null
-	for region in regions_node.region_polygons:
-		for ring in region.get("rings", []):
-			if point_in_polygon(lat_lon.lat, lat_lon.lon, ring):
-				return region
+	if "region_polygons" in regions_node:
+		for region in regions_node.region_polygons:
+			for ring in region.get("rings", []):
+				if point_in_polygon(lat_lon.lat, lat_lon.lon, ring):
+					return region
 	return null
 
 func point_in_polygon(lat: float, lon: float, ring: Array) -> bool:
