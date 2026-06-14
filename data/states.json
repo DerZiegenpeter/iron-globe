@@ -1,1467 +1,1467 @@
 {
   "states": [
-    {
-      "id": "IDN",
-      "name": "Indonesia",
-      "nation_id": "IDN_",
-      "owner": "IDN_",
-      "controller": "IDN_"
-    },
-    {
-      "id": "MYS",
-      "name": "Malaysia",
-      "nation_id": "MYS_",
-      "owner": "MYS_",
-      "controller": "MYS_"
-    },
-    {
-      "id": "CHL",
-      "name": "Chile",
-      "nation_id": "CHL_",
-      "owner": "CHL_",
-      "controller": "CHL_"
-    },
-    {
-      "id": "BOL",
-      "name": "Bolivia",
-      "nation_id": "BOL_",
-      "owner": "BOL_",
-      "controller": "BOL_"
-    },
-    {
-      "id": "PER",
-      "name": "Peru",
-      "nation_id": "PER_",
-      "owner": "PER_",
-      "controller": "PER_"
-    },
-    {
-      "id": "ARG",
-      "name": "Argentina",
-      "nation_id": "ARG_",
-      "owner": "ARG_",
-      "controller": "ARG_"
-    },
-    {
-      "id": "GB1",
-      "name": "United Kingdom",
-      "nation_id": "GB1_",
-      "owner": "GB1_",
-      "controller": "GB1_"
-    },
-    {
-      "id": "CYP",
-      "name": "Cyprus",
-      "nation_id": "CYP_",
-      "owner": "CYP_",
-      "controller": "CYP_"
-    },
-    {
-      "id": "IND",
-      "name": "India",
-      "nation_id": "IND_",
-      "owner": "IND_",
-      "controller": "IND_"
-    },
-    {
-      "id": "CH1",
-      "name": "China",
-      "nation_id": "CH1_",
-      "owner": "CH1_",
-      "controller": "CH1_"
-    },
-    {
-      "id": "IS1",
-      "name": "Israel",
-      "nation_id": "IS1_",
-      "owner": "IS1_",
-      "controller": "IS1_"
-    },
-    {
-      "id": "LBN",
-      "name": "Lebanon",
-      "nation_id": "LBN_",
-      "owner": "LBN_",
-      "controller": "LBN_"
-    },
-    {
-      "id": "ETH",
-      "name": "Ethiopia",
-      "nation_id": "ETH_",
-      "owner": "ETH_",
-      "controller": "ETH_"
-    },
-    {
-      "id": "SDS",
-      "name": "S. Sudan",
-      "nation_id": "SDS_",
-      "owner": "SDS_",
-      "controller": "SDS_"
-    },
-    {
-      "id": "SOM",
-      "name": "Somalia",
-      "nation_id": "SOM_",
-      "owner": "SOM_",
-      "controller": "SOM_"
-    },
-    {
-      "id": "KEN",
-      "name": "Kenya",
-      "nation_id": "KEN_",
-      "owner": "KEN_",
-      "controller": "KEN_"
-    },
-    {
-      "id": "MWI",
-      "name": "Malawi",
-      "nation_id": "MWI_",
-      "owner": "MWI_",
-      "controller": "MWI_"
-    },
-    {
-      "id": "TZA",
-      "name": "Tanzania",
-      "nation_id": "TZA_",
-      "owner": "TZA_",
-      "controller": "TZA_"
-    },
-    {
-      "id": "SYR",
-      "name": "Syria",
-      "nation_id": "SYR_",
-      "owner": "SYR_",
-      "controller": "SYR_"
-    },
-    {
-      "id": "SOL",
-      "name": "Somaliland",
-      "nation_id": "SOL_",
-      "owner": "SOL_",
-      "controller": "SOL_"
-    },
-    {
-      "id": "FR1",
-      "name": "France",
-      "nation_id": "FR1_",
-      "owner": "FR1_",
-      "controller": "FR1_"
-    },
-    {
-      "id": "SUR",
-      "name": "Suriname",
-      "nation_id": "SUR_",
-      "owner": "SUR_",
-      "controller": "SUR_"
-    },
-    {
-      "id": "GUY",
-      "name": "Guyana",
-      "nation_id": "GUY_",
-      "owner": "GUY_",
-      "controller": "GUY_"
-    },
-    {
-      "id": "KOR",
-      "name": "South Korea",
-      "nation_id": "KOR_",
-      "owner": "KOR_",
-      "controller": "KOR_"
-    },
-    {
-      "id": "PRK",
-      "name": "North Korea",
-      "nation_id": "PRK_",
-      "owner": "PRK_",
-      "controller": "PRK_"
-    },
-    {
-      "id": "MAR",
-      "name": "Morocco",
-      "nation_id": "MAR_",
-      "owner": "MAR_",
-      "controller": "MAR_"
-    },
-    {
-      "id": "B28",
-      "name": "W. Sahara",
-      "nation_id": "SAH_",
-      "owner": "SAH_",
-      "controller": "SAH_"
-    },
-    {
-      "id": "CRI",
-      "name": "Costa Rica",
-      "nation_id": "CRI_",
-      "owner": "CRI_",
-      "controller": "CRI_"
-    },
-    {
-      "id": "NIC",
-      "name": "Nicaragua",
-      "nation_id": "NIC_",
-      "owner": "NIC_",
-      "controller": "NIC_"
-    },
-    {
-      "id": "COG",
-      "name": "Congo",
-      "nation_id": "COG_",
-      "owner": "COG_",
-      "controller": "COG_"
-    },
-    {
-      "id": "COD",
-      "name": "Dem. Rep. Congo",
-      "nation_id": "COD_",
-      "owner": "COD_",
-      "controller": "COD_"
-    },
-    {
-      "id": "BTN",
-      "name": "Bhutan",
-      "nation_id": "BTN_",
-      "owner": "BTN_",
-      "controller": "BTN_"
-    },
-    {
-      "id": "UKR",
-      "name": "Ukraine",
-      "nation_id": "UKR_",
-      "owner": "UKR_",
-      "controller": "UKR_"
-    },
-    {
-      "id": "BLR",
-      "name": "Belarus",
-      "nation_id": "BLR_",
-      "owner": "BLR_",
-      "controller": "BLR_"
-    },
-    {
-      "id": "NAM",
-      "name": "Namibia",
-      "nation_id": "NAM_",
-      "owner": "NAM_",
-      "controller": "NAM_"
-    },
-    {
-      "id": "ZAF",
-      "name": "South Africa",
-      "nation_id": "ZAF_",
-      "owner": "ZAF_",
-      "controller": "ZAF_"
-    },
-    {
-      "id": "NL1",
-      "name": "Netherlands",
-      "nation_id": "NL1_",
-      "owner": "NL1_",
-      "controller": "NL1_"
-    },
-    {
-      "id": "OMN",
-      "name": "Oman",
-      "nation_id": "OMN_",
-      "owner": "OMN_",
-      "controller": "OMN_"
-    },
-    {
-      "id": "UZB",
-      "name": "Uzbekistan",
-      "nation_id": "UZB_",
-      "owner": "UZB_",
-      "controller": "UZB_"
-    },
-    {
-      "id": "KAZ",
-      "name": "Kazakhstan",
-      "nation_id": "KAZ_",
-      "owner": "KAZ_",
-      "controller": "KAZ_"
-    },
-    {
-      "id": "TJK",
-      "name": "Tajikistan",
-      "nation_id": "TJK_",
-      "owner": "TJK_",
-      "controller": "TJK_"
-    },
-    {
-      "id": "LTU",
-      "name": "Lithuania",
-      "nation_id": "LTU_",
-      "owner": "LTU_",
-      "controller": "LTU_"
-    },
-    {
-      "id": "BRA",
-      "name": "Brazil",
-      "nation_id": "BRA_",
-      "owner": "BRA_",
-      "controller": "BRA_"
-    },
-    {
-      "id": "URY",
-      "name": "Uruguay",
-      "nation_id": "URY_",
-      "owner": "URY_",
-      "controller": "URY_"
-    },
-    {
-      "id": "MNG",
-      "name": "Mongolia",
-      "nation_id": "MNG_",
-      "owner": "MNG_",
-      "controller": "MNG_"
-    },
-    {
-      "id": "RUS",
-      "name": "Russia",
-      "nation_id": "RUS_",
-      "owner": "RUS_",
-      "controller": "RUS_"
-    },
-    {
-      "id": "CZE",
-      "name": "Czechia",
-      "nation_id": "CZE_",
-      "owner": "CZE_",
-      "controller": "CZE_"
-    },
-    {
-      "id": "DEU",
-      "name": "Germany",
-      "nation_id": "DEU_",
-      "owner": "DEU_",
-      "controller": "DEU_"
-    },
-    {
-      "id": "EST",
-      "name": "Estonia",
-      "nation_id": "EST_",
-      "owner": "EST_",
-      "controller": "EST_"
-    },
-    {
-      "id": "LVA",
-      "name": "Latvia",
-      "nation_id": "LVA_",
-      "owner": "LVA_",
-      "controller": "LVA_"
-    },
-    {
-      "id": "NOR",
-      "name": "Norway",
-      "nation_id": "NOR_",
-      "owner": "NOR_",
-      "controller": "NOR_"
-    },
-    {
-      "id": "SWE",
-      "name": "Sweden",
-      "nation_id": "SWE_",
-      "owner": "SWE_",
-      "controller": "SWE_"
-    },
-    {
-      "id": "FI1",
-      "name": "Finland",
-      "nation_id": "FI1_",
-      "owner": "FI1_",
-      "controller": "FI1_"
-    },
-    {
-      "id": "VNM",
-      "name": "Vietnam",
-      "nation_id": "VNM_",
-      "owner": "VNM_",
-      "controller": "VNM_"
-    },
-    {
-      "id": "KHM",
-      "name": "Cambodia",
-      "nation_id": "KHM_",
-      "owner": "KHM_",
-      "controller": "KHM_"
-    },
-    {
-      "id": "LUX",
-      "name": "Luxembourg",
-      "nation_id": "LUX_",
-      "owner": "LUX_",
-      "controller": "LUX_"
-    },
-    {
-      "id": "ARE",
-      "name": "United Arab Emirates",
-      "nation_id": "ARE_",
-      "owner": "ARE_",
-      "controller": "ARE_"
-    },
-    {
-      "id": "BEL",
-      "name": "Belgium",
-      "nation_id": "BEL_",
-      "owner": "BEL_",
-      "controller": "BEL_"
-    },
-    {
-      "id": "B35",
-      "name": "Georgia",
-      "nation_id": "B35_",
-      "owner": "B35_",
-      "controller": "B35_"
-    },
-    {
-      "id": "MKD",
-      "name": "North Macedonia",
-      "nation_id": "MKD_",
-      "owner": "MKD_",
-      "controller": "MKD_"
-    },
-    {
-      "id": "ALB",
-      "name": "Albania",
-      "nation_id": "ALB_",
-      "owner": "ALB_",
-      "controller": "ALB_"
-    },
-    {
-      "id": "AZE",
-      "name": "Azerbaijan",
-      "nation_id": "AZE_",
-      "owner": "AZE_",
-      "controller": "AZE_"
-    },
-    {
-      "id": "KOS",
-      "name": "Kosovo",
-      "nation_id": "KOS_",
-      "owner": "KOS_",
-      "controller": "KOS_"
-    },
-    {
-      "id": "TUR",
-      "name": "Turkey",
-      "nation_id": "TUR_",
-      "owner": "TUR_",
-      "controller": "TUR_"
-    },
-    {
-      "id": "ESP",
-      "name": "Spain",
-      "nation_id": "ESP_",
-      "owner": "ESP_",
-      "controller": "ESP_"
-    },
-    {
-      "id": "LAO",
-      "name": "Laos",
-      "nation_id": "LAO_",
-      "owner": "LAO_",
-      "controller": "LAO_"
-    },
-    {
-      "id": "KGZ",
-      "name": "Kyrgyzstan",
-      "nation_id": "KGZ_",
-      "owner": "KGZ_",
-      "controller": "KGZ_"
-    },
-    {
-      "id": "ARM",
-      "name": "Armenia",
-      "nation_id": "ARM_",
-      "owner": "ARM_",
-      "controller": "ARM_"
-    },
-    {
-      "id": "DN1",
-      "name": "Denmark",
-      "nation_id": "DN1_",
-      "owner": "DN1_",
-      "controller": "DN1_"
-    },
-    {
-      "id": "LBY",
-      "name": "Libya",
-      "nation_id": "LBY_",
-      "owner": "LBY_",
-      "controller": "LBY_"
-    },
-    {
-      "id": "TUN",
-      "name": "Tunisia",
-      "nation_id": "TUN_",
-      "owner": "TUN_",
-      "controller": "TUN_"
-    },
-    {
-      "id": "ROU",
-      "name": "Romania",
-      "nation_id": "ROU_",
-      "owner": "ROU_",
-      "controller": "ROU_"
-    },
-    {
-      "id": "HUN",
-      "name": "Hungary",
-      "nation_id": "HUN_",
-      "owner": "HUN_",
-      "controller": "HUN_"
-    },
-    {
-      "id": "SVK",
-      "name": "Slovakia",
-      "nation_id": "SVK_",
-      "owner": "SVK_",
-      "controller": "SVK_"
-    },
-    {
-      "id": "POL",
-      "name": "Poland",
-      "nation_id": "POL_",
-      "owner": "POL_",
-      "controller": "POL_"
-    },
-    {
-      "id": "IRL",
-      "name": "Ireland",
-      "nation_id": "IRL_",
-      "owner": "IRL_",
-      "controller": "IRL_"
-    },
-    {
-      "id": "GRC",
-      "name": "Greece",
-      "nation_id": "GRC_",
-      "owner": "GRC_",
-      "controller": "GRC_"
-    },
-    {
-      "id": "ZMB",
-      "name": "Zambia",
-      "nation_id": "ZMB_",
-      "owner": "ZMB_",
-      "controller": "ZMB_"
-    },
-    {
-      "id": "SLE",
-      "name": "Sierra Leone",
-      "nation_id": "SLE_",
-      "owner": "SLE_",
-      "controller": "SLE_"
-    },
-    {
-      "id": "GIN",
-      "name": "Guinea",
-      "nation_id": "GIN_",
-      "owner": "GIN_",
-      "controller": "GIN_"
-    },
-    {
-      "id": "LBR",
-      "name": "Liberia",
-      "nation_id": "LBR_",
-      "owner": "LBR_",
-      "controller": "LBR_"
-    },
-    {
-      "id": "CAF",
-      "name": "Central African Rep.",
-      "nation_id": "CAF_",
-      "owner": "CAF_",
-      "controller": "CAF_"
-    },
-    {
-      "id": "SDN",
-      "name": "Sudan",
-      "nation_id": "SDN_",
-      "owner": "SDN_",
-      "controller": "SDN_"
-    },
-    {
-      "id": "DJI",
-      "name": "Djibouti",
-      "nation_id": "DJI_",
-      "owner": "DJI_",
-      "controller": "DJI_"
-    },
-    {
-      "id": "ERI",
-      "name": "Eritrea",
-      "nation_id": "ERI_",
-      "owner": "ERI_",
-      "controller": "ERI_"
-    },
-    {
-      "id": "AUT",
-      "name": "Austria",
-      "nation_id": "AUT_",
-      "owner": "AUT_",
-      "controller": "AUT_"
-    },
-    {
-      "id": "IRQ",
-      "name": "Iraq",
-      "nation_id": "IRQ_",
-      "owner": "IRQ_",
-      "controller": "IRQ_"
-    },
-    {
-      "id": "ITA",
-      "name": "Italy",
-      "nation_id": "ITA_",
-      "owner": "ITA_",
-      "controller": "ITA_"
-    },
-    {
-      "id": "CHE",
-      "name": "Switzerland",
-      "nation_id": "CHE_",
-      "owner": "CHE_",
-      "controller": "CHE_"
-    },
-    {
-      "id": "IRN",
-      "name": "Iran",
-      "nation_id": "IRN_",
-      "owner": "IRN_",
-      "controller": "IRN_"
-    },
-    {
-      "id": "LIE",
-      "name": "Liechtenstein",
-      "nation_id": "LIE_",
-      "owner": "LIE_",
-      "controller": "LIE_"
-    },
-    {
-      "id": "CIV",
-      "name": "Côte d'Ivoire",
-      "nation_id": "CIV_",
-      "owner": "CIV_",
-      "controller": "CIV_"
-    },
-    {
-      "id": "SRB",
-      "name": "Serbia",
-      "nation_id": "SRB_",
-      "owner": "SRB_",
-      "controller": "SRB_"
-    },
-    {
-      "id": "MLI",
-      "name": "Mali",
-      "nation_id": "MLI_",
-      "owner": "MLI_",
-      "controller": "MLI_"
-    },
-    {
-      "id": "SEN",
-      "name": "Senegal",
-      "nation_id": "SEN_",
-      "owner": "SEN_",
-      "controller": "SEN_"
-    },
-    {
-      "id": "NGA",
-      "name": "Nigeria",
-      "nation_id": "NGA_",
-      "owner": "NGA_",
-      "controller": "NGA_"
-    },
-    {
-      "id": "BEN",
-      "name": "Benin",
-      "nation_id": "BEN_",
-      "owner": "BEN_",
-      "controller": "BEN_"
-    },
-    {
-      "id": "AGO",
-      "name": "Angola",
-      "nation_id": "AGO_",
-      "owner": "AGO_",
-      "controller": "AGO_"
-    },
-    {
-      "id": "HRV",
-      "name": "Croatia",
-      "nation_id": "HRV_",
-      "owner": "HRV_",
-      "controller": "HRV_"
-    },
-    {
-      "id": "SVN",
-      "name": "Slovenia",
-      "nation_id": "SVN_",
-      "owner": "SVN_",
-      "controller": "SVN_"
-    },
-    {
-      "id": "QAT",
-      "name": "Qatar",
-      "nation_id": "QAT_",
-      "owner": "QAT_",
-      "controller": "QAT_"
-    },
-    {
-      "id": "SAU",
-      "name": "Saudi Arabia",
-      "nation_id": "SAU_",
-      "owner": "SAU_",
-      "controller": "SAU_"
-    },
-    {
-      "id": "BWA",
-      "name": "Botswana",
-      "nation_id": "BWA_",
-      "owner": "BWA_",
-      "controller": "BWA_"
-    },
-    {
-      "id": "ZWE",
-      "name": "Zimbabwe",
-      "nation_id": "ZWE_",
-      "owner": "ZWE_",
-      "controller": "ZWE_"
-    },
-    {
-      "id": "PAK",
-      "name": "Pakistan",
-      "nation_id": "PAK_",
-      "owner": "PAK_",
-      "controller": "PAK_"
-    },
-    {
-      "id": "BGR",
-      "name": "Bulgaria",
-      "nation_id": "BGR_",
-      "owner": "BGR_",
-      "controller": "BGR_"
-    },
-    {
-      "id": "THA",
-      "name": "Thailand",
-      "nation_id": "THA_",
-      "owner": "THA_",
-      "controller": "THA_"
-    },
-    {
-      "id": "SMR",
-      "name": "San Marino",
-      "nation_id": "SMR_",
-      "owner": "SMR_",
-      "controller": "SMR_"
-    },
-    {
-      "id": "HTI",
-      "name": "Haiti",
-      "nation_id": "HTI_",
-      "owner": "HTI_",
-      "controller": "HTI_"
-    },
-    {
-      "id": "DOM",
-      "name": "Dominican Rep.",
-      "nation_id": "DOM_",
-      "owner": "DOM_",
-      "controller": "DOM_"
-    },
-    {
-      "id": "TCD",
-      "name": "Chad",
-      "nation_id": "TCD_",
-      "owner": "TCD_",
-      "controller": "TCD_"
-    },
-    {
-      "id": "KWT",
-      "name": "Kuwait",
-      "nation_id": "KWT_",
-      "owner": "KWT_",
-      "controller": "KWT_"
-    },
-    {
-      "id": "SLV",
-      "name": "El Salvador",
-      "nation_id": "SLV_",
-      "owner": "SLV_",
-      "controller": "SLV_"
-    },
-    {
-      "id": "GTM",
-      "name": "Guatemala",
-      "nation_id": "GTM_",
-      "owner": "GTM_",
-      "controller": "GTM_"
-    },
-    {
-      "id": "TLS",
-      "name": "Timor-Leste",
-      "nation_id": "TLS_",
-      "owner": "TLS_",
-      "controller": "TLS_"
-    },
-    {
-      "id": "BRN",
-      "name": "Brunei",
-      "nation_id": "BRN_",
-      "owner": "BRN_",
-      "controller": "BRN_"
-    },
-    {
-      "id": "MCO",
-      "name": "Monaco",
-      "nation_id": "MCO_",
-      "owner": "MCO_",
-      "controller": "MCO_"
-    },
-    {
-      "id": "DZA",
-      "name": "Algeria",
-      "nation_id": "DZA_",
-      "owner": "DZA_",
-      "controller": "DZA_"
-    },
-    {
-      "id": "MOZ",
-      "name": "Mozambique",
-      "nation_id": "MOZ_",
-      "owner": "MOZ_",
-      "controller": "MOZ_"
-    },
-    {
-      "id": "SWZ",
-      "name": "eSwatini",
-      "nation_id": "SWZ_",
-      "owner": "SWZ_",
-      "controller": "SWZ_"
-    },
-    {
-      "id": "BDI",
-      "name": "Burundi",
-      "nation_id": "BDI_",
-      "owner": "BDI_",
-      "controller": "BDI_"
-    },
-    {
-      "id": "RWA",
-      "name": "Rwanda",
-      "nation_id": "RWA_",
-      "owner": "RWA_",
-      "controller": "RWA_"
-    },
-    {
-      "id": "MMR",
-      "name": "Myanmar",
-      "nation_id": "MMR_",
-      "owner": "MMR_",
-      "controller": "MMR_"
-    },
-    {
-      "id": "BGD",
-      "name": "Bangladesh",
-      "nation_id": "BGD_",
-      "owner": "BGD_",
-      "controller": "BGD_"
-    },
-    {
-      "id": "AND",
-      "name": "Andorra",
-      "nation_id": "AND_",
-      "owner": "AND_",
-      "controller": "AND_"
-    },
-    {
-      "id": "AFG",
-      "name": "Afghanistan",
-      "nation_id": "AFG_",
-      "owner": "AFG_",
-      "controller": "AFG_"
-    },
-    {
-      "id": "MNE",
-      "name": "Montenegro",
-      "nation_id": "MNE_",
-      "owner": "MNE_",
-      "controller": "MNE_"
-    },
-    {
-      "id": "BIH",
-      "name": "Bosnia and Herz.",
-      "nation_id": "BIH_",
-      "owner": "BIH_",
-      "controller": "BIH_"
-    },
-    {
-      "id": "UGA",
-      "name": "Uganda",
-      "nation_id": "UGA_",
-      "owner": "UGA_",
-      "controller": "UGA_"
-    },
-    {
-      "id": "CUB",
-      "name": "Cuba",
-      "nation_id": "CUB_",
-      "owner": "CUB_",
-      "controller": "CUB_"
-    },
-    {
-      "id": "HND",
-      "name": "Honduras",
-      "nation_id": "HND_",
-      "owner": "HND_",
-      "controller": "HND_"
-    },
-    {
-      "id": "ECU",
-      "name": "Ecuador",
-      "nation_id": "ECU_",
-      "owner": "ECU_",
-      "controller": "ECU_"
-    },
-    {
-      "id": "COL",
-      "name": "Colombia",
-      "nation_id": "COL_",
-      "owner": "COL_",
-      "controller": "COL_"
-    },
-    {
-      "id": "PRY",
-      "name": "Paraguay",
-      "nation_id": "PRY_",
-      "owner": "PRY_",
-      "controller": "PRY_"
-    },
-    {
-      "id": "B85",
-      "name": "Brazilian I.",
-      "nation_id": "BRI_",
-      "owner": "BRI_",
-      "controller": "BRI_"
-    },
-    {
-      "id": "PR1",
-      "name": "Portugal",
-      "nation_id": "PRT_",
-      "owner": "PRT_",
-      "controller": "PRT_"
-    },
-    {
-      "id": "MDA",
-      "name": "Moldova",
-      "nation_id": "MDA_",
-      "owner": "MDA_",
-      "controller": "MDA_"
-    },
-    {
-      "id": "TKM",
-      "name": "Turkmenistan",
-      "nation_id": "TKM_",
-      "owner": "TKM_",
-      "controller": "TKM_"
-    },
-    {
-      "id": "JOR",
-      "name": "Jordan",
-      "nation_id": "JOR_",
-      "owner": "JOR_",
-      "controller": "JOR_"
-    },
-    {
-      "id": "NPL",
-      "name": "Nepal",
-      "nation_id": "NPL_",
-      "owner": "NPL_",
-      "controller": "NPL_"
-    },
-    {
-      "id": "LSO",
-      "name": "Lesotho",
-      "nation_id": "LSO_",
-      "owner": "LSO_",
-      "controller": "LSO_"
-    },
-    {
-      "id": "CMR",
-      "name": "Cameroon",
-      "nation_id": "CMR_",
-      "owner": "CMR_",
-      "controller": "CMR_"
-    },
-    {
-      "id": "GAB",
-      "name": "Gabon",
-      "nation_id": "GAB_",
-      "owner": "GAB_",
-      "controller": "GAB_"
-    },
-    {
-      "id": "NER",
-      "name": "Niger",
-      "nation_id": "NER_",
-      "owner": "NER_",
-      "controller": "NER_"
-    },
-    {
-      "id": "BFA",
-      "name": "Burkina Faso",
-      "nation_id": "BFA_",
-      "owner": "BFA_",
-      "controller": "BFA_"
-    },
-    {
-      "id": "TGO",
-      "name": "Togo",
-      "nation_id": "TGO_",
-      "owner": "TGO_",
-      "controller": "TGO_"
-    },
-    {
-      "id": "GHA",
-      "name": "Ghana",
-      "nation_id": "GHA_",
-      "owner": "GHA_",
-      "controller": "GHA_"
-    },
-    {
-      "id": "GNB",
-      "name": "Guinea-Bissau",
-      "nation_id": "GNB_",
-      "owner": "GNB_",
-      "controller": "GNB_"
-    },
-    {
-      "id": "US1",
-      "name": "United States of America",
-      "nation_id": "US1_",
-      "owner": "US1_",
-      "controller": "US1_"
-    },
-    {
-      "id": "CAN",
-      "name": "Canada",
-      "nation_id": "CAN_",
-      "owner": "CAN_",
-      "controller": "CAN_"
-    },
-    {
-      "id": "MEX",
-      "name": "Mexico",
-      "nation_id": "MEX_",
-      "owner": "MEX_",
-      "controller": "MEX_"
-    },
-    {
-      "id": "BLZ",
-      "name": "Belize",
-      "nation_id": "BLZ_",
-      "owner": "BLZ_",
-      "controller": "BLZ_"
-    },
-    {
-      "id": "PAN",
-      "name": "Panama",
-      "nation_id": "PAN_",
-      "owner": "PAN_",
-      "controller": "PAN_"
-    },
-    {
-      "id": "VEN",
-      "name": "Venezuela",
-      "nation_id": "VEN_",
-      "owner": "VEN_",
-      "controller": "VEN_"
-    },
-    {
-      "id": "PN1",
-      "name": "Papua New Guinea",
-      "nation_id": "PNG_",
-      "owner": "PNG_",
-      "controller": "PNG_"
-    },
-    {
-      "id": "EGY",
-      "name": "Egypt",
-      "nation_id": "EGY_",
-      "owner": "EGY_",
-      "controller": "EGY_"
-    },
-    {
-      "id": "YEM",
-      "name": "Yemen",
-      "nation_id": "YEM_",
-      "owner": "YEM_",
-      "controller": "YEM_"
-    },
-    {
-      "id": "MRT",
-      "name": "Mauritania",
-      "nation_id": "MRT_",
-      "owner": "MRT_",
-      "controller": "MRT_"
-    },
-    {
-      "id": "GNQ",
-      "name": "Eq. Guinea",
-      "nation_id": "GNQ_",
-      "owner": "GNQ_",
-      "controller": "GNQ_"
-    },
-    {
-      "id": "GMB",
-      "name": "Gambia",
-      "nation_id": "GMB_",
-      "owner": "GMB_",
-      "controller": "GMB_"
-    },
-    {
-      "id": "VAT",
-      "name": "Vatican",
-      "nation_id": "VAT_",
-      "owner": "VAT_",
-      "controller": "VAT_"
-    },
-    {
-      "id": "CYN",
-      "name": "N. Cyprus",
-      "nation_id": "CYN_",
-      "owner": "CYN_",
-      "controller": "CYN_"
-    },
-    {
-      "id": "B43",
-      "name": "Cyprus U.N. Buffer Zone",
-      "nation_id": "CNM_",
-      "owner": "CNM_",
-      "controller": "CNM_"
-    },
-    {
-      "id": "B45",
-      "name": "Siachen Glacier",
-      "nation_id": "KAS_",
-      "owner": "KAS_",
-      "controller": "KAS_"
-    },
-    {
-      "id": "B97",
-      "name": "Southern Patagonian Ice Field",
-      "nation_id": "SPI_",
-      "owner": "SPI_",
-      "controller": "SPI_"
-    },
-    {
-      "id": "B94",
-      "name": "Bir Tawil",
-      "nation_id": "BRT_",
-      "owner": "BRT_",
-      "controller": "BRT_"
-    },
-    {
-      "id": "ATA",
-      "name": "Antarctica",
-      "nation_id": "ATA_",
-      "owner": "ATA_",
-      "controller": "ATA_"
-    },
-    {
-      "id": "AU1",
-      "name": "Australia",
-      "nation_id": "AU1_",
-      "owner": "AU1_",
-      "controller": "AU1_"
-    },
-    {
-      "id": "FJI",
-      "name": "Fiji",
-      "nation_id": "FJI_",
-      "owner": "FJI_",
-      "controller": "FJI_"
-    },
-    {
-      "id": "NZ1",
-      "name": "New Zealand",
-      "nation_id": "NZ1_",
-      "owner": "NZ1_",
-      "controller": "NZ1_"
-    },
-    {
-      "id": "MDG",
-      "name": "Madagascar",
-      "nation_id": "MDG_",
-      "owner": "MDG_",
-      "controller": "MDG_"
-    },
-    {
-      "id": "PHL",
-      "name": "Philippines",
-      "nation_id": "PHL_",
-      "owner": "PHL_",
-      "controller": "PHL_"
-    },
-    {
-      "id": "LKA",
-      "name": "Sri Lanka",
-      "nation_id": "LKA_",
-      "owner": "LKA_",
-      "controller": "LKA_"
-    },
-    {
-      "id": "BHS",
-      "name": "Bahamas",
-      "nation_id": "BHS_",
-      "owner": "BHS_",
-      "controller": "BHS_"
-    },
-    {
-      "id": "TWN",
-      "name": "Taiwan",
-      "nation_id": "TWN_",
-      "owner": "TWN_",
-      "controller": "TWN_"
-    },
-    {
-      "id": "JPN",
-      "name": "Japan",
-      "nation_id": "JPN_",
-      "owner": "JPN_",
-      "controller": "JPN_"
-    },
-    {
-      "id": "ISL",
-      "name": "Iceland",
-      "nation_id": "ISL_",
-      "owner": "ISL_",
-      "controller": "ISL_"
-    },
-    {
-      "id": "SYC",
-      "name": "Seychelles",
-      "nation_id": "SYC_",
-      "owner": "SYC_",
-      "controller": "SYC_"
-    },
-    {
-      "id": "KIR",
-      "name": "Kiribati",
-      "nation_id": "KIR_",
-      "owner": "KIR_",
-      "controller": "KIR_"
-    },
-    {
-      "id": "MHL",
-      "name": "Marshall Is.",
-      "nation_id": "MHL_",
-      "owner": "MHL_",
-      "controller": "MHL_"
-    },
-    {
-      "id": "TTO",
-      "name": "Trinidad and Tobago",
-      "nation_id": "TTO_",
-      "owner": "TTO_",
-      "controller": "TTO_"
-    },
-    {
-      "id": "GRD",
-      "name": "Grenada",
-      "nation_id": "GRD_",
-      "owner": "GRD_",
-      "controller": "GRD_"
-    },
-    {
-      "id": "VCT",
-      "name": "St. Vin. and Gren.",
-      "nation_id": "VCT_",
-      "owner": "VCT_",
-      "controller": "VCT_"
-    },
-    {
-      "id": "BRB",
-      "name": "Barbados",
-      "nation_id": "BRB_",
-      "owner": "BRB_",
-      "controller": "BRB_"
-    },
-    {
-      "id": "LCA",
-      "name": "Saint Lucia",
-      "nation_id": "LCA_",
-      "owner": "LCA_",
-      "controller": "LCA_"
-    },
-    {
-      "id": "DMA",
-      "name": "Dominica",
-      "nation_id": "DMA_",
-      "owner": "DMA_",
-      "controller": "DMA_"
-    },
-    {
-      "id": "ATG",
-      "name": "Antigua and Barb.",
-      "nation_id": "ATG_",
-      "owner": "ATG_",
-      "controller": "ATG_"
-    },
-    {
-      "id": "KNA",
-      "name": "St. Kitts and Nevis",
-      "nation_id": "KNA_",
-      "owner": "KNA_",
-      "controller": "KNA_"
-    },
-    {
-      "id": "JAM",
-      "name": "Jamaica",
-      "nation_id": "JAM_",
-      "owner": "JAM_",
-      "controller": "JAM_"
-    },
-    {
-      "id": "MUS",
-      "name": "Mauritius",
-      "nation_id": "MUS_",
-      "owner": "MUS_",
-      "controller": "MUS_"
-    },
-    {
-      "id": "COM",
-      "name": "Comoros",
-      "nation_id": "COM_",
-      "owner": "COM_",
-      "controller": "COM_"
-    },
-    {
-      "id": "STP",
-      "name": "São Tomé and Principe",
-      "nation_id": "STP_",
-      "owner": "STP_",
-      "controller": "STP_"
-    },
-    {
-      "id": "CPV",
-      "name": "Cabo Verde",
-      "nation_id": "CPV_",
-      "owner": "CPV_",
-      "controller": "CPV_"
-    },
-    {
-      "id": "MLT",
-      "name": "Malta",
-      "nation_id": "MLT_",
-      "owner": "MLT_",
-      "controller": "MLT_"
-    },
-    {
-      "id": "SGP",
-      "name": "Singapore",
-      "nation_id": "SGP_",
-      "owner": "SGP_",
-      "controller": "SGP_"
-    },
-    {
-      "id": "TON",
-      "name": "Tonga",
-      "nation_id": "TON_",
-      "owner": "TON_",
-      "controller": "TON_"
-    },
-    {
-      "id": "WSM",
-      "name": "Samoa",
-      "nation_id": "WSM_",
-      "owner": "WSM_",
-      "controller": "WSM_"
-    },
-    {
-      "id": "SLB",
-      "name": "Solomon Is.",
-      "nation_id": "SLB_",
-      "owner": "SLB_",
-      "controller": "SLB_"
-    },
-    {
-      "id": "TUV",
-      "name": "Tuvalu",
-      "nation_id": "TUV_",
-      "owner": "TUV_",
-      "controller": "TUV_"
-    },
-    {
-      "id": "MDV",
-      "name": "Maldives",
-      "nation_id": "MDV_",
-      "owner": "MDV_",
-      "controller": "MDV_"
-    },
-    {
-      "id": "NRU",
-      "name": "Nauru",
-      "nation_id": "NRU_",
-      "owner": "NRU_",
-      "controller": "NRU_"
-    },
-    {
-      "id": "FSM",
-      "name": "Micronesia",
-      "nation_id": "FSM_",
-      "owner": "FSM_",
-      "controller": "FSM_"
-    },
-    {
-      "id": "VUT",
-      "name": "Vanuatu",
-      "nation_id": "VUT_",
-      "owner": "VUT_",
-      "controller": "VUT_"
-    },
-    {
-      "id": "PLW",
-      "name": "Palau",
-      "nation_id": "PLW_",
-      "owner": "PLW_",
-      "controller": "PLW_"
-    },
-    {
-      "id": "BHR",
-      "name": "Bahrain",
-      "nation_id": "BHR_",
-      "owner": "BHR_",
-      "controller": "BHR_"
-    },
-    {
-      "id": "B46",
-      "name": "Spratly Is.",
-      "nation_id": "PGA_",
-      "owner": "PGA_",
-      "controller": "PGA_"
-    },
-    {
-      "id": "B41",
-      "name": "Bajo Nuevo Bank",
-      "nation_id": "BJN_",
-      "owner": "BJN_",
-      "controller": "BJN_"
-    },
-    {
-      "id": "B42",
-      "name": "Serranilla Bank",
-      "nation_id": "SER_",
-      "owner": "SER_",
-      "controller": "SER_"
-    },
-    {
-      "id": "B70",
-      "name": "Scarborough Reef",
-      "nation_id": "SCR_",
-      "owner": "SCR_",
-      "controller": "SCR_"
-    }
+	{
+	  "id": "IDN",
+	  "name": "Indonesia",
+	  "nation_id": "IDN_",
+	  "owner": "IDN_",
+	  "controller": "IDN_"
+	},
+	{
+	  "id": "MYS",
+	  "name": "Malaysia",
+	  "nation_id": "MYS_",
+	  "owner": "MYS_",
+	  "controller": "MYS_"
+	},
+	{
+	  "id": "CHL",
+	  "name": "Chile",
+	  "nation_id": "CHL_",
+	  "owner": "CHL_",
+	  "controller": "CHL_"
+	},
+	{
+	  "id": "BOL",
+	  "name": "Bolivia",
+	  "nation_id": "BOL_",
+	  "owner": "BOL_",
+	  "controller": "BOL_"
+	},
+	{
+	  "id": "PER",
+	  "name": "Peru",
+	  "nation_id": "PER_",
+	  "owner": "PER_",
+	  "controller": "PER_"
+	},
+	{
+	  "id": "ARG",
+	  "name": "Argentina",
+	  "nation_id": "ARG_",
+	  "owner": "ARG_",
+	  "controller": "ARG_"
+	},
+	{
+	  "id": "GB1",
+	  "name": "United Kingdom",
+	  "nation_id": "GB1_",
+	  "owner": "GB1_",
+	  "controller": "GB1_"
+	},
+	{
+	  "id": "CYP",
+	  "name": "Cyprus",
+	  "nation_id": "CYP_",
+	  "owner": "CYP_",
+	  "controller": "CYP_"
+	},
+	{
+	  "id": "IND",
+	  "name": "India",
+	  "nation_id": "IND_",
+	  "owner": "IND_",
+	  "controller": "IND_"
+	},
+	{
+	  "id": "CH1",
+	  "name": "China",
+	  "nation_id": "CH1_",
+	  "owner": "CH1_",
+	  "controller": "CH1_"
+	},
+	{
+	  "id": "IS1",
+	  "name": "Israel",
+	  "nation_id": "IS1_",
+	  "owner": "IS1_",
+	  "controller": "IS1_"
+	},
+	{
+	  "id": "LBN",
+	  "name": "Lebanon",
+	  "nation_id": "LBN_",
+	  "owner": "LBN_",
+	  "controller": "LBN_"
+	},
+	{
+	  "id": "ETH",
+	  "name": "Ethiopia",
+	  "nation_id": "ETH_",
+	  "owner": "ETH_",
+	  "controller": "ETH_"
+	},
+	{
+	  "id": "SDS",
+	  "name": "S. Sudan",
+	  "nation_id": "SDS_",
+	  "owner": "SDS_",
+	  "controller": "SDS_"
+	},
+	{
+	  "id": "SOM",
+	  "name": "Somalia",
+	  "nation_id": "SOM_",
+	  "owner": "SOM_",
+	  "controller": "SOM_"
+	},
+	{
+	  "id": "KEN",
+	  "name": "Kenya",
+	  "nation_id": "KEN_",
+	  "owner": "KEN_",
+	  "controller": "KEN_"
+	},
+	{
+	  "id": "MWI",
+	  "name": "Malawi",
+	  "nation_id": "MWI_",
+	  "owner": "MWI_",
+	  "controller": "MWI_"
+	},
+	{
+	  "id": "TZA",
+	  "name": "Tanzania",
+	  "nation_id": "TZA_",
+	  "owner": "TZA_",
+	  "controller": "TZA_"
+	},
+	{
+	  "id": "SYR",
+	  "name": "Syria",
+	  "nation_id": "SYR_",
+	  "owner": "SYR_",
+	  "controller": "SYR_"
+	},
+	{
+	  "id": "SOL",
+	  "name": "Somaliland",
+	  "nation_id": "SOL_",
+	  "owner": "SOL_",
+	  "controller": "SOL_"
+	},
+	{
+	  "id": "FR1",
+	  "name": "France",
+	  "nation_id": "FR1_",
+	  "owner": "FR1_",
+	  "controller": "FR1_"
+	},
+	{
+	  "id": "SUR",
+	  "name": "Suriname",
+	  "nation_id": "SUR_",
+	  "owner": "SUR_",
+	  "controller": "SUR_"
+	},
+	{
+	  "id": "GUY",
+	  "name": "Guyana",
+	  "nation_id": "GUY_",
+	  "owner": "GUY_",
+	  "controller": "GUY_"
+	},
+	{
+	  "id": "KOR",
+	  "name": "South Korea",
+	  "nation_id": "KOR_",
+	  "owner": "KOR_",
+	  "controller": "KOR_"
+	},
+	{
+	  "id": "PRK",
+	  "name": "North Korea",
+	  "nation_id": "PRK_",
+	  "owner": "PRK_",
+	  "controller": "PRK_"
+	},
+	{
+	  "id": "MAR",
+	  "name": "Morocco",
+	  "nation_id": "MAR_",
+	  "owner": "MAR_",
+	  "controller": "MAR_"
+	},
+	{
+	  "id": "B28",
+	  "name": "W. Sahara",
+	  "nation_id": "SAH_",
+	  "owner": "SAH_",
+	  "controller": "SAH_"
+	},
+	{
+	  "id": "CRI",
+	  "name": "Costa Rica",
+	  "nation_id": "CRI_",
+	  "owner": "CRI_",
+	  "controller": "CRI_"
+	},
+	{
+	  "id": "NIC",
+	  "name": "Nicaragua",
+	  "nation_id": "NIC_",
+	  "owner": "NIC_",
+	  "controller": "NIC_"
+	},
+	{
+	  "id": "COG",
+	  "name": "Congo",
+	  "nation_id": "COG_",
+	  "owner": "COG_",
+	  "controller": "COG_"
+	},
+	{
+	  "id": "COD",
+	  "name": "Dem. Rep. Congo",
+	  "nation_id": "COD_",
+	  "owner": "COD_",
+	  "controller": "COD_"
+	},
+	{
+	  "id": "BTN",
+	  "name": "Bhutan",
+	  "nation_id": "BTN_",
+	  "owner": "BTN_",
+	  "controller": "BTN_"
+	},
+	{
+	  "id": "UKR",
+	  "name": "Ukraine",
+	  "nation_id": "UKR_",
+	  "owner": "UKR_",
+	  "controller": "UKR_"
+	},
+	{
+	  "id": "BLR",
+	  "name": "Belarus",
+	  "nation_id": "BLR_",
+	  "owner": "BLR_",
+	  "controller": "BLR_"
+	},
+	{
+	  "id": "NAM",
+	  "name": "Namibia",
+	  "nation_id": "NAM_",
+	  "owner": "NAM_",
+	  "controller": "NAM_"
+	},
+	{
+	  "id": "ZAF",
+	  "name": "South Africa",
+	  "nation_id": "ZAF_",
+	  "owner": "ZAF_",
+	  "controller": "ZAF_"
+	},
+	{
+	  "id": "NL1",
+	  "name": "Netherlands",
+	  "nation_id": "NL1_",
+	  "owner": "NL1_",
+	  "controller": "NL1_"
+	},
+	{
+	  "id": "OMN",
+	  "name": "Oman",
+	  "nation_id": "OMN_",
+	  "owner": "OMN_",
+	  "controller": "OMN_"
+	},
+	{
+	  "id": "UZB",
+	  "name": "Uzbekistan",
+	  "nation_id": "UZB_",
+	  "owner": "UZB_",
+	  "controller": "UZB_"
+	},
+	{
+	  "id": "KAZ",
+	  "name": "Kazakhstan",
+	  "nation_id": "KAZ_",
+	  "owner": "KAZ_",
+	  "controller": "KAZ_"
+	},
+	{
+	  "id": "TJK",
+	  "name": "Tajikistan",
+	  "nation_id": "TJK_",
+	  "owner": "TJK_",
+	  "controller": "TJK_"
+	},
+	{
+	  "id": "LTU",
+	  "name": "Lithuania",
+	  "nation_id": "LTU_",
+	  "owner": "LTU_",
+	  "controller": "LTU_"
+	},
+	{
+	  "id": "BRA",
+	  "name": "Brazil",
+	  "nation_id": "BRA_",
+	  "owner": "BRA_",
+	  "controller": "BRA_"
+	},
+	{
+	  "id": "URY",
+	  "name": "Uruguay",
+	  "nation_id": "URY_",
+	  "owner": "URY_",
+	  "controller": "URY_"
+	},
+	{
+	  "id": "MNG",
+	  "name": "Mongolia",
+	  "nation_id": "MNG_",
+	  "owner": "MNG_",
+	  "controller": "MNG_"
+	},
+	{
+	  "id": "RUS",
+	  "name": "Russia",
+	  "nation_id": "RUS_",
+	  "owner": "RUS_",
+	  "controller": "RUS_"
+	},
+	{
+	  "id": "CZE",
+	  "name": "Czechia",
+	  "nation_id": "CZE_",
+	  "owner": "CZE_",
+	  "controller": "CZE_"
+	},
+	{
+	  "id": "DEU",
+	  "name": "Germany",
+	  "nation_id": "DEU_",
+	  "owner": "DEU_",
+	  "controller": "DEU_"
+	},
+	{
+	  "id": "EST",
+	  "name": "Estonia",
+	  "nation_id": "EST_",
+	  "owner": "EST_",
+	  "controller": "EST_"
+	},
+	{
+	  "id": "LVA",
+	  "name": "Latvia",
+	  "nation_id": "LVA_",
+	  "owner": "LVA_",
+	  "controller": "LVA_"
+	},
+	{
+	  "id": "NOR",
+	  "name": "Norway",
+	  "nation_id": "NOR_",
+	  "owner": "NOR_",
+	  "controller": "NOR_"
+	},
+	{
+	  "id": "SWE",
+	  "name": "Sweden",
+	  "nation_id": "SWE_",
+	  "owner": "SWE_",
+	  "controller": "SWE_"
+	},
+	{
+	  "id": "FI1",
+	  "name": "Finland",
+	  "nation_id": "FI1_",
+	  "owner": "FI1_",
+	  "controller": "FI1_"
+	},
+	{
+	  "id": "VNM",
+	  "name": "Vietnam",
+	  "nation_id": "VNM_",
+	  "owner": "VNM_",
+	  "controller": "VNM_"
+	},
+	{
+	  "id": "KHM",
+	  "name": "Cambodia",
+	  "nation_id": "KHM_",
+	  "owner": "KHM_",
+	  "controller": "KHM_"
+	},
+	{
+	  "id": "LUX",
+	  "name": "Luxembourg",
+	  "nation_id": "LUX_",
+	  "owner": "LUX_",
+	  "controller": "LUX_"
+	},
+	{
+	  "id": "ARE",
+	  "name": "United Arab Emirates",
+	  "nation_id": "ARE_",
+	  "owner": "ARE_",
+	  "controller": "ARE_"
+	},
+	{
+	  "id": "BEL",
+	  "name": "Belgium",
+	  "nation_id": "BEL_",
+	  "owner": "BEL_",
+	  "controller": "BEL_"
+	},
+	{
+	  "id": "B35",
+	  "name": "Georgia",
+	  "nation_id": "B35_",
+	  "owner": "B35_",
+	  "controller": "B35_"
+	},
+	{
+	  "id": "MKD",
+	  "name": "North Macedonia",
+	  "nation_id": "MKD_",
+	  "owner": "MKD_",
+	  "controller": "MKD_"
+	},
+	{
+	  "id": "ALB",
+	  "name": "Albania",
+	  "nation_id": "ALB_",
+	  "owner": "ALB_",
+	  "controller": "ALB_"
+	},
+	{
+	  "id": "AZE",
+	  "name": "Azerbaijan",
+	  "nation_id": "AZE_",
+	  "owner": "AZE_",
+	  "controller": "AZE_"
+	},
+	{
+	  "id": "KOS",
+	  "name": "Kosovo",
+	  "nation_id": "KOS_",
+	  "owner": "KOS_",
+	  "controller": "KOS_"
+	},
+	{
+	  "id": "TUR",
+	  "name": "Turkey",
+	  "nation_id": "TUR_",
+	  "owner": "TUR_",
+	  "controller": "TUR_"
+	},
+	{
+	  "id": "ESP",
+	  "name": "Spain",
+	  "nation_id": "ESP_",
+	  "owner": "ESP_",
+	  "controller": "ESP_"
+	},
+	{
+	  "id": "LAO",
+	  "name": "Laos",
+	  "nation_id": "LAO_",
+	  "owner": "LAO_",
+	  "controller": "LAO_"
+	},
+	{
+	  "id": "KGZ",
+	  "name": "Kyrgyzstan",
+	  "nation_id": "KGZ_",
+	  "owner": "KGZ_",
+	  "controller": "KGZ_"
+	},
+	{
+	  "id": "ARM",
+	  "name": "Armenia",
+	  "nation_id": "ARM_",
+	  "owner": "ARM_",
+	  "controller": "ARM_"
+	},
+	{
+	  "id": "DN1",
+	  "name": "Denmark",
+	  "nation_id": "DN1_",
+	  "owner": "DN1_",
+	  "controller": "DN1_"
+	},
+	{
+	  "id": "LBY",
+	  "name": "Libya",
+	  "nation_id": "LBY_",
+	  "owner": "LBY_",
+	  "controller": "LBY_"
+	},
+	{
+	  "id": "TUN",
+	  "name": "Tunisia",
+	  "nation_id": "TUN_",
+	  "owner": "TUN_",
+	  "controller": "TUN_"
+	},
+	{
+	  "id": "ROU",
+	  "name": "Romania",
+	  "nation_id": "ROU_",
+	  "owner": "ROU_",
+	  "controller": "ROU_"
+	},
+	{
+	  "id": "HUN",
+	  "name": "Hungary",
+	  "nation_id": "HUN_",
+	  "owner": "HUN_",
+	  "controller": "HUN_"
+	},
+	{
+	  "id": "SVK",
+	  "name": "Slovakia",
+	  "nation_id": "SVK_",
+	  "owner": "SVK_",
+	  "controller": "SVK_"
+	},
+	{
+	  "id": "POL",
+	  "name": "Poland",
+	  "nation_id": "POL_",
+	  "owner": "POL_",
+	  "controller": "POL_"
+	},
+	{
+	  "id": "IRL",
+	  "name": "Ireland",
+	  "nation_id": "IRL_",
+	  "owner": "IRL_",
+	  "controller": "IRL_"
+	},
+	{
+	  "id": "GRC",
+	  "name": "Greece",
+	  "nation_id": "GRC_",
+	  "owner": "GRC_",
+	  "controller": "GRC_"
+	},
+	{
+	  "id": "ZMB",
+	  "name": "Zambia",
+	  "nation_id": "ZMB_",
+	  "owner": "ZMB_",
+	  "controller": "ZMB_"
+	},
+	{
+	  "id": "SLE",
+	  "name": "Sierra Leone",
+	  "nation_id": "SLE_",
+	  "owner": "SLE_",
+	  "controller": "SLE_"
+	},
+	{
+	  "id": "GIN",
+	  "name": "Guinea",
+	  "nation_id": "GIN_",
+	  "owner": "GIN_",
+	  "controller": "GIN_"
+	},
+	{
+	  "id": "LBR",
+	  "name": "Liberia",
+	  "nation_id": "LBR_",
+	  "owner": "LBR_",
+	  "controller": "LBR_"
+	},
+	{
+	  "id": "CAF",
+	  "name": "Central African Rep.",
+	  "nation_id": "CAF_",
+	  "owner": "CAF_",
+	  "controller": "CAF_"
+	},
+	{
+	  "id": "SDN",
+	  "name": "Sudan",
+	  "nation_id": "SDN_",
+	  "owner": "SDN_",
+	  "controller": "SDN_"
+	},
+	{
+	  "id": "DJI",
+	  "name": "Djibouti",
+	  "nation_id": "DJI_",
+	  "owner": "DJI_",
+	  "controller": "DJI_"
+	},
+	{
+	  "id": "ERI",
+	  "name": "Eritrea",
+	  "nation_id": "ERI_",
+	  "owner": "ERI_",
+	  "controller": "ERI_"
+	},
+	{
+	  "id": "AUT",
+	  "name": "Austria",
+	  "nation_id": "AUT_",
+	  "owner": "AUT_",
+	  "controller": "AUT_"
+	},
+	{
+	  "id": "IRQ",
+	  "name": "Iraq",
+	  "nation_id": "IRQ_",
+	  "owner": "IRQ_",
+	  "controller": "IRQ_"
+	},
+	{
+	  "id": "ITA",
+	  "name": "Italy",
+	  "nation_id": "ITA_",
+	  "owner": "ITA_",
+	  "controller": "ITA_"
+	},
+	{
+	  "id": "CHE",
+	  "name": "Switzerland",
+	  "nation_id": "CHE_",
+	  "owner": "CHE_",
+	  "controller": "CHE_"
+	},
+	{
+	  "id": "IRN",
+	  "name": "Iran",
+	  "nation_id": "IRN_",
+	  "owner": "IRN_",
+	  "controller": "IRN_"
+	},
+	{
+	  "id": "LIE",
+	  "name": "Liechtenstein",
+	  "nation_id": "LIE_",
+	  "owner": "LIE_",
+	  "controller": "LIE_"
+	},
+	{
+	  "id": "CIV",
+	  "name": "Côte d'Ivoire",
+	  "nation_id": "CIV_",
+	  "owner": "CIV_",
+	  "controller": "CIV_"
+	},
+	{
+	  "id": "SRB",
+	  "name": "Serbia",
+	  "nation_id": "SRB_",
+	  "owner": "SRB_",
+	  "controller": "SRB_"
+	},
+	{
+	  "id": "MLI",
+	  "name": "Mali",
+	  "nation_id": "MLI_",
+	  "owner": "MLI_",
+	  "controller": "MLI_"
+	},
+	{
+	  "id": "SEN",
+	  "name": "Senegal",
+	  "nation_id": "SEN_",
+	  "owner": "SEN_",
+	  "controller": "SEN_"
+	},
+	{
+	  "id": "NGA",
+	  "name": "Nigeria",
+	  "nation_id": "NGA_",
+	  "owner": "NGA_",
+	  "controller": "NGA_"
+	},
+	{
+	  "id": "BEN",
+	  "name": "Benin",
+	  "nation_id": "BEN_",
+	  "owner": "BEN_",
+	  "controller": "BEN_"
+	},
+	{
+	  "id": "AGO",
+	  "name": "Angola",
+	  "nation_id": "AGO_",
+	  "owner": "AGO_",
+	  "controller": "AGO_"
+	},
+	{
+	  "id": "HRV",
+	  "name": "Croatia",
+	  "nation_id": "HRV_",
+	  "owner": "HRV_",
+	  "controller": "HRV_"
+	},
+	{
+	  "id": "SVN",
+	  "name": "Slovenia",
+	  "nation_id": "SVN_",
+	  "owner": "SVN_",
+	  "controller": "SVN_"
+	},
+	{
+	  "id": "QAT",
+	  "name": "Qatar",
+	  "nation_id": "QAT_",
+	  "owner": "QAT_",
+	  "controller": "QAT_"
+	},
+	{
+	  "id": "SAU",
+	  "name": "Saudi Arabia",
+	  "nation_id": "SAU_",
+	  "owner": "SAU_",
+	  "controller": "SAU_"
+	},
+	{
+	  "id": "BWA",
+	  "name": "Botswana",
+	  "nation_id": "BWA_",
+	  "owner": "BWA_",
+	  "controller": "BWA_"
+	},
+	{
+	  "id": "ZWE",
+	  "name": "Zimbabwe",
+	  "nation_id": "ZWE_",
+	  "owner": "ZWE_",
+	  "controller": "ZWE_"
+	},
+	{
+	  "id": "PAK",
+	  "name": "Pakistan",
+	  "nation_id": "PAK_",
+	  "owner": "PAK_",
+	  "controller": "PAK_"
+	},
+	{
+	  "id": "BGR",
+	  "name": "Bulgaria",
+	  "nation_id": "BGR_",
+	  "owner": "BGR_",
+	  "controller": "BGR_"
+	},
+	{
+	  "id": "THA",
+	  "name": "Thailand",
+	  "nation_id": "THA_",
+	  "owner": "THA_",
+	  "controller": "THA_"
+	},
+	{
+	  "id": "SMR",
+	  "name": "San Marino",
+	  "nation_id": "SMR_",
+	  "owner": "SMR_",
+	  "controller": "SMR_"
+	},
+	{
+	  "id": "HTI",
+	  "name": "Haiti",
+	  "nation_id": "HTI_",
+	  "owner": "HTI_",
+	  "controller": "HTI_"
+	},
+	{
+	  "id": "DOM",
+	  "name": "Dominican Rep.",
+	  "nation_id": "DOM_",
+	  "owner": "DOM_",
+	  "controller": "DOM_"
+	},
+	{
+	  "id": "TCD",
+	  "name": "Chad",
+	  "nation_id": "TCD_",
+	  "owner": "TCD_",
+	  "controller": "TCD_"
+	},
+	{
+	  "id": "KWT",
+	  "name": "Kuwait",
+	  "nation_id": "KWT_",
+	  "owner": "KWT_",
+	  "controller": "KWT_"
+	},
+	{
+	  "id": "SLV",
+	  "name": "El Salvador",
+	  "nation_id": "SLV_",
+	  "owner": "SLV_",
+	  "controller": "SLV_"
+	},
+	{
+	  "id": "GTM",
+	  "name": "Guatemala",
+	  "nation_id": "GTM_",
+	  "owner": "GTM_",
+	  "controller": "GTM_"
+	},
+	{
+	  "id": "TLS",
+	  "name": "Timor-Leste",
+	  "nation_id": "TLS_",
+	  "owner": "TLS_",
+	  "controller": "TLS_"
+	},
+	{
+	  "id": "BRN",
+	  "name": "Brunei",
+	  "nation_id": "BRN_",
+	  "owner": "BRN_",
+	  "controller": "BRN_"
+	},
+	{
+	  "id": "MCO",
+	  "name": "Monaco",
+	  "nation_id": "MCO_",
+	  "owner": "MCO_",
+	  "controller": "MCO_"
+	},
+	{
+	  "id": "DZA",
+	  "name": "Algeria",
+	  "nation_id": "DZA_",
+	  "owner": "DZA_",
+	  "controller": "DZA_"
+	},
+	{
+	  "id": "MOZ",
+	  "name": "Mozambique",
+	  "nation_id": "MOZ_",
+	  "owner": "MOZ_",
+	  "controller": "MOZ_"
+	},
+	{
+	  "id": "SWZ",
+	  "name": "eSwatini",
+	  "nation_id": "SWZ_",
+	  "owner": "SWZ_",
+	  "controller": "SWZ_"
+	},
+	{
+	  "id": "BDI",
+	  "name": "Burundi",
+	  "nation_id": "BDI_",
+	  "owner": "BDI_",
+	  "controller": "BDI_"
+	},
+	{
+	  "id": "RWA",
+	  "name": "Rwanda",
+	  "nation_id": "RWA_",
+	  "owner": "RWA_",
+	  "controller": "RWA_"
+	},
+	{
+	  "id": "MMR",
+	  "name": "Myanmar",
+	  "nation_id": "MMR_",
+	  "owner": "MMR_",
+	  "controller": "MMR_"
+	},
+	{
+	  "id": "BGD",
+	  "name": "Bangladesh",
+	  "nation_id": "BGD_",
+	  "owner": "BGD_",
+	  "controller": "BGD_"
+	},
+	{
+	  "id": "AND",
+	  "name": "Andorra",
+	  "nation_id": "AND_",
+	  "owner": "AND_",
+	  "controller": "AND_"
+	},
+	{
+	  "id": "AFG",
+	  "name": "Afghanistan",
+	  "nation_id": "AFG_",
+	  "owner": "AFG_",
+	  "controller": "AFG_"
+	},
+	{
+	  "id": "MNE",
+	  "name": "Montenegro",
+	  "nation_id": "MNE_",
+	  "owner": "MNE_",
+	  "controller": "MNE_"
+	},
+	{
+	  "id": "BIH",
+	  "name": "Bosnia and Herz.",
+	  "nation_id": "BIH_",
+	  "owner": "BIH_",
+	  "controller": "BIH_"
+	},
+	{
+	  "id": "UGA",
+	  "name": "Uganda",
+	  "nation_id": "UGA_",
+	  "owner": "UGA_",
+	  "controller": "UGA_"
+	},
+	{
+	  "id": "CUB",
+	  "name": "Cuba",
+	  "nation_id": "CUB_",
+	  "owner": "CUB_",
+	  "controller": "CUB_"
+	},
+	{
+	  "id": "HND",
+	  "name": "Honduras",
+	  "nation_id": "HND_",
+	  "owner": "HND_",
+	  "controller": "HND_"
+	},
+	{
+	  "id": "ECU",
+	  "name": "Ecuador",
+	  "nation_id": "ECU_",
+	  "owner": "ECU_",
+	  "controller": "ECU_"
+	},
+	{
+	  "id": "COL",
+	  "name": "Colombia",
+	  "nation_id": "COL_",
+	  "owner": "COL_",
+	  "controller": "COL_"
+	},
+	{
+	  "id": "PRY",
+	  "name": "Paraguay",
+	  "nation_id": "PRY_",
+	  "owner": "PRY_",
+	  "controller": "PRY_"
+	},
+	{
+	  "id": "B85",
+	  "name": "Brazilian I.",
+	  "nation_id": "BRI_",
+	  "owner": "BRI_",
+	  "controller": "BRI_"
+	},
+	{
+	  "id": "PR1",
+	  "name": "Portugal",
+	  "nation_id": "PRT_",
+	  "owner": "PRT_",
+	  "controller": "PRT_"
+	},
+	{
+	  "id": "MDA",
+	  "name": "Moldova",
+	  "nation_id": "MDA_",
+	  "owner": "MDA_",
+	  "controller": "MDA_"
+	},
+	{
+	  "id": "TKM",
+	  "name": "Turkmenistan",
+	  "nation_id": "TKM_",
+	  "owner": "TKM_",
+	  "controller": "TKM_"
+	},
+	{
+	  "id": "JOR",
+	  "name": "Jordan",
+	  "nation_id": "JOR_",
+	  "owner": "JOR_",
+	  "controller": "JOR_"
+	},
+	{
+	  "id": "NPL",
+	  "name": "Nepal",
+	  "nation_id": "NPL_",
+	  "owner": "NPL_",
+	  "controller": "NPL_"
+	},
+	{
+	  "id": "LSO",
+	  "name": "Lesotho",
+	  "nation_id": "LSO_",
+	  "owner": "LSO_",
+	  "controller": "LSO_"
+	},
+	{
+	  "id": "CMR",
+	  "name": "Cameroon",
+	  "nation_id": "CMR_",
+	  "owner": "CMR_",
+	  "controller": "CMR_"
+	},
+	{
+	  "id": "GAB",
+	  "name": "Gabon",
+	  "nation_id": "GAB_",
+	  "owner": "GAB_",
+	  "controller": "GAB_"
+	},
+	{
+	  "id": "NER",
+	  "name": "Niger",
+	  "nation_id": "NER_",
+	  "owner": "NER_",
+	  "controller": "NER_"
+	},
+	{
+	  "id": "BFA",
+	  "name": "Burkina Faso",
+	  "nation_id": "BFA_",
+	  "owner": "BFA_",
+	  "controller": "BFA_"
+	},
+	{
+	  "id": "TGO",
+	  "name": "Togo",
+	  "nation_id": "TGO_",
+	  "owner": "TGO_",
+	  "controller": "TGO_"
+	},
+	{
+	  "id": "GHA",
+	  "name": "Ghana",
+	  "nation_id": "GHA_",
+	  "owner": "GHA_",
+	  "controller": "GHA_"
+	},
+	{
+	  "id": "GNB",
+	  "name": "Guinea-Bissau",
+	  "nation_id": "GNB_",
+	  "owner": "GNB_",
+	  "controller": "GNB_"
+	},
+	{
+	  "id": "US1",
+	  "name": "United States of America",
+	  "nation_id": "US1_",
+	  "owner": "US1_",
+	  "controller": "US1_"
+	},
+	{
+	  "id": "CAN",
+	  "name": "Canada",
+	  "nation_id": "CAN_",
+	  "owner": "CAN_",
+	  "controller": "CAN_"
+	},
+	{
+	  "id": "MEX",
+	  "name": "Mexico",
+	  "nation_id": "MEX_",
+	  "owner": "MEX_",
+	  "controller": "MEX_"
+	},
+	{
+	  "id": "BLZ",
+	  "name": "Belize",
+	  "nation_id": "BLZ_",
+	  "owner": "BLZ_",
+	  "controller": "BLZ_"
+	},
+	{
+	  "id": "PAN",
+	  "name": "Panama",
+	  "nation_id": "PAN_",
+	  "owner": "PAN_",
+	  "controller": "PAN_"
+	},
+	{
+	  "id": "VEN",
+	  "name": "Venezuela",
+	  "nation_id": "VEN_",
+	  "owner": "VEN_",
+	  "controller": "VEN_"
+	},
+	{
+	  "id": "PN1",
+	  "name": "Papua New Guinea",
+	  "nation_id": "PNG_",
+	  "owner": "PNG_",
+	  "controller": "PNG_"
+	},
+	{
+	  "id": "EGY",
+	  "name": "Egypt",
+	  "nation_id": "EGY_",
+	  "owner": "EGY_",
+	  "controller": "EGY_"
+	},
+	{
+	  "id": "YEM",
+	  "name": "Yemen",
+	  "nation_id": "YEM_",
+	  "owner": "YEM_",
+	  "controller": "YEM_"
+	},
+	{
+	  "id": "MRT",
+	  "name": "Mauritania",
+	  "nation_id": "MRT_",
+	  "owner": "MRT_",
+	  "controller": "MRT_"
+	},
+	{
+	  "id": "GNQ",
+	  "name": "Eq. Guinea",
+	  "nation_id": "GNQ_",
+	  "owner": "GNQ_",
+	  "controller": "GNQ_"
+	},
+	{
+	  "id": "GMB",
+	  "name": "Gambia",
+	  "nation_id": "GMB_",
+	  "owner": "GMB_",
+	  "controller": "GMB_"
+	},
+	{
+	  "id": "VAT",
+	  "name": "Vatican",
+	  "nation_id": "VAT_",
+	  "owner": "VAT_",
+	  "controller": "VAT_"
+	},
+	{
+	  "id": "CYN",
+	  "name": "N. Cyprus",
+	  "nation_id": "CYN_",
+	  "owner": "CYN_",
+	  "controller": "CYN_"
+	},
+	{
+	  "id": "B43",
+	  "name": "Cyprus U.N. Buffer Zone",
+	  "nation_id": "CNM_",
+	  "owner": "CNM_",
+	  "controller": "CNM_"
+	},
+	{
+	  "id": "B45",
+	  "name": "Siachen Glacier",
+	  "nation_id": "KAS_",
+	  "owner": "KAS_",
+	  "controller": "KAS_"
+	},
+	{
+	  "id": "B97",
+	  "name": "Southern Patagonian Ice Field",
+	  "nation_id": "SPI_",
+	  "owner": "SPI_",
+	  "controller": "SPI_"
+	},
+	{
+	  "id": "B94",
+	  "name": "Bir Tawil",
+	  "nation_id": "BRT_",
+	  "owner": "BRT_",
+	  "controller": "BRT_"
+	},
+	{
+	  "id": "ATA",
+	  "name": "Antarctica",
+	  "nation_id": "ATA_",
+	  "owner": "ATA_",
+	  "controller": "ATA_"
+	},
+	{
+	  "id": "AU1",
+	  "name": "Australia",
+	  "nation_id": "AU1_",
+	  "owner": "AU1_",
+	  "controller": "AU1_"
+	},
+	{
+	  "id": "FJI",
+	  "name": "Fiji",
+	  "nation_id": "FJI_",
+	  "owner": "FJI_",
+	  "controller": "FJI_"
+	},
+	{
+	  "id": "NZ1",
+	  "name": "New Zealand",
+	  "nation_id": "NZ1_",
+	  "owner": "NZ1_",
+	  "controller": "NZ1_"
+	},
+	{
+	  "id": "MDG",
+	  "name": "Madagascar",
+	  "nation_id": "MDG_",
+	  "owner": "MDG_",
+	  "controller": "MDG_"
+	},
+	{
+	  "id": "PHL",
+	  "name": "Philippines",
+	  "nation_id": "PHL_",
+	  "owner": "PHL_",
+	  "controller": "PHL_"
+	},
+	{
+	  "id": "LKA",
+	  "name": "Sri Lanka",
+	  "nation_id": "LKA_",
+	  "owner": "LKA_",
+	  "controller": "LKA_"
+	},
+	{
+	  "id": "BHS",
+	  "name": "Bahamas",
+	  "nation_id": "BHS_",
+	  "owner": "BHS_",
+	  "controller": "BHS_"
+	},
+	{
+	  "id": "TWN",
+	  "name": "Taiwan",
+	  "nation_id": "TWN_",
+	  "owner": "TWN_",
+	  "controller": "TWN_"
+	},
+	{
+	  "id": "JPN",
+	  "name": "Japan",
+	  "nation_id": "JPN_",
+	  "owner": "JPN_",
+	  "controller": "JPN_"
+	},
+	{
+	  "id": "ISL",
+	  "name": "Iceland",
+	  "nation_id": "ISL_",
+	  "owner": "ISL_",
+	  "controller": "ISL_"
+	},
+	{
+	  "id": "SYC",
+	  "name": "Seychelles",
+	  "nation_id": "SYC_",
+	  "owner": "SYC_",
+	  "controller": "SYC_"
+	},
+	{
+	  "id": "KIR",
+	  "name": "Kiribati",
+	  "nation_id": "KIR_",
+	  "owner": "KIR_",
+	  "controller": "KIR_"
+	},
+	{
+	  "id": "MHL",
+	  "name": "Marshall Is.",
+	  "nation_id": "MHL_",
+	  "owner": "MHL_",
+	  "controller": "MHL_"
+	},
+	{
+	  "id": "TTO",
+	  "name": "Trinidad and Tobago",
+	  "nation_id": "TTO_",
+	  "owner": "TTO_",
+	  "controller": "TTO_"
+	},
+	{
+	  "id": "GRD",
+	  "name": "Grenada",
+	  "nation_id": "GRD_",
+	  "owner": "GRD_",
+	  "controller": "GRD_"
+	},
+	{
+	  "id": "VCT",
+	  "name": "St. Vin. and Gren.",
+	  "nation_id": "VCT_",
+	  "owner": "VCT_",
+	  "controller": "VCT_"
+	},
+	{
+	  "id": "BRB",
+	  "name": "Barbados",
+	  "nation_id": "BRB_",
+	  "owner": "BRB_",
+	  "controller": "BRB_"
+	},
+	{
+	  "id": "LCA",
+	  "name": "Saint Lucia",
+	  "nation_id": "LCA_",
+	  "owner": "LCA_",
+	  "controller": "LCA_"
+	},
+	{
+	  "id": "DMA",
+	  "name": "Dominica",
+	  "nation_id": "DMA_",
+	  "owner": "DMA_",
+	  "controller": "DMA_"
+	},
+	{
+	  "id": "ATG",
+	  "name": "Antigua and Barb.",
+	  "nation_id": "ATG_",
+	  "owner": "ATG_",
+	  "controller": "ATG_"
+	},
+	{
+	  "id": "KNA",
+	  "name": "St. Kitts and Nevis",
+	  "nation_id": "KNA_",
+	  "owner": "KNA_",
+	  "controller": "KNA_"
+	},
+	{
+	  "id": "JAM",
+	  "name": "Jamaica",
+	  "nation_id": "JAM_",
+	  "owner": "JAM_",
+	  "controller": "JAM_"
+	},
+	{
+	  "id": "MUS",
+	  "name": "Mauritius",
+	  "nation_id": "MUS_",
+	  "owner": "MUS_",
+	  "controller": "MUS_"
+	},
+	{
+	  "id": "COM",
+	  "name": "Comoros",
+	  "nation_id": "COM_",
+	  "owner": "COM_",
+	  "controller": "COM_"
+	},
+	{
+	  "id": "STP",
+	  "name": "São Tomé and Principe",
+	  "nation_id": "STP_",
+	  "owner": "STP_",
+	  "controller": "STP_"
+	},
+	{
+	  "id": "CPV",
+	  "name": "Cabo Verde",
+	  "nation_id": "CPV_",
+	  "owner": "CPV_",
+	  "controller": "CPV_"
+	},
+	{
+	  "id": "MLT",
+	  "name": "Malta",
+	  "nation_id": "MLT_",
+	  "owner": "MLT_",
+	  "controller": "MLT_"
+	},
+	{
+	  "id": "SGP",
+	  "name": "Singapore",
+	  "nation_id": "SGP_",
+	  "owner": "SGP_",
+	  "controller": "SGP_"
+	},
+	{
+	  "id": "TON",
+	  "name": "Tonga",
+	  "nation_id": "TON_",
+	  "owner": "TON_",
+	  "controller": "TON_"
+	},
+	{
+	  "id": "WSM",
+	  "name": "Samoa",
+	  "nation_id": "WSM_",
+	  "owner": "WSM_",
+	  "controller": "WSM_"
+	},
+	{
+	  "id": "SLB",
+	  "name": "Solomon Is.",
+	  "nation_id": "SLB_",
+	  "owner": "SLB_",
+	  "controller": "SLB_"
+	},
+	{
+	  "id": "TUV",
+	  "name": "Tuvalu",
+	  "nation_id": "TUV_",
+	  "owner": "TUV_",
+	  "controller": "TUV_"
+	},
+	{
+	  "id": "MDV",
+	  "name": "Maldives",
+	  "nation_id": "MDV_",
+	  "owner": "MDV_",
+	  "controller": "MDV_"
+	},
+	{
+	  "id": "NRU",
+	  "name": "Nauru",
+	  "nation_id": "NRU_",
+	  "owner": "NRU_",
+	  "controller": "NRU_"
+	},
+	{
+	  "id": "FSM",
+	  "name": "Micronesia",
+	  "nation_id": "FSM_",
+	  "owner": "FSM_",
+	  "controller": "FSM_"
+	},
+	{
+	  "id": "VUT",
+	  "name": "Vanuatu",
+	  "nation_id": "VUT_",
+	  "owner": "VUT_",
+	  "controller": "VUT_"
+	},
+	{
+	  "id": "PLW",
+	  "name": "Palau",
+	  "nation_id": "PLW_",
+	  "owner": "PLW_",
+	  "controller": "PLW_"
+	},
+	{
+	  "id": "BHR",
+	  "name": "Bahrain",
+	  "nation_id": "BHR_",
+	  "owner": "BHR_",
+	  "controller": "BHR_"
+	},
+	{
+	  "id": "B46",
+	  "name": "Spratly Is.",
+	  "nation_id": "PGA_",
+	  "owner": "PGA_",
+	  "controller": "PGA_"
+	},
+	{
+	  "id": "B41",
+	  "name": "Bajo Nuevo Bank",
+	  "nation_id": "BJN_",
+	  "owner": "BJN_",
+	  "controller": "BJN_"
+	},
+	{
+	  "id": "B42",
+	  "name": "Serranilla Bank",
+	  "nation_id": "SER_",
+	  "owner": "SER_",
+	  "controller": "SER_"
+	},
+	{
+	  "id": "B70",
+	  "name": "Scarborough Reef",
+	  "nation_id": "SCR_",
+	  "owner": "SCR_",
+	  "controller": "SCR_"
+	}
   ]
 }

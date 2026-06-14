@@ -26,17 +26,14 @@ func _input(event: InputEvent):
 		var rid = str(hit_region.id)
 		print("✅ GETROFFEN: ", hit_region.name, " (ID: ", rid, ")")
 		
-		# Nation anzeigen
 		if game_data:
-			var nation = game_data.get_nation(rid)
-			print("   Nation: ", nation.name, " (", nation.get("short_name", "???"), ")")
+			print(game_data.get_click_info(rid, hit_region.name))
 		else:
 			print("   ⚠️ GameData nicht gefunden!")
 	else:
 		print("Nichts getroffen an Koordinaten: ", lat_lon)
 
-# ==================== HILFSFUNKTIONEN ====================
-
+# ==================== HILFSFUNKTIONEN (unverändert) ====================
 func intersect_ray_sphere(ray_origin: Vector3, ray_dir: Vector3, sphere_center: Vector3, sphere_radius: float) -> Variant:
 	var oc = ray_origin - sphere_center
 	var a = ray_dir.dot(ray_dir)

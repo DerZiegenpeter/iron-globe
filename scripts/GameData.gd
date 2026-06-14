@@ -1,76 +1,76 @@
 extends Node
 
-# Datenbanken
-var nations: Dictionary = {}                    # nation_id → Nation-Daten
-var states: Dictionary = {}                     # province_id → State-Daten (mit owner/controller)
-
-signal ownership_changed(province_id: String, old_nation_id: String, new_nation_id: String)
+var nations: Dictionary = {}                    # nation_id ("IDN_") → Nation
+var current_owner: Dictionary = {}
+var current_controller: Dictionary = {}
 
 func _ready():
 	load_nations()
-	load_states()
 	load_ownership()
 
 func load_nations():
 	var path = "res://data/nations.json"
 	if not FileAccess.file_exists(path):
-		print("WARNUNG: nations.json nicht gefunden!")
+		print("❌ nations.json nicht gefunden!")
 		return
 	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json = JSON.new()
-	json.parse(file.get_as_text())
+	var error = json.parse(file.get_as_text())
 	file.close()
 	
-	var data = json.data
-	for nation in data.get("nations", []):
-		nations[str(nation.id)] = nation
-	print("✅ Nationen geladen: ", nations.size())
-
-func load_states():
-	var path = "res://data/states.json"
-	if not FileAccess.file_exists(path):
-		print("WARNUNG: states.json nicht gefunden!")
+	if error != OK:
+		print("❌ JSON Parse Fehler in nations.json!")
 		return
 	
-	var file = FileAccess.open(path, FileAccess.READ)
-	var json = JSON.new()
-	json.parse(file.get_as_text())
-	file.close()
+	for nation in json.data.get("nations", []):
+		var nid = str(nation.get("id"))
+		nations[nid] = nation
+		# Debug: erste paar ausgeben
+		if nations.size() <= 5:
+			print("Nation geladen: ", nid, " = ", nation.get("name"))
 	
-	var data = json.data
-	for state in data.get("states", []):
-		states[str(state.id)] = state
-	print("✅ Staaten geladen: ", states.size())
+	print("✅ Nationen geladen: ", nations.size(), " Stück")
 
 func load_ownership():
 	var path = "res://data/ownership.json"
 	if not FileAccess.file_exists(path):
 		print("WARNUNG: ownership.json nicht gefunden!")
 		return
-	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json = JSON.new()
 	json.parse(file.get_as_text())
 	file.close()
 	
-	# ownership.json hat aktuell noch nicht die volle Struktur, daher nutzen wir states.json als Hauptquelle
-	print("✅ Besitzstände geladen.")
+	var data = json.data.get("ownership", {})
+	current_owner = data.duplicate(true)
+	current_controller = data.duplicate(true)
+	print("✅ Ownership geladen: ", current_owner.size(), " Provinzen")
 
-# Hauptfunktion für ClickHandler
-func get_province_info(province_id: String) -> Dictionary:
-	var state = states.get(province_id, null)
-	if not state:
-		return {"name": "Unbekannt", "owner": "??", "controller": "??"}
-	
-	var owner_nation = nations.get(state.owner, {"name": "Unbekannt", "id": state.owner})
-	var controller_nation = nations.get(state.controller, {"name": "Unbekannt", "id": state.controller})
-	
+func get_nation(pid: Variant) -> Dictionary:
+	var province_id = str(pid)
+	var nation_id = str(current_owner.get(province_id, "NONE"))
+	return nations.get(nation_id, _default_nation())
+
+func get_controller(pid: Variant) -> Dictionary:
+	var province_id = str(pid)
+	var nation_id = str(current_controller.get(province_id, current_owner.get(province_id, "NONE")))
+	return nations.get(nation_id, _default_nation())
+
+func _default_nation() -> Dictionary:
 	return {
-		"id": province_id,
-		"name": state.name,
-		"owner_id": state.owner,
-		"owner_name": owner_nation.name,
-		"controller_id": state.controller,
-		"controller_name": controller_nation.name
+		"id": "NONE",
+		"name": "Unbekannt",
+		"short_name": "??",
+		"color": "#888888"
 	}
+
+func get_click_info(province_id: Variant, region_name: String = "") -> String:
+	var owner = get_nation(province_id)
+	var ctrl = get_controller(province_id)
+	return """=== Provinz Info ===
+ID:          %s
+Name:        %s
+Owner:       %s (%s)
+Controller:  %s (%s)
+""" % [str(province_id), region_name, owner.get("name"), owner.get("short_name", owner.get("name")), ctrl.get("name"), ctrl.get("short_name", ctrl.get("name"))]
