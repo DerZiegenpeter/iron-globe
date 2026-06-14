@@ -1,0 +1,25 @@
+{
+  "nations": [
+	{
+	  "id": 1,
+	  "name": "Bundesrepublik Deutschland",
+	  "short_name": "BRD",
+	  "color": "#FF0000",
+	  "flag_path": "res://assets/flags/brd.png"
+	},
+	{
+	  "id": 2,
+	  "name": "Sowjetunion",
+	  "short_name": "UdSSR",
+	  "color": "#FFD700",
+	  "flag_path": "res://assets/flags/ussr.png"
+	},
+	{
+	  "id": 3,
+	  "name": "Polen",
+	  "short_name": "Polen",
+	  "color": "#FFFFFF",
+	  "flag_path": "res://assets/flags/poland.png"
+	}
+  ]
+}

@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dp85gfa1hrlk5"]
+
+[ext_resource type="Script" uid="uid://bu3t0komn7ckl" path="res://Coastlines.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://bk1te7uud1n0x" path="res://camera_controller.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://l5imauwm7bng" path="res://HexGrid.gd" id="2_h2yge"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
+albedo_color = Color(0, 0, 0, 1)
+metallic_specular = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_0xm2m"]
+material = SubResource("StandardMaterial3D_0xm2m")
+radius = 999.0
+height = 1998.0
+
+[sub_resource type="Sky" id="Sky_0xm2m"]
+
+[sub_resource type="Environment" id="Environment_0xm2m"]
+background_mode = 2
+sky = SubResource("Sky_0xm2m")
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.18
+
+[node name="World" type="Node3D" unique_id=808408397]
+
+[node name="PlanetBody" type="MeshInstance3D" parent="." unique_id=991339030]
+mesh = SubResource("SphereMesh_0xm2m")
+
+[node name="HexGrid" type="Node3D" parent="." unique_id=2059144403]
+script = ExtResource("2_h2yge")
+
+[node name="Coastlines" type="Node3D" parent="." unique_id=1833489443]
+script = ExtResource("1_ig7tw")
+
+[node name="Polygons" type="Node3D" parent="." unique_id=73081054]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=670935253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2500)
+script = ExtResource("2_0xm2m")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=649230429]
+environment = SubResource("Environment_0xm2m")
