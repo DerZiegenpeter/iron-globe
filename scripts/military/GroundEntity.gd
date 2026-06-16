@@ -4,7 +4,7 @@ class_name GroundEntity
 @export var entity_id: String = ""
 @export var entity_name: String = ""
 @export var nation_code: String = ""
-@export var entity_type: String = "division"   # high_command, army_group, army, corps, division, brigade
+@export var entity_type: String = "division"
 
 @onready var sprite: Sprite3D = $Sprite3D
 @onready var label: Label3D = $Label3D
@@ -12,10 +12,9 @@ class_name GroundEntity
 var current_lat: float = 0.0
 var current_lon: float = 0.0
 
-func setup(data: Dictionary, type: String):
+func setup(data: Dictionary, type: String = "division"):
 	entity_id = data.get("id", "")
 	entity_name = data.get("name", "Formation")
-	nation_code = data.get("nation", "")
 	entity_type = type
 	
 	var pos = data.get("position", {})
