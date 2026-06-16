@@ -3,42 +3,39 @@
 	"high_command": {
 	  "id": "ger_obk",
 	  "name": "Oberkommando des Heeres",
-	  "position": { "lat": 52.4, "lon": 13.0 }
+	  "position": { "lat": 52.4, "lon": 13.0 },
+	  "children": ["ger_ag_center"]
 	},
 	"army_groups": [
 	  {
 		"id": "ger_ag_center",
 		"name": "Heeresgruppe Mitte",
-		"position": { "lat": 52.0, "lon": 20.0 }
+		"position": { "lat": 52.0, "lon": 20.0 },
+		"children": ["ger_6th_army"]
 	  }
 	],
 	"armies": [
 	  {
 		"id": "ger_6th_army",
 		"name": "6. Armee",
-		"position": { "lat": 48.5, "lon": 35.0 }
+		"position": { "lat": 48.5, "lon": 35.0 },
+		"children": ["ger_xxxx_corps"]
 	  }
 	],
 	"corps": [
 	  {
 		"id": "ger_xxxx_corps",
 		"name": "XXXX. Armeekorps",
-		"position": { "lat": 50.0, "lon": 30.0 }
+		"position": { "lat": 50.0, "lon": 30.0 },
+		"children": ["ger_1_div"]
 	  }
 	],
 	"divisions": [
 	  {
-		"id": "ger_1",
+		"id": "ger_1_div",
 		"name": "1. Division",
 		"type": "infantry",
 		"position": { "lat": 52.52, "lon": 13.40 }
-	  }
-	],
-	"brigades": [
-	  {
-		"id": "ger_1_pz_brig",
-		"name": "1. Panzerbrigade",
-		"position": { "lat": 51.0, "lon": 17.0 }
 	  }
 	]
   }

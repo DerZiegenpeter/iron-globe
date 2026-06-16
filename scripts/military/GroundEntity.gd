@@ -35,15 +35,15 @@ func _ready_after_add():
 func select():
 	is_selected = true
 	if sprite:
-		sprite.modulate = Color(2.0, 2.0, 3.0)   # Starkes Leuchten
-	print("✅ Ausgewählt:", entity_name, " | Typ:", entity_type, " | ID:", entity_id)
+		sprite.modulate = Color(2.0, 2.0, 3.0)
+	print("✅ Ausgewählt:", entity_name)
 
 func deselect():
 	is_selected = false
 	if sprite:
 		sprite.modulate = Color.WHITE
 
-func move_to(new_lat: float, new_lon: float, duration: float = 2.5):
+func move_to(new_lat: float, new_lon: float, duration: float = 4.0):
 	current_lat = new_lat
 	current_lon = new_lon
 	var target_pos = _lat_lon_to_vector3(new_lat, new_lon, 1002.0)
