@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://dp85gfa1hrlk5"]
+
+[ext_resource type="Script" uid="uid://bu3t0komn7ckl" path="res://scripts/states/Regions.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://bk1te7uud1n0x" path="res://scripts/camera/camera_controller.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://d3kjmg4b2o6q3" path="res://scripts/states/ClickHandler.gd" id="2_h2yge"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
+albedo_color = Color(0, 0, 0, 1)
+metallic = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_0xm2m"]
+material = SubResource("StandardMaterial3D_0xm2m")
+radius = 998.0
+height = 1996.0
+
+[sub_resource type="Sky" id="Sky_0xm2m"]
+
+[sub_resource type="Environment" id="Environment_0xm2m"]
+background_mode = 2
+sky = SubResource("Sky_0xm2m")
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.18
+
+[node name="World" type="Node3D" unique_id=808408397]
+
+[node name="PlanetBody" type="MeshInstance3D" parent="." unique_id=991339030]
+transform = Transform3D(-0.9999999, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.9999999, 0, 0, 0)
+mesh = SubResource("SphereMesh_0xm2m")
+
+[node name="Regions" type="Node3D" parent="." unique_id=1833489443]
+script = ExtResource("1_ig7tw")
+radius = null
+max_features = null
+border_color = null
+border_emission = null
+min_font_size = null
+max_font_size = null
+label_offset = null
+min_diameter_for_label = null
+show_country_labels = null
+show_province_labels = null
+
+[node name="Polygons" type="Node3D" parent="." unique_id=73081054]
+
+[node name="ClickHandler" type="Node3D" parent="." unique_id=1311505181]
+script = ExtResource("2_h2yge")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=649230429]
+environment = SubResource("Environment_0xm2m")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=670935253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2500)
+script = ExtResource("2_0xm2m")
