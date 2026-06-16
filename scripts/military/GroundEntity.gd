@@ -11,6 +11,7 @@ class_name GroundEntity
 
 var current_lat: float = 0.0
 var current_lon: float = 0.0
+var is_selected: bool = false
 
 func setup(data: Dictionary, type: String = "division"):
 	entity_id = data.get("id", "")
@@ -29,6 +30,29 @@ func setup(data: Dictionary, type: String = "division"):
 func _ready_after_add():
 	var normal = position.normalized()
 	look_at(position + normal * 100.0, Vector3.UP)
+
+func select():
+	is_selected = true
+	if sprite:
+		sprite.modulate = Color(1.8, 1.8, 2.5)   # Leuchten
+	print("Ausgewählt:", entity_name, "| Typ:", entity_type)
+
+func deselect():
+	is_selected = false
+	if sprite:
+		sprite.modulate = Color.WHITE
+
+func move_to(new_lat: float, new_lon: float, duration: float = 2.5):
+	current_lat = new_lat
+	current_lon = new_lon
+	var target_pos = _lat_lon_to_vector3(new_lat, new_lon, 1002.0)
+	
+	var tween = create_tween()
+	tween.tween_property(self, "position", target_pos, duration)\
+		 .set_trans(Tween.TRANS_SINE)\
+		 .set_ease(Tween.EASE_IN_OUT)
+	
+	tween.finished.connect(_ready_after_add)
 
 func _lat_lon_to_vector3(lat: float, lon: float, r: float) -> Vector3:
 	var lat_rad = deg_to_rad(lat)
