@@ -1,13 +1,47 @@
 {
   "GER": {
+	"high_command": {
+	  "name": "Oberkommando des Heeres",
+	  "commander": "von Brauchitsch",
+	  "position": { "lat": 52.4, "lon": 13.0 }
+	},
+	"army_groups": [
+	  {
+		"id": "ger_ag_center",
+		"name": "Heeresgruppe Mitte",
+		"commander": "von Bock",
+		"position": { "lat": 52.0, "lon": 20.0 }
+	  }
+	],
+	"armies": [
+	  {
+		"id": "ger_6th_army",
+		"name": "6. Armee",
+		"commander": "Paulus",
+		"position": { "lat": 48.5, "lon": 35.0 }
+	  }
+	],
+	"corps": [
+	  {
+		"id": "ger_xxxx_corps",
+		"name": "XXXX. Armeekorps",
+		"commander": "von Schwedler",
+		"position": { "lat": 50.0, "lon": 30.0 }
+	  }
+	],
 	"divisions": [
 	  {
 		"id": "ger_1",
 		"name": "1. Division",
-		"position": {
-		  "lat": 52.52,
-		  "lon": 13.40
-		}
+		"type": "infantry",
+		"position": { "lat": 52.52, "lon": 13.40 }
+	  }
+	],
+	"brigades": [
+	  {
+		"id": "ger_1_pz_brig",
+		"name": "1. Panzerbrigade",
+		"position": { "lat": 51.0, "lon": 17.0 }
 	  }
 	]
   }

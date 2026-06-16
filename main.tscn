@@ -26,6 +26,7 @@ glow_bloom = 0.18
 
 [node name="PlanetBody" type="MeshInstance3D" parent="." unique_id=991339030]
 transform = Transform3D(-0.9999999, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.9999999, 0, 0, 0)
+visible = false
 mesh = SubResource("SphereMesh_0xm2m")
 
 [node name="Regions" type="Node3D" parent="." unique_id=1833489443]
