@@ -28,14 +28,15 @@ func setup(data: Dictionary, type: String = "division"):
 		label.text = entity_name
 
 func _ready_after_add():
+	add_to_group("ground_entities")
 	var normal = position.normalized()
 	look_at(position + normal * 100.0, Vector3.UP)
 
 func select():
 	is_selected = true
 	if sprite:
-		sprite.modulate = Color(1.8, 1.8, 2.5)   # Leuchten
-	print("Ausgewählt:", entity_name, "| Typ:", entity_type)
+		sprite.modulate = Color(2.0, 2.0, 3.0)   # Starkes Leuchten
+	print("✅ Ausgewählt:", entity_name, " | Typ:", entity_type, " | ID:", entity_id)
 
 func deselect():
 	is_selected = false
