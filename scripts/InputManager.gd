@@ -34,12 +34,18 @@ func _unhandled_input(event):
 				elif event.button_index == MOUSE_BUTTON_RIGHT:
 					_move_selected(result.position)
 			else:
-				# Klick ins Leere → deselektieren
+				# Klick ins Leere
 				if event.button_index == MOUSE_BUTTON_LEFT:
 					_deselect()
 		else:
+			# Raycast hat nichts getroffen (z.B. auf Wasser)
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				_deselect()
+			elif event.button_index == MOUSE_BUTTON_RIGHT and selected_entity != null:
+				# Fallback: trotzdem bewegen, wenn etwas ausgewählt ist
+				var mouse_pos = get_viewport().get_mouse_position()
+				var fallback_pos = camera.project_position(mouse_pos, 1000)
+				_move_selected(fallback_pos)
 
 func _select(entity: GroundEntity):
 	_deselect()
