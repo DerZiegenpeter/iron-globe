@@ -13,17 +13,13 @@ var speed: int = 0
 var paused: bool = true
 
 var _time_accumulator: float = 0.0
-var _seconds_per_day: float = 0.15
+var _seconds_per_day: float = 0.2
 
 func _ready():
-	print("TimeManager _ready() aufgerufen")
 	paused = true
 	speed = 0
 
 func _process(delta: float):
-	if Engine.get_frames_drawn() % 60 == 0:
-		print("TimeManager _process läuft | speed =", speed, " | paused =", paused)
-
 	if paused or speed <= 0:
 		return
 
@@ -36,7 +32,6 @@ func _process(delta: float):
 func advance_day(days: int = 1):
 	for i in range(days):
 		current_day += 1
-
 		if current_day > _days_in_month(current_month, current_year):
 			current_day = 1
 			current_month += 1
@@ -51,20 +46,10 @@ func advance_day(days: int = 1):
 			month_passed.emit()
 
 	time_advanced.emit(days)
-	print(">>> ZEIT VORBEI | Neues Datum:", get_date_string())
-
-func _days_in_month(month: int, year: int) -> int:
-	if month == 2:
-		return 29 if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) else 28
-	elif month in [4, 6, 9, 11]:
-		return 30
-	else:
-		return 31
 
 func set_speed(new_speed: int):
 	speed = new_speed
 	paused = (speed == 0)
-	print(">>> set_speed() aufgerufen mit:", new_speed)
 
 func toggle_pause():
 	if speed == 0:
@@ -74,3 +59,11 @@ func toggle_pause():
 
 func get_date_string() -> String:
 	return "%02d.%02d.%d" % [current_day, current_month, current_year]
+
+func _days_in_month(month: int, year: int) -> int:
+	if month == 2:
+		return 29 if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) else 28
+	elif month in [4, 6, 9, 11]:
+		return 30
+	else:
+		return 31
