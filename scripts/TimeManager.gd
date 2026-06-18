@@ -1,10 +1,12 @@
 extends Node
 
 signal time_advanced(days: int)
+signal hour_passed
 signal day_passed
 signal week_passed
 signal month_passed
 
+var current_hour: int = 0
 var current_day: int = 1
 var current_month: int = 1
 var current_year: int = 1946
@@ -13,7 +15,7 @@ var speed: int = 0
 var paused: bool = true
 
 var _time_accumulator: float = 0.0
-var _seconds_per_day: float = 0.2
+var _seconds_per_hour: float = 0.05
 
 func _ready():
 	paused = true
@@ -25,8 +27,17 @@ func _process(delta: float):
 
 	_time_accumulator += delta * speed
 
-	while _time_accumulator >= _seconds_per_day:
-		_time_accumulator -= _seconds_per_day
+	while _time_accumulator >= _seconds_per_hour:
+		_time_accumulator -= _seconds_per_hour
+		advance_hour()
+
+func advance_hour():
+	current_hour += 1
+	hour_passed.emit()
+	time_advanced.emit(0)           # ← Wichtig für deine UI
+
+	if current_hour >= 24:
+		current_hour = 0
 		advance_day(1)
 
 func advance_day(days: int = 1):
@@ -58,7 +69,7 @@ func toggle_pause():
 		set_speed(0)
 
 func get_date_string() -> String:
-	return "%02d.%02d.%d" % [current_day, current_month, current_year]
+	return "%02d.%02d.%d %02d:00" % [current_day, current_month, current_year, current_hour]
 
 func _days_in_month(month: int, year: int) -> int:
 	if month == 2:
