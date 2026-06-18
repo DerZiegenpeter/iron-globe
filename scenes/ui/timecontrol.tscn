@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://78wp6isu28io"]
 
-[ext_resource type="Script" uid="uid://c6fppv3g5b7d4" path="res://ui/timecontrol.gd" id="1_6brcj"]
+[ext_resource type="Script" uid="uid://c6fppv3g5b7d4" path="res://ui/TimeControl.gd" id="1_6brcj"]
 
 [node name="TimeControl" type="Control" unique_id=865041256]
 layout_mode = 3

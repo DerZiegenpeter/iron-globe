@@ -5,16 +5,16 @@ signal day_passed
 signal week_passed
 signal month_passed
 
-# === Startdatum (Cold War Beginn) ===
+# Startdatum
 var current_day: int = 1
 var current_month: int = 1
 var current_year: int = 1946
 
-var speed: int = 0          # 0 = Pause
+var speed: int = 0
 var paused: bool = true
 
 var _time_accumulator: float = 0.0
-var _seconds_per_day: float = 0.25   # Reale Sekunden pro Spieltag bei Speed 1
+var _seconds_per_day: float = 0.1   # Für Tests kleiner machen (später wieder auf 0.2–0.5)
 
 func _ready():
 	print("TimeManager gestartet - Startdatum: %02d.%02d.%d" % [current_day, current_month, current_year])
@@ -52,6 +52,7 @@ func advance_day(days: int = 1):
 			month_passed.emit()
 
 	time_advanced.emit(days)
+	print("Datum: ", get_date_string())   # Debug
 
 func _days_in_month(month: int, year: int) -> int:
 	if month == 2:
@@ -61,11 +62,10 @@ func _days_in_month(month: int, year: int) -> int:
 	else:
 		return 31
 
-# === Steuerung ===
 func set_speed(new_speed: int):
 	speed = new_speed
 	paused = (speed == 0)
-	print("Zeitgeschwindigkeit:", speed if speed > 0 else "Pause")
+	print("Geschwindigkeit geändert auf:", speed)
 
 func toggle_pause():
 	if speed == 0:
@@ -75,10 +75,3 @@ func toggle_pause():
 
 func get_date_string() -> String:
 	return "%02d.%02d.%d" % [current_day, current_month, current_year]
-
-func get_current_date() -> Dictionary:
-	return {
-		"day": current_day,
-		"month": current_month,
-		"year": current_year
-	}

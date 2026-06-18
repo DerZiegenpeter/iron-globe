@@ -20,6 +20,7 @@ GameData="*uid://co7kfi0upygw4"
 MilitaryManager="*uid://w0ynek0hiwe"
 InputManager="*uid://bgqwxijs0nhn0"
 PopManager="*uid://cl68jriavhp1p"
+TimeManager="*uid://cnqr1j3lml61f"
 
 [display]
 
