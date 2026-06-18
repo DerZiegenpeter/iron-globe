@@ -40,19 +40,17 @@ var entity_subtype: String = ""
 var template_name: String = ""
 var raw_data: Dictionary = {}
 
-# Typ-Definitionen aus JSON
-var _type_definitions: Dictionary = {}
+var _battalion_definitions: Dictionary = {}
 
 
 func _ready():
-	_load_type_definitions()
+	_load_battalion_definitions()
 
 
-func _load_type_definitions():
-	var path = "res://data/ground_entity_types.json"
+func _load_battalion_definitions():
+	var path = "res://data/battalion_types.json"
 	if not FileAccess.file_exists(path):
-		print("⚠️ ground_entity_types.json nicht gefunden! Fallback wird verwendet.")
-		_create_fallback_definitions()
+		print("⚠️ battalion_types.json nicht gefunden!")
 		return
 
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -60,20 +58,8 @@ func _load_type_definitions():
 	json.parse(file.get_as_text())
 	file.close()
 
-	_type_definitions = json.data.get("types", {})
-	print("✅ Ground Entity Typen geladen:", _type_definitions.keys())
-
-
-func _create_fallback_definitions():
-	# Fallback falls JSON fehlt
-	_type_definitions = {
-		"division": {"is_combat_unit": true, "display_name": "Division"},
-		"brigade": {"is_combat_unit": true, "display_name": "Brigade"},
-		"corps": {"is_combat_unit": false, "display_name": "Korps"},
-		"army": {"is_combat_unit": false, "display_name": "Armee"},
-		"army_group": {"is_combat_unit": false, "display_name": "Heeresgruppe"},
-		"high_command": {"is_combat_unit": false, "display_name": "Oberkommando"}
-	}
+	_battalion_definitions = json.data
+	print("✅ Battalion Types geladen:", _battalion_definitions.keys())
 
 
 func setup(data: Dictionary, type: String = "division"):
@@ -96,32 +82,64 @@ func setup(data: Dictionary, type: String = "division"):
 	raw_data = data.duplicate()
 
 	_apply_type_properties()
-	_load_combat_stats(data)
+	_calculate_stats_from_composition()
 
 
 func _apply_type_properties():
-	var type_data = _type_definitions.get(entity_type, {})
-	type_display_name = type_data.get("display_name", entity_type.capitalize())
-	is_combat_unit = type_data.get("is_combat_unit", false)
+	# Nutzt die ground_entity_types.json aus vorherigem Schritt
+	var type_data = {}  # Hier später die Typ-Definitionen laden wenn gewünscht
+	type_display_name = entity_type.capitalize()
+	is_combat_unit = entity_type in ["division", "brigade"]
 
 
-func _load_combat_stats(data: Dictionary):
-	if is_combat_unit:
-		manpower = data.get("manpower", 8000)
-		max_manpower = data.get("max_manpower", manpower)
-		organization = data.get("organization", 80.0)
-		max_organization = data.get("max_organization", 100.0)
-		soft_attack = data.get("soft_attack", 30.0)
-		hard_attack = data.get("hard_attack", 10.0)
-		defense = data.get("defense", 50.0)
-		breakthrough = data.get("breakthrough", 20.0)
-		armor = data.get("armor", 5.0)
-		piercing = data.get("piercing", 15.0)
-		supply_consumption = data.get("supply_consumption", 3.5)
-		experience = data.get("experience", 25.0)
-	else:
-		# Organisations-Einheiten bekommen keine Kampfwerte
-		pass
+func _calculate_stats_from_composition():
+	if not is_combat_unit:
+		return
+
+	var composition = raw_data.get("composition", [])
+	if composition.is_empty():
+		# Fallback: alte flache Werte falls keine Composition vorhanden
+		manpower = raw_data.get("manpower", 8000)
+		max_manpower = raw_data.get("max_manpower", manpower)
+		organization = raw_data.get("organization", 80.0)
+		max_organization = raw_data.get("max_organization", 100.0)
+		soft_attack = raw_data.get("soft_attack", 30.0)
+		hard_attack = raw_data.get("hard_attack", 10.0)
+		defense = raw_data.get("defense", 50.0)
+		breakthrough = raw_data.get("breakthrough", 20.0)
+		supply_consumption = raw_data.get("supply_consumption", 3.5)
+		return
+
+	# === Stats aus Composition berechnen ===
+	manpower = 0
+	max_manpower = 0
+	soft_attack = 0.0
+	hard_attack = 0.0
+	defense = 0.0
+	breakthrough = 0.0
+	supply_consumption = 0.0
+
+	for entry in composition:
+		var bat_type = entry.get("type", "")
+		var amount = entry.get("amount", 1)
+		var bat_data = _battalion_definitions.get(bat_type, {})
+
+		if bat_data.is_empty():
+			print("⚠️ Unbekannter Battalion-Typ:", bat_type)
+			continue
+
+		manpower += int(bat_data.get("manpower", 0)) * amount
+		max_manpower += int(bat_data.get("manpower", 0)) * amount
+		soft_attack += float(bat_data.get("soft_attack", 0)) * amount
+		hard_attack += float(bat_data.get("hard_attack", 0)) * amount
+		defense += float(bat_data.get("defense", 0)) * amount
+		breakthrough += float(bat_data.get("breakthrough", 0)) * amount
+		supply_consumption += float(bat_data.get("supply_consumption", 0)) * amount
+
+	# Basis-Organisation & Experience (später erweiterbar)
+	organization = 75.0
+	max_organization = 100.0
+	experience = raw_data.get("experience", 30.0)
 
 
 func _ready_after_add():
@@ -192,15 +210,3 @@ func _lat_lon_to_vector3(lat: float, lon: float, r: float) -> Vector3:
 		r * sin(lat_rad),
 		r * cos(lat_rad) * cos(lon_rad)
 	)
-
-
-# ====================== HELPER ======================
-
-func get_display_name() -> String:
-	return entity_name
-
-func is_division() -> bool:
-	return entity_type == "division"
-
-func is_organizational_unit() -> bool:
-	return not is_combat_unit

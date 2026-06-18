@@ -1,47 +1,82 @@
 {
   "GER": {
 	"high_command": {
-	  "id": "ger_high_command",
-	  "name": "High Command",
-	  "position": { "lat": 52.5, "lon": 13.4 },
-	  "children": ["ger_ag_1"]
+	  "id": "ger_okh",
+	  "name": "Oberkommando des Heeres (OKH)",
+	  "position": { "lat": 52.52, "lon": 13.40 },
+	  "children": ["army_group_center"]
 	},
+
 	"army_groups": [
 	  {
-		"id": "ger_ag_1",
-		"name": "1. Armygroup",
-		"position": { "lat": 52.0, "lon": 20.0 },
-		"children": ["ger_army_1"]
+		"id": "army_group_center",
+		"name": "Heeresgruppe Mitte",
+		"position": { "lat": 53.5, "lon": 25.0 },
+		"children": ["4th_army"]
 	  }
 	],
+
 	"armies": [
 	  {
-		"id": "ger_army_1",
-		"name": "1. Army",
-		"position": { "lat": 50.0, "lon": 30.0 },
-		"children": ["ger_corps_1"]
+		"id": "4th_army",
+		"name": "4. Armee",
+		"position": { "lat": 53.0, "lon": 24.5 },
+		"children": ["xii_corps"]
 	  }
 	],
+
 	"corps": [
 	  {
-		"id": "ger_corps_1",
-		"name": "1. Corps",
-		"position": { "lat": 48.5, "lon": 35.0 },
-		"children": ["ger_div_1", "ger_div_2"]
+		"id": "xii_corps",
+		"name": "XII. Armeekorps",
+		"position": { "lat": 52.8, "lon": 24.0 },
+		"children": ["ger_div_31", "ger_div_34", "ger_brig_1"]
 	  }
 	],
+
 	"divisions": [
 	  {
-		"id": "ger_div_1",
-		"name": "1. Division",
+		"id": "ger_div_31",
+		"name": "31. Infanterie-Division",
 		"type": "infantry",
-		"position": { "lat": 47.8, "lon": 38.5 }
+		"nation_code": "GER",
+		"position": { "lat": 52.6, "lon": 23.8 },
+		"composition": [
+		  { "type": "infantry", "amount": 9 },
+		  { "type": "artillery", "amount": 3 },
+		  { "type": "anti_tank", "amount": 1 },
+		  { "type": "engineer", "amount": 1 }
+		],
+		"experience": 45
 	  },
 	  {
-		"id": "ger_div_2",
-		"name": "2. Division",
+		"id": "ger_div_34",
+		"name": "34. Infanterie-Division",
 		"type": "infantry",
-		"position": { "lat": 46.8, "lon": 37.8 }
+		"nation_code": "GER",
+		"position": { "lat": 52.9, "lon": 24.3 },
+		"composition": [
+		  { "type": "infantry", "amount": 8 },
+		  { "type": "artillery", "amount": 4 },
+		  { "type": "reconnaissance", "amount": 1 }
+		],
+		"experience": 38
+	  }
+	],
+
+	"brigades": [
+	  {
+		"id": "ger_brig_1",
+		"name": "1. Motorisierte Brigade",
+		"type": "motorized",
+		"nation_code": "GER",
+		"position": { "lat": 52.7, "lon": 23.5 },
+		"composition": [
+		  { "type": "motorized_infantry", "amount": 4 },
+		  { "type": "artillery", "amount": 1 },
+		  { "type": "medium_tank", "amount": 1 }
+		],
+		"experience": 52
 	  }
 	]
   }
