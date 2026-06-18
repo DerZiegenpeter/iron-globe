@@ -6,6 +6,18 @@ extends Control
 
 func _ready():
 	hide()
+	
+	var game_data = get_node_or_null("/root/GameData")
+	if game_data:
+		game_data.state_selected.connect(_on_state_selected)
+		game_data.state_deselected.connect(hide_panel)
+		game_data.unit_selected.connect(_on_unit_selected)
+
+func _on_state_selected(info: Dictionary):
+	show_state(info)
+
+func _on_unit_selected(entity: GroundEntity):
+	show_unit(entity)
 
 func show_state(info: Dictionary):
 	show()
@@ -19,7 +31,6 @@ func show_state(info: Dictionary):
 	
 	info_label.text = text
 	
-	# Tortendiagramm nach einzelnen Pop-Gruppen
 	var pop_data := _parse_full_pop_summary(info.get("pops", ""))
 	pie_chart.data = pop_data
 	pie_chart.colors = _generate_colors(pop_data.keys())

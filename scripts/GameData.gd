@@ -7,8 +7,8 @@ var selected_province: Dictionary = {}
 
 @onready var pop_manager: Node = get_node_or_null("/root/PopManager")
 
-# === Signale für das UI ===
 signal state_selected(info: Dictionary)
+signal state_deselected
 signal unit_selected(entity: GroundEntity)
 
 func _ready():
@@ -108,10 +108,8 @@ func select_province(province_id: int, province_name: String, info: Dictionary =
 		"info": info
 	}
 
-	# Signal für das UI senden
 	state_selected.emit(info)
 
-	# Console-Ausgabe (bleibt erstmal drin)
 	print("═══════════════════════════════════════")
 	print("=== STATE AUSGEWÄHLT ===")
 	print("Name: %s (ID: %d)" % [province_name, province_id])
@@ -126,10 +124,8 @@ func select_province(province_id: int, province_name: String, info: Dictionary =
 func deselect_province():
 	if selected_province.is_empty():
 		return
+	
+	state_deselected.emit()
+	
 	print("=== STATE DESELECTED: %s (ID: %d) ===" % [selected_province.get("name", ""), selected_province.get("id", 0)])
 	selected_province.clear()
-
-# Optional: Methode zum Auswählen einer Einheit (wird später vom InputManager genutzt)
-func select_unit(entity: GroundEntity):
-	if entity:
-		unit_selected.emit(entity)

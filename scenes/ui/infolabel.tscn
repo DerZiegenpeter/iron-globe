@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://drx3y056l7bc1"]
+
+[ext_resource type="Script" uid="uid://iuvbicx42vn5" path="res://ui/InfoPanel.gd" id="1_ndi2g"]
+[ext_resource type="Script" uid="uid://cmbot2o5an717" path="res://ui/PieChart.gd" id="2_5eg3q"]
+
+[node name="InfoPanel" type="VBoxContainer" unique_id=273327953]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -167.0
+offset_right = 411.0
+grow_vertical = 0
+script = ExtResource("1_ndi2g")
+
+[node name="TitleLabel" type="Label" parent="." unique_id=154912757]
+layout_mode = 2
+
+[node name="InfoLabel" type="RichTextLabel" parent="." unique_id=778787060]
+layout_mode = 2
+
+[node name="PieChartContainer" type="Control" parent="." unique_id=1698030306]
+layout_mode = 2
+
+[node name="PieChart" type="Control" parent="PieChartContainer" unique_id=1849748321]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_5eg3q")
+metadata/_custom_type_script = "uid://cmbot2o5an717"
