@@ -1,131 +1,129 @@
-extends Node
+extends Node3D
+class_name GroundEntity
 
-var nations: Dictionary = {}
-var province_to_owner: Dictionary = {}
-var province_to_controller: Dictionary = {}
-var selected_province: Dictionary = {}
+@export var entity_id: String = ""
+@export var entity_name: String = ""
+@export var nation_code: String = ""
+@export var entity_type: String = "division"
 
-@onready var pop_manager: Node = get_node_or_null("/root/PopManager")
+@onready var sprite: Sprite3D = $Sprite3D
+@onready var label: Label3D = $Label3D
 
-signal state_selected(info: Dictionary)
-signal state_deselected
-signal unit_selected(entity: GroundEntity)
+var current_lat: float = 0.0
+var current_lon: float = 0.0
+var is_selected: bool = false
 
-func _ready():
-	load_nations()
-	load_ownership()
+var movement_speed: float = 80.0
 
-func load_nations():
-	var path = "res://data/nations.json"
-	if not FileAccess.file_exists(path):
-		print("❌ nations.json nicht gefunden!")
+var _move_tween: Tween = null
+var _target_lat: float = 0.0
+var _target_lon: float = 0.0
+
+
+func setup(data: Dictionary, type: String = "division"):
+	entity_id = data.get("id", "")
+	entity_name = data.get("name", "Formation")
+	entity_type = type
+
+	var pos = data.get("position", {})
+	current_lat = float(pos.get("lat", 0.0))
+	current_lon = float(pos.get("lon", 0.0))
+
+	position = _lat_lon_to_vector3(current_lat, current_lon, 1002.0)
+
+	if label:
+		label.text = entity_name
+
+
+func _ready_after_add():
+	add_to_group("ground_entities")
+	var normal = position.normalized()
+	look_at(position + normal * 100.0, Vector3.UP)
+
+
+func select():
+	is_selected = true
+	if sprite:
+		sprite.modulate = Color(2.0, 2.0, 3.0)
+
+
+func deselect():
+	is_selected = false
+	if sprite:
+		sprite.modulate = Color.WHITE)
+
+
+func move_to(new_lat: float, new_lon: float):
+	var radius := 1002.0
+	var target_pos := _lat_lon_to_vector3(new_lat, new_lon, radius)
+
+	var start_dir := position.normalized()
+	var end_dir := target_pos.normalized()
+
+	var dot := clampf(start_dir.dot(end_dir), -1.0, 1.0)
+	var angle := acos(dot)
+	var arc_length := radius * angle
+
+	var tm := get_node_or_null("/root/TimeManager")
+	var sim_speed := 1.0
+	if tm and not tm.paused and tm.speed > 0:
+		sim_speed = float(tm.speed)
+
+	var duration := (arc_length / movement_speed) / sim_speed
+	duration = clampf(duration, 0.6, 12.0)
+
+	_target_lat = new_lat
+	_target_lon = new_lon
+
+	if _move_tween and _move_tween.is_valid():
+		_move_tween.kill()
+
+	_move_tween = create_tween()
+	_move_tween.set_trans(Tween.TRANS_SINE)
+	_move_tween.set_ease(Tween.EASE_IN_OUT)
+
+	# Stabile Variante mit Callable + bind (empfohlen)
+	_move_tween.tween_method(
+		Callable(self, "_apply_sphere_move").bind(start_dir, end_dir),
+		0.0, 1.0, duration
+	)
+
+	_move_tween.finished.connect(_on_movement_finished)
+
+
+func _apply_sphere_move(start_dir: Vector3, end_dir: Vector3, progress: float):
+	_update_position_on_sphere(start_dir, end_dir, progress)
+
+
+func _update_position_on_sphere(start_dir: Vector3, end_dir: Vector3, progress: float):
+	if start_dir.is_equal_approx(end_dir):
+		position = start_dir * 1002.0
 		return
 
-	var file = FileAccess.open(path, FileAccess.READ)
-	var json = JSON.new()
-	json.parse(file.get_as_text())
-	file.close()
-
-	var data = json.data.get("nations", [])
-	for n in data:
-		var code = str(n.get("id", n.get("short_name", n.get("code", "")))).to_upper().strip_edges()
-		if code != "":
-			nations[code] = n
-
-	print("✅ Nationen geladen:", nations.size())
-
-func load_ownership():
-	var path = "res://data/ownership.json"
-	if not FileAccess.file_exists(path):
-		print("❌ ownership.json nicht gefunden!")
+	var angle := acos(clampf(start_dir.dot(end_dir), -1.0, 1.0))
+	if angle < 0.0001:
+		position = start_dir * 1002.0
 		return
 
-	var file = FileAccess.open(path, FileAccess.READ)
-	var json = JSON.new()
-	json.parse(file.get_as_text())
-	file.close()
+	var axis := start_dir.cross(end_dir).normalized()
+	var partial_quat := Quaternion(axis, angle * progress)
+	var current_dir := partial_quat * start_dir
+	position = current_dir * 1002.0
 
-	province_to_owner.clear()
-	province_to_controller.clear()
 
-	for entry in json.data.get("ownership", []):
-		var pid = entry.get("id", 0) as int
-		if pid <= 0: continue
-		
-		var owner_code = str(entry.get("owner", "NEU")).to_upper()
-		var controller = str(entry.get("controller", owner_code)).to_upper()
+func _on_movement_finished():
+	current_lat = _target_lat
+	current_lon = _target_lon
 
-		province_to_owner[pid] = owner_code
-		province_to_controller[pid] = controller
+	var normal := position.normalized()
+	look_at(position + normal * 100.0, Vector3.UP)
 
-	print("✅ Ownership geladen:", province_to_owner.size(), "Provinzen")
 
-func get_province_info(province_id: int, region_name: String = "") -> Dictionary:
-	if province_id <= 0:
-		return {
-			"province_id": province_id,
-			"name": region_name if region_name != "" else "Unbekannt",
-			"owner": "Unbekannt",
-			"owner_code": "NEU",
-			"controller": "Unbekannt",
-			"controller_code": "NEU",
-			"population": 0,
-			"pops": "Keine Daten"
-		}
-
-	var owner_code = province_to_owner.get(province_id, "NEU")
-	var nation = nations.get(owner_code, {})
-	var owner_name = nation.get("name", "Unbekannt")
-	var color_hex = nation.get("color", "#555555")
-
-	var controller_code = province_to_controller.get(province_id, owner_code)
-	var controller_nation = nations.get(controller_code, {})
-	var controller_name = controller_nation.get("name", controller_code)
-
-	var population = 0
-	var pop_summary = "Keine Pops geladen"
-
-	if pop_manager:
-		population = pop_manager.get_total_population(province_id)
-		pop_summary = pop_manager.get_pop_summary(province_id)
-
-	return {
-		"province_id": province_id,
-		"name": region_name if region_name != "" else "Unbekannt",
-		"owner": owner_name,
-		"owner_code": owner_code,
-		"controller": controller_name,
-		"controller_code": controller_code,
-		"color": color_hex,
-		"population": population,
-		"pops": pop_summary
-	}
-
-func select_province(province_id: int, province_name: String, info: Dictionary = {}):
-	selected_province = {
-		"id": province_id,
-		"name": province_name,
-		"info": info
-	}
-
-	state_selected.emit(info)
-
-	print("═══════════════════════════════════════")
-	print("=== STATE AUSGEWÄHLT ===")
-	print("Name: %s (ID: %d)" % [province_name, province_id])
-
-	if not info.is_empty():
-		print("Owner:      ", info.get("owner", "?"), " (", info.get("owner_code", "?"), ")")
-		print("Controller: ", info.get("controller", "?"), " (", info.get("controller_code", "?"), ")")
-		print("Bevölkerung:", info.get("population", 0))
-		print("Pops:       ", info.get("pops", "Keine Daten"))
-	print("═══════════════════════════════════════")
-
-func deselect_province():
-	if selected_province.is_empty():
-		return
-	
-	state_deselected.emit()
-	
-	print("=== STATE DESELECTED: %s (ID: %d) ===" % [selected_province.get("name", ""), selected_province.get("id", 0)])
-	selected_province.clear()
+func _lat_lon_to_vector3(lat: float, lon: float, r: float) -> Vector3:
+	var lat_rad = deg_to_rad(lat)
+	var lon_rad = deg_to_rad(lon)
+	return Vector3(
+		r * cos(lat_rad) * sin(lon_rad),
+		r * sin(lat_rad),
+		r * cos(lat_rad) * cos(lon_rad)
+	)
