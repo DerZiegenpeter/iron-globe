@@ -36,22 +36,31 @@ func select():
 	is_selected = true
 	if sprite:
 		sprite.modulate = Color(2.0, 2.0, 3.0)
-	print("✅ Ausgewählt:", entity_name)
+	print("Ausgewählt:", entity_name)
 
 func deselect():
 	is_selected = false
 	if sprite:
 		sprite.modulate = Color.WHITE
 
-func move_to(new_lat: float, new_lon: float, duration: float = 4.0):
+# Bessere Bewegung auf der Kugeloberfläche
+func move_to(new_lat: float, new_lon: float, duration: float = 6.0):
 	current_lat = new_lat
 	current_lon = new_lon
 	var target_pos = _lat_lon_to_vector3(new_lat, new_lon, 1002.0)
 	
 	var tween = create_tween()
-	tween.tween_property(self, "position", target_pos, duration)\
-		 .set_trans(Tween.TRANS_SINE)\
-		 .set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	# Wir tweenen die Position und normalisieren sie ständig auf die Kugel
+	tween.tween_method(
+		func(pos): 
+			position = pos.normalized() * 1002.0,
+		position,
+		target_pos,
+		duration
+	)
 	
 	tween.finished.connect(_ready_after_add)
 

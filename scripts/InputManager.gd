@@ -5,13 +5,11 @@ var selected_entity: GroundEntity = null
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed:
 		
-		# Nur Links- und Rechtsklick erlauben
 		if event.button_index != MOUSE_BUTTON_LEFT and event.button_index != MOUSE_BUTTON_RIGHT:
 			return
 
 		var camera = get_viewport().get_camera_3d()
-		if not camera:
-			return
+		if not camera: return
 
 		var from = camera.project_ray_origin(event.position)
 		var to = from + camera.project_ray_normal(event.position) * 5000
@@ -34,24 +32,16 @@ func _unhandled_input(event):
 				elif event.button_index == MOUSE_BUTTON_RIGHT:
 					_move_selected(result.position)
 			else:
-				# Klick ins Leere
 				if event.button_index == MOUSE_BUTTON_LEFT:
 					_deselect()
 		else:
-			# Raycast hat nichts getroffen (z.B. auf Wasser)
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				_deselect()
-			elif event.button_index == MOUSE_BUTTON_RIGHT and selected_entity != null:
-				# Fallback: trotzdem bewegen, wenn etwas ausgewählt ist
-				var mouse_pos = get_viewport().get_mouse_position()
-				var fallback_pos = camera.project_position(mouse_pos, 1000)
-				_move_selected(fallback_pos)
 
 func _select(entity: GroundEntity):
 	_deselect()
 	selected_entity = entity
 	entity.select()
-	print("Ausgewählt:", entity.entity_name)
 
 func _deselect():
 	if selected_entity:
@@ -60,12 +50,11 @@ func _deselect():
 
 func _move_selected(world_pos: Vector3):
 	if selected_entity == null:
-		print("Keine Einheit ausgewählt!")
 		return
 	
-	var new_pos = world_pos.normalized() * 1002.0
-	var new_lat = rad_to_deg(asin(new_pos.y / 1002.0))
-	var new_lon = rad_to_deg(atan2(new_pos.x, new_pos.z))
+	var target_pos = world_pos.normalized() * 1002.0
+	var new_lat = rad_to_deg(asin(target_pos.y / 1002.0))
+	var new_lon = rad_to_deg(atan2(target_pos.x, target_pos.z))
 	
 	print(">>> Bewege", selected_entity.entity_name, "nach Lat:", new_lat, "Lon:", new_lon)
-	selected_entity.move_to(new_lat, new_lon, 5.0)
+	selected_entity.move_to(new_lat, new_lon, 6.0)
