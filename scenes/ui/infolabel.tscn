@@ -3,25 +3,35 @@
 [ext_resource type="Script" uid="uid://iuvbicx42vn5" path="res://ui/InfoPanel.gd" id="1_ndi2g"]
 [ext_resource type="Script" uid="uid://cmbot2o5an717" path="res://ui/PieChart.gd" id="2_5eg3q"]
 
-[node name="InfoPanel" type="VBoxContainer" unique_id=273327953]
+[node name="InfoPanel" type="Control" unique_id=357459841]
+layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -167.0
-offset_right = 411.0
+offset_top = -255.0
+offset_right = 662.0
 grow_vertical = 0
 script = ExtResource("1_ndi2g")
 
-[node name="TitleLabel" type="Label" parent="." unique_id=154912757]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1338327087]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=154912757]
 layout_mode = 2
 
-[node name="InfoLabel" type="RichTextLabel" parent="." unique_id=778787060]
+[node name="InfoLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=778787060]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="PieChartContainer" type="Control" parent="." unique_id=1698030306]
+[node name="PieChartContainer" type="Control" parent="VBoxContainer" unique_id=1698030306]
 layout_mode = 2
 
-[node name="PieChart" type="Control" parent="PieChartContainer" unique_id=1849748321]
+[node name="PieChart" type="Control" parent="VBoxContainer/PieChartContainer" unique_id=1849748321]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
