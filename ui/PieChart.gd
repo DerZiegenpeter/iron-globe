@@ -1,41 +1,70 @@
-@tool
 extends Control
-class_name PieChart
 
-@export var data: Dictionary = {}      # z.B. {"German worker": 980000, "German farmer": 620000}
-@export var colors: Dictionary = {}
-@export var radius: float = 90.0
-@export var show_labels: bool = true
+@onready var date_label: Label = $HBoxContainer/DateLabel
 
-func _draw():
-	if data.is_empty():
+@onready var pause_button: Button = $HBoxContainer/PauseButton
+@onready var speed_1_button: Button = $HBoxContainer/Speed1Button
+@onready var speed_2_button: Button = $HBoxContainer/Speed2Button
+@onready var speed_5_button: Button = $HBoxContainer/Speed5Button
+@onready var speed_10_button: Button = $HBoxContainer/Speed10Button
+
+func _ready():
+	await get_tree().process_frame
+
+	var tm = get_node_or_null("/root/TimeManager")
+	if tm == null:
+		print("❌ TimeManager nicht gefunden!")
 		return
 
-	var total = 0.0
-	for value in data.values():
-		total += value
+	print("✅ TimeManager erfolgreich gefunden!")
 
-	if total <= 0:
-		return
+	# Signal für Datums-Update
+	if not tm.time_advanced.is_connected(_update_date):
+		tm.time_advanced.connect(_update_date)
 
-	var start_angle := -PI / 2.0
-	var center := size / 2.0
+	_update_date(0)
 
-	var i := 0
-	for key in data.keys():
-		var value = data[key]
-		var angle = (value / total) * TAU
-		var color = colors.get(key, Color.WHITE)
+	# Buttons explizit verbinden (das war das Problem!)
+	pause_button.pressed.connect(_on_pause_pressed)
+	speed_1_button.pressed.connect(_on_speed_1_pressed)
+	speed_2_button.pressed.connect(_on_speed_2_pressed)
+	speed_5_button.pressed.connect(_on_speed_5_pressed)
+	speed_10_button.pressed.connect(_on_speed_10_pressed)
 
-		# Slice zeichnen
-		var points := [center]
-		var steps := 48
-		for s in range(steps + 1):
-			var a = start_angle + angle * (float(s) / steps)
-			points.append(center + Vector2(cos(a), sin(a)) * radius)
+	# Start pausiert
+	tm.set_speed(0)
 
-		draw_polygon(points, [color])
+func _update_date(_days: int = 0):
+	var tm = get_node_or_null("/root/TimeManager")
+	if tm and date_label:
+		date_label.text = tm.get_date_string()
 
-		# Optional: kleine Linie + Text (später erweiterbar)
-		start_angle += angle
-		i += 1
+func _on_pause_pressed():
+	var tm = get_node_or_null("/root/TimeManager")
+	if tm:
+		tm.toggle_pause()
+		print(">>> Pause/Play | speed =", tm.speed)
+
+func _on_speed_1_pressed():
+	var tm = get_node_or_null("/root/TimeManager")
+	if tm:
+		tm.set_speed(1)
+		print(">>> Speed 1x")
+
+func _on_speed_2_pressed():
+	var tm = get_node_or_null("/root/TimeManager")
+	if tm:
+		tm.set_speed(2)
+		print(">>> Speed 2x")
+
+func _on_speed_5_pressed():
+	var tm = get_node_or_null("/root/TimeManager")
+	if tm:
+		tm.set_speed(5)
+		print(">>> Speed 5x")
+
+func _on_speed_10_pressed():
+	var tm = get_node_or_null("/root/TimeManager")
+	if tm:
+		tm.set_speed(10)
+		print(">>> Speed 10x")

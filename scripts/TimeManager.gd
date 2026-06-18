@@ -5,7 +5,6 @@ signal day_passed
 signal week_passed
 signal month_passed
 
-# Startdatum
 var current_day: int = 1
 var current_month: int = 1
 var current_year: int = 1946
@@ -14,14 +13,18 @@ var speed: int = 0
 var paused: bool = true
 
 var _time_accumulator: float = 0.0
-var _seconds_per_day: float = 0.1   # Für Tests kleiner machen (später wieder auf 0.2–0.5)
+var _seconds_per_day: float = 0.15   # Etwas schneller für Tests
 
 func _ready():
-	print("TimeManager gestartet - Startdatum: %02d.%02d.%d" % [current_day, current_month, current_year])
+	print("TimeManager _ready() aufgerufen")
 	paused = true
 	speed = 0
 
 func _process(delta: float):
+	# Debug-Ausgabe jede Sekunde
+	if Engine.get_frames_drawn() % 60 == 0:
+		print("TimeManager _process läuft | speed =", speed, " | paused =", paused)
+
 	if paused or speed <= 0:
 		return
 
@@ -38,21 +41,18 @@ func advance_day(days: int = 1):
 		if current_day > _days_in_month(current_month, current_year):
 			current_day = 1
 			current_month += 1
-
 			if current_month > 12:
 				current_month = 1
 				current_year += 1
 
 		day_passed.emit()
-
 		if current_day % 7 == 0:
 			week_passed.emit()
-
 		if current_day == 1:
 			month_passed.emit()
 
 	time_advanced.emit(days)
-	print("Datum: ", get_date_string())   # Debug
+	print(">>> ZEIT VORBEI | Neues Datum:", get_date_string())
 
 func _days_in_month(month: int, year: int) -> int:
 	if month == 2:
@@ -65,7 +65,7 @@ func _days_in_month(month: int, year: int) -> int:
 func set_speed(new_speed: int):
 	speed = new_speed
 	paused = (speed == 0)
-	print("Geschwindigkeit geändert auf:", speed)
+	print(">>> set_speed() aufgerufen mit:", new_speed)
 
 func toggle_pause():
 	if speed == 0:
