@@ -48,31 +48,24 @@ func _on_button_pressed(btn: Button):
 	elif "10x" in text or name == "Speed10Button":
 		if tm: tm.set_speed(10)
 
-# === TASTATUR-STEUERUNG (funktioniert garantiert) ===
 func _unhandled_input(event):
 	if event is InputEventKey and event.pressed:
 		match event.keycode:
 			KEY_SPACE:
-				if tm:
-					tm.toggle_pause()
+				if tm: tm.toggle_pause()
 				print(">>> TASTE: Pause/Play")
 			KEY_1:
-				if tm:
-					tm.set_speed(1)
+				if tm: tm.set_speed(1)
 				print(">>> TASTE: 1x")
 			KEY_2:
-				if tm:
-					tm.set_speed(2)
+				if tm: tm.set_speed(2)
 				print(">>> TASTE: 2x")
 			KEY_3:
-				if tm:
-					tm.set_speed(5)
+				if tm: tm.set_speed(5)
 				print(">>> TASTE: 5x")
 			KEY_4:
-				if tm:
-					tm.set_speed(10)
+				if tm: tm.set_speed(10)
 				print(">>> TASTE: 10x")
 			KEY_0:
-				if tm:
-					tm.set_speed(0)
+				if tm: tm.set_speed(0)
 				print(">>> TASTE: Pause (0)")
