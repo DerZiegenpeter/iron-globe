@@ -1,64 +1,72 @@
 extends Control
 
 @onready var date_label: Label = $HBoxContainer/DateLabel
+@onready var hbox: HBoxContainer = $HBoxContainer
 
-@onready var pause_button: Button   = $HBoxContainer/PauseButton
-@onready var speed_1_button: Button = $HBoxContainer/Speed1Button
-@onready var speed_2_button: Button = $HBoxContainer/Speed2Button
-@onready var speed_5_button: Button = $HBoxContainer/Speed5Button
-@onready var speed_10_button: Button = $HBoxContainer/Speed10Button
+var tm: Node = null
 
 func _ready():
 	await get_tree().process_frame
 
-	var tm = get_node_or_null("/root/TimeManager")
+	tm = get_node_or_null("/root/TimeManager")
 	if tm == null:
 		print("❌ TimeManager nicht gefunden!")
 		return
 
-	print("✅ TimeManager erfolgreich gefunden!")
+	print("✅ TimeManager gefunden")
 
+	# Datum aktualisieren
 	if not tm.time_advanced.is_connected(_update_date):
 		tm.time_advanced.connect(_update_date)
-
 	_update_date(0)
 
-	# === Buttons verbinden (das hat gefehlt!) ===
-	pause_button.pressed.connect(_on_pause_pressed)
-	speed_1_button.pressed.connect(_on_speed_1_pressed)
-	speed_2_button.pressed.connect(_on_speed_2_pressed)
-	speed_5_button.pressed.connect(_on_speed_5_pressed)
-	speed_10_button.pressed.connect(_on_speed_10_pressed)
+	# === Buttons automatisch finden und verbinden (robust) ===
+	for child in hbox.get_children():
+		if child is Button:
+			var btn = child as Button
+			print("Button gefunden: ", btn.name)
+			
+			match btn.name:
+				"PauseButton":
+					btn.pressed.connect(_on_pause_pressed)
+				"Speed1Button":
+					btn.pressed.connect(_on_speed_1_pressed)
+				"Speed2Button":
+					btn.pressed.connect(_on_speed_2_pressed)
+				"Speed5Button":
+					btn.pressed.connect(_on_speed_5_pressed)
+				"Speed10Button":
+					btn.pressed.connect(_on_speed_10_pressed)
 
-	tm.set_speed(0)   # Start pausiert
+	# Start pausiert
+	tm.set_speed(0)
+	print(">>> TimeControl bereit (pausiert)")
 
 func _update_date(_days: int = 0):
-	var tm = get_node_or_null("/root/TimeManager")
 	if tm and date_label:
 		date_label.text = tm.get_date_string()
 
 func _on_pause_pressed():
-	var tm = get_node_or_null("/root/TimeManager")
 	if tm:
 		tm.toggle_pause()
-		print(">>> Pause/Play gedrückt | speed =", tm.speed)
+		print(">>> PAUSE gedrückt → speed =", tm.speed, " paused =", tm.paused)
 
 func _on_speed_1_pressed():
-	var tm = get_node_or_null("/root/TimeManager")
 	if tm:
+		print(">>> 1x gedrückt")
 		tm.set_speed(1)
 
 func _on_speed_2_pressed():
-	var tm = get_node_or_null("/root/TimeManager")
 	if tm:
+		print(">>> 2x gedrückt")
 		tm.set_speed(2)
 
 func _on_speed_5_pressed():
-	var tm = get_node_or_null("/root/TimeManager")
 	if tm:
+		print(">>> 5x gedrückt")
 		tm.set_speed(5)
 
 func _on_speed_10_pressed():
-	var tm = get_node_or_null("/root/TimeManager")
 	if tm:
+		print(">>> 10x gedrückt")
 		tm.set_speed(10)

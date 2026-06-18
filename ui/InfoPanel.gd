@@ -2,12 +2,18 @@ extends Control
 
 @onready var title_label: Label = $VBoxContainer/TitleLabel
 @onready var info_label: RichTextLabel = $VBoxContainer/InfoLabel
-@onready var pie_chart: PieChart = $VBoxContainer/PieChartContainer/PieChart
+
+# === FIX: Preload + Cast für PieChart (löst den Parser Error) ===
+const PieChartScript = preload("res://ui/PieChart.gd")
+@onready var pie_chart = $VBoxContainer/PieChartContainer/PieChart as PieChartScript
+
+# === FIX: Preload + Cast für GroundEntity (vorbeugend) ===
+const GroundEntityScript = preload("res://scripts/military/GroundEntity.gd")
 
 func _ready():
 	hide()
 	
-	# Schriftgröße des RichTextLabels per Code setzen (sicherer Fallback)
+	# Schriftgröße des RichTextLabels per Code setzen (sicherer Fall)
 	if info_label:
 		info_label.add_theme_font_size_override("normal_font_size", 24)
 	
@@ -20,8 +26,10 @@ func _ready():
 func _on_state_selected(info: Dictionary):
 	show_state(info)
 
-func _on_unit_selected(entity: GroundEntity):
-	show_unit(entity)
+func _on_unit_selected(entity):
+	# Cast sicherstellen
+	var ground_entity = entity as GroundEntityScript
+	show_unit(ground_entity)
 
 func show_state(info: Dictionary):
 	show()
@@ -40,7 +48,7 @@ func show_state(info: Dictionary):
 	pie_chart.colors = _generate_colors(pop_data.keys())
 	pie_chart.queue_redraw()
 
-func show_unit(entity: GroundEntity):
+func show_unit(entity):
 	show()
 	title_label.text = entity.entity_name if entity else "Einheit"
 	info_label.text = "Einheit ausgewählt"
