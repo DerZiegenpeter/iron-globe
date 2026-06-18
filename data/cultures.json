@@ -1,0 +1,6 @@
+{
+  "german": { "name": "German", "group": "Western" },
+  "western": { "name": "Western European", "group": "Western" },
+  "eastern_bloc": { "name": "Eastern Bloc", "group": "Communist" },
+  "mediterranean": { "name": "Mediterranean", "group": "Southern" }
+}

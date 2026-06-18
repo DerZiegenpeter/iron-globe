@@ -1,0 +1,8 @@
+{
+  "protestant": { "name": "Protestant" },
+  "catholic": { "name": "Catholic" },
+  "orthodox": { "name": "Orthodox" },
+  "muslim": { "name": "Muslim" },
+  "jewish": { "name": "Jewish" },
+  "atheist": { "name": "Atheist / Secular" }
+}

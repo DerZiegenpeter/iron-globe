@@ -1,0 +1,7 @@
+{
+  "german": { "name": "German", "color": "#3a6ea5" },
+  "greek": { "name": "Greek", "color": "#8B4513" },
+  "russian": { "name": "Russian", "color": "#c41e3a" },
+  "polish": { "name": "Polish", "color": "#dc143c" },
+  "turkish": { "name": "Turkish", "color": "#c41e3a" }
+}

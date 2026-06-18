@@ -17,7 +17,7 @@ func _input(event: InputEvent):
 	var ray_origin = camera.project_ray_origin(event.position)
 	var ray_dir = camera.project_ray_normal(event.position)
 	
-	# === WICHTIG: Wenn hier eine Entity liegt, State-Logik NICHT ausführen ===
+	# Military Entity Priorität
 	var space_state = get_viewport().get_world_3d().direct_space_state
 	var phys_query = PhysicsRayQueryParameters3D.create(ray_origin, ray_origin + ray_dir * 5000.0)
 	phys_query.collide_with_areas = true
@@ -28,9 +28,9 @@ func _input(event: InputEvent):
 		while hit and not (hit is GroundEntity):
 			hit = hit.get_parent()
 		if hit is GroundEntity:
-			return   # InputManager übernimmt die Entity
+			return
 	
-	# === STATE / WASSER ===
+	# State / Wasser
 	var hit_point = intersect_ray_sphere(ray_origin, ray_dir, Vector3.ZERO, 1000.0)
 	if hit_point == Vector3.INF:
 		deselect_current()

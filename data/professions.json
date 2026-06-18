@@ -1,0 +1,7 @@
+{
+  "worker": { "name": "Worker", "manpower_factor": 0.85 },
+  "farmer": { "name": "Farmer", "manpower_factor": 0.60 },
+  "soldier": { "name": "Soldier", "manpower_factor": 1.0 },
+  "intellectual": { "name": "Intellectual", "manpower_factor": 0.40 },
+  "capitalist": { "name": "Capitalist", "manpower_factor": 0.20 }
+}

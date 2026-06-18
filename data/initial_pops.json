@@ -1,0 +1,28 @@
+{
+  "pops": [
+	{
+	  "state_id": 1,
+	  "profession": "worker",
+	  "ethnicity": "german",
+	  "culture": "german",
+	  "religion": "protestant",
+	  "size": 980000
+	},
+	{
+	  "state_id": 1,
+	  "profession": "farmer",
+	  "ethnicity": "german",
+	  "culture": "german",
+	  "religion": "protestant",
+	  "size": 620000
+	},
+	{
+	  "state_id": 1,
+	  "profession": "intellectual",
+	  "ethnicity": "german",
+	  "culture": "german",
+	  "religion": "protestant",
+	  "size": 185000
+	}
+  ]
+}
