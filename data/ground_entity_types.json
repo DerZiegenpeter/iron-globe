@@ -1,0 +1,40 @@
+{
+  "types": {
+	"high_command": {
+	  "is_combat_unit": false,
+	  "display_name": "Oberkommando",
+	  "organizational_level": 5,
+	  "can_command": true
+	},
+	"army_group": {
+	  "is_combat_unit": false,
+	  "display_name": "Heeresgruppe",
+	  "organizational_level": 4,
+	  "can_command": true
+	},
+	"army": {
+	  "is_combat_unit": false,
+	  "display_name": "Armee",
+	  "organizational_level": 3,
+	  "can_command": true
+	},
+	"corps": {
+	  "is_combat_unit": false,
+	  "display_name": "Korps",
+	  "organizational_level": 2,
+	  "can_command": true
+	},
+	"division": {
+	  "is_combat_unit": true,
+	  "display_name": "Division",
+	  "organizational_level": 1,
+	  "can_command": false
+	},
+	"brigade": {
+	  "is_combat_unit": true,
+	  "display_name": "Brigade",
+	  "organizational_level": 1,
+	  "can_command": false
+	}
+  }
+}

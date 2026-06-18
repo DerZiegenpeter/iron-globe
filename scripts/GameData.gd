@@ -12,6 +12,7 @@ var selected_province: Dictionary = {}
 signal state_selected(info: Dictionary)
 signal state_deselected
 signal unit_selected(entity: GroundEntity)
+signal unit_deselected          # NEU für sauberes Schließen des InfoPanels
 
 
 func _ready():

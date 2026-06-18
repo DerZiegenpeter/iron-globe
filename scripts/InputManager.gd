@@ -54,9 +54,18 @@ func _select(entity: GroundEntity):
 	selected_entity = entity
 	entity.select()
 
+	# Signal an InfoPanel senden (für Unit-Info-Fenster)
+	var game_data = get_node_or_null("/root/GameData")
+	if game_data:
+		game_data.unit_selected.emit(entity)
+
 
 func _deselect():
 	if selected_entity:
+		var gd = get_node_or_null("/root/GameData")
+		if gd:
+			gd.unit_deselected.emit()
+
 		selected_entity.deselect()
 		selected_entity = null
 

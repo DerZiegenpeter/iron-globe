@@ -22,6 +22,8 @@ func _ready():
 		game_data.state_selected.connect(_on_state_selected)
 		game_data.state_deselected.connect(hide_panel)
 		game_data.unit_selected.connect(_on_unit_selected)
+		game_data.unit_deselected.connect(hide_panel)
+
 
 func _on_state_selected(info: Dictionary):
 	show_state(info)
@@ -49,9 +51,34 @@ func show_state(info: Dictionary):
 	pie_chart.queue_redraw()
 
 func show_unit(entity):
+	if not entity:
+		hide_panel()
+		return
+	
 	show()
-	title_label.text = entity.entity_name if entity else "Einheit"
-	info_label.text = "Einheit ausgewählt"
+	
+	title_label.text = entity.entity_name if entity.entity_name else "Einheit"
+	
+	var text := ""
+	text += "Typ: %s" % entity.entity_type.capitalize()
+	if entity.entity_subtype != "":
+		text += " (%s)" % entity.entity_subtype.capitalize()
+	text += "\n"
+	
+	text += "ID: %s\n" % entity.entity_id
+	text += "Nation: %s\n" % entity.nation_code
+	text += "Position: %.2f° N, %.2f° E\n" % [entity.current_lat, entity.current_lon]
+	text += "Geschwindigkeit: %.2f Einheiten/h\n" % entity.movement_speed
+	
+	if entity.is_selected:
+		text += "Status: Ausgewählt\n"
+	
+	if entity._has_target:
+		text += "→ Bewegt sich zu: %.2f° N, %.2f° E\n" % [entity._target_lat, entity._target_lon]
+	
+	info_label.text = text
+	
+	# PieChart bei Einheiten leer lassen (später erweiterbar)
 	pie_chart.data.clear()
 	pie_chart.queue_redraw()
 
