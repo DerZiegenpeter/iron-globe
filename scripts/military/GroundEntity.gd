@@ -43,7 +43,6 @@ func deselect():
 	if sprite:
 		sprite.modulate = Color.WHITE
 
-# Bessere Bewegung auf der Kugeloberfläche
 func move_to(new_lat: float, new_lon: float, duration: float = 6.0):
 	current_lat = new_lat
 	current_lon = new_lon
@@ -53,9 +52,8 @@ func move_to(new_lat: float, new_lon: float, duration: float = 6.0):
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
 	
-	# Wir tweenen die Position und normalisieren sie ständig auf die Kugel
 	tween.tween_method(
-		func(pos): 
+		func(pos):
 			position = pos.normalized() * 1002.0,
 		position,
 		target_pos,

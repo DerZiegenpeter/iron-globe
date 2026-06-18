@@ -24,7 +24,6 @@ func load_regions():
 	var features = json.data.get("features", [])
 	print("Lade ", features.size(), " States...")
 
-	# Nur Borders (keine Labels)
 	for idx in features.size():
 		if idx >= max_features: break
 		var feature = features[idx]
@@ -53,7 +52,21 @@ func load_regions():
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 		border_node.material_override = mat
 
-	print("✅ Nur State-Grenzen geladen. Labels sind deaktiviert.")
+		# === LAND KOLLISION (StaticBody + CollisionShape) ===
+		var static_body = StaticBody3D.new()
+		border_node.add_child(static_body)
+
+		var collision_shape = CollisionShape3D.new()
+		static_body.add_child(collision_shape)
+
+		var shape = border_node.mesh.create_trimesh_shape()
+		if shape:
+			collision_shape.shape = shape
+
+		static_body.collision_layer = 2
+		static_body.collision_mask = 2
+
+	print("✅ ", features.size(), " States mit Kollision geladen.")
 
 # Hilfsfunktionen
 func _extract_rings(geometry: Dictionary) -> Array:

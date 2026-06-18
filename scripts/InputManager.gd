@@ -17,7 +17,7 @@ func _unhandled_input(event):
 		var space_state = get_viewport().get_world_3d().direct_space_state
 		var query = PhysicsRayQueryParameters3D.create(from, to)
 		query.collide_with_areas = true
-		query.collision_mask = 1
+		query.collision_mask = 1 | 2
 
 		var result = space_state.intersect_ray(query)
 
@@ -32,11 +32,11 @@ func _unhandled_input(event):
 				elif event.button_index == MOUSE_BUTTON_RIGHT:
 					_move_selected(result.position)
 			else:
-				if event.button_index == MOUSE_BUTTON_LEFT:
-					_deselect()
+				# Kein GroundEntity → Klick durchlassen für ClickHandler (States)
+				pass
 		else:
 			if event.button_index == MOUSE_BUTTON_LEFT:
-				_deselect()
+				pass   # Klick durchlassen
 
 func _select(entity: GroundEntity):
 	_deselect()
