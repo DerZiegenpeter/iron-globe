@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drx3y056l7bc1"]
 
-[ext_resource type="Script" uid="uid://iuvbicx42vn5" path="res://ui/InfoPanel.gd" id="1_ndi2g"]
-[ext_resource type="Script" uid="uid://cmbot2o5an717" path="res://ui/PieChart.gd" id="2_5eg3q"]
+[ext_resource type="Script" uid="uid://cmbot2o5an717" path="res://ui/PieChart.gd" id="1_ia44j"]
+[ext_resource type="Script" uid="uid://iuvbicx42vn5" path="res://ui/InfoPanel.gd" id="1_qhvjt"]
 
 [node name="InfoPanel" type="Control" unique_id=357459841]
 layout_mode = 3
@@ -11,7 +11,7 @@ anchor_bottom = 1.0
 offset_top = -255.0
 offset_right = 662.0
 grow_vertical = 0
-script = ExtResource("1_ndi2g")
+script = ExtResource("1_qhvjt")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1338327087]
 layout_mode = 1
@@ -35,5 +35,5 @@ layout_mode = 2
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("2_5eg3q")
+script = ExtResource("1_ia44j")
 metadata/_custom_type_script = "uid://cmbot2o5an717"

@@ -13,17 +13,20 @@ var current_lat: float = 0.0
 var current_lon: float = 0.0
 var is_selected: bool = false
 
+# === Fixe Bewegungsgeschwindigkeit (Einheiten pro Tag) ===
+var movement_speed: float = 120.0
+
 func setup(data: Dictionary, type: String = "division"):
 	entity_id = data.get("id", "")
 	entity_name = data.get("name", "Formation")
 	entity_type = type
-	
+
 	var pos = data.get("position", {})
 	current_lat = float(pos.get("lat", 0.0))
 	current_lon = float(pos.get("lon", 0.0))
-	
+
 	position = _lat_lon_to_vector3(current_lat, current_lon, 1002.0)
-	
+
 	if label:
 		label.text = entity_name
 
@@ -43,23 +46,24 @@ func deselect():
 	if sprite:
 		sprite.modulate = Color.WHITE
 
-func move_to(new_lat: float, new_lon: float, duration: float = 6.0):
+func move_to(new_lat: float, new_lon: float):
 	current_lat = new_lat
 	current_lon = new_lon
+
 	var target_pos = _lat_lon_to_vector3(new_lat, new_lon, 1002.0)
-	
+	var distance = position.distance_to(target_pos)
+
+	# Dauer basierend auf fixer Geschwindigkeit berechnen
+	var duration = distance / movement_speed
+	if duration < 0.8:
+		duration = 0.8
+
+	print(">>> %s bewegt sich (Distanz: %.1f | Dauer: %.1f Tage)" % [entity_name, distance, duration])
+
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
-	
-	tween.tween_method(
-		func(pos):
-			position = pos.normalized() * 1002.0,
-		position,
-		target_pos,
-		duration
-	)
-	
+	tween.tween_property(self, "position", target_pos, duration)
 	tween.finished.connect(_ready_after_add)
 
 func _lat_lon_to_vector3(lat: float, lon: float, r: float) -> Vector3:
