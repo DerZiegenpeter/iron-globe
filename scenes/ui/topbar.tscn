@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dlb2ngvdiuv74"]
+
+[ext_resource type="Script" uid="uid://eh7evmawwiwf" path="res://scripts/TopBar.gd" id="1_gqrek"]
+
+[node name="Topbar" type="Control" unique_id=1001731856]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_gqrek")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1506632266]
+layout_mode = 0
+offset_right = 685.0
+offset_bottom = 31.0
+
+[node name="NationContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=664943735]
+layout_mode = 2
+
+[node name="NationLabel" type="Label" parent="HBoxContainer/NationContainer" unique_id=995361898]
+layout_mode = 2
+
+[node name="Tabs" type="HBoxContainer" parent="HBoxContainer" unique_id=2093441589]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="GovernmentButton" type="Button" parent="HBoxContainer/Tabs" unique_id=742572887]
+layout_mode = 2
+text = "Government"
+
+[node name="PoliticsButton" type="Button" parent="HBoxContainer/Tabs" unique_id=1761881747]
+layout_mode = 2
+text = "Politics"
+
+[node name="PopulationButton" type="Button" parent="HBoxContainer/Tabs" unique_id=1664924214]
+layout_mode = 2
+text = "Population"
+
+[node name="DiplomacyButton" type="Button" parent="HBoxContainer/Tabs" unique_id=418390591]
+layout_mode = 2
+text = "Diplomacy"
+
+[node name="IndustryButton" type="Button" parent="HBoxContainer/Tabs" unique_id=586736448]
+layout_mode = 2
+text = "Industry"
+
+[node name="EconomyButton" type="Button" parent="HBoxContainer/Tabs" unique_id=233675393]
+layout_mode = 2
+text = "Economy"
+
+[node name="MilitaryButton" type="Button" parent="HBoxContainer/Tabs" unique_id=570219213]
+layout_mode = 2
+text = "Military"
+
+[node name="ResearchButton" type="Button" parent="HBoxContainer/Tabs" unique_id=878827769]
+layout_mode = 2
+text = "Research"

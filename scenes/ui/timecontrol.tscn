@@ -4,41 +4,37 @@
 
 [node name="TimeControl" type="Control" unique_id=865041256]
 layout_mode = 3
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-grow_horizontal = 2
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
 script = ExtResource("1_6brcj")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1413730995]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -108.0
-offset_right = 108.0
+layout_direction = 3
+layout_mode = 0
+offset_right = 216.0
 offset_bottom = 40.0
-grow_horizontal = 2
 
-[node name="DateLabel" type="Label" parent="HBoxContainer" unique_id=1485496415]
+[node name="Speed10Button" type="Button" parent="HBoxContainer" unique_id=1542863030]
 layout_mode = 2
-
-[node name="PauseButton" type="Button" parent="HBoxContainer" unique_id=179962454]
-layout_mode = 2
-text = "⏸ Pause"
-
-[node name="Speed1Button" type="Button" parent="HBoxContainer" unique_id=513489716]
-layout_mode = 2
-text = "1x"
-
-[node name="Speed2Button" type="Button" parent="HBoxContainer" unique_id=1641839365]
-layout_mode = 2
-text = "2x"
+text = "10x"
 
 [node name="Speed5Button" type="Button" parent="HBoxContainer" unique_id=985598239]
 layout_mode = 2
 text = "5x"
 
-[node name="Speed10Button" type="Button" parent="HBoxContainer" unique_id=1542863030]
+[node name="Speed2Button" type="Button" parent="HBoxContainer" unique_id=1641839365]
 layout_mode = 2
-text = "10x"
+text = "2x"
+
+[node name="Speed1Button" type="Button" parent="HBoxContainer" unique_id=513489716]
+layout_mode = 2
+text = "1x"
+
+[node name="PauseButton" type="Button" parent="HBoxContainer" unique_id=179962454]
+layout_mode = 2
+text = "⏸ Pause"
+
+[node name="DateLabel" type="Label" parent="HBoxContainer" unique_id=1485496415]
+layout_mode = 2
