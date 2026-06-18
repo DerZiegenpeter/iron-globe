@@ -7,6 +7,10 @@ var selected_province: Dictionary = {}
 
 @onready var pop_manager: Node = get_node_or_null("/root/PopManager")
 
+# === Signale für das UI ===
+signal state_selected(info: Dictionary)
+signal unit_selected(entity: GroundEntity)
+
 func _ready():
 	load_nations()
 	load_ownership()
@@ -47,10 +51,11 @@ func load_ownership():
 	for entry in json.data.get("ownership", []):
 		var pid = entry.get("id", 0) as int
 		if pid <= 0: continue
-		var owner = str(entry.get("owner", "NEU")).to_upper()
-		var controller = str(entry.get("controller", owner)).to_upper()
+		
+		var owner_code = str(entry.get("owner", "NEU")).to_upper()
+		var controller = str(entry.get("controller", owner_code)).to_upper()
 
-		province_to_owner[pid] = owner
+		province_to_owner[pid] = owner_code
 		province_to_controller[pid] = controller
 
 	print("✅ Ownership geladen:", province_to_owner.size(), "Provinzen")
@@ -77,7 +82,6 @@ func get_province_info(province_id: int, region_name: String = "") -> Dictionary
 	var controller_nation = nations.get(controller_code, {})
 	var controller_name = controller_nation.get("name", controller_code)
 
-	# Pops
 	var population = 0
 	var pop_summary = "Keine Pops geladen"
 
@@ -104,6 +108,10 @@ func select_province(province_id: int, province_name: String, info: Dictionary =
 		"info": info
 	}
 
+	# Signal für das UI senden
+	state_selected.emit(info)
+
+	# Console-Ausgabe (bleibt erstmal drin)
 	print("═══════════════════════════════════════")
 	print("=== STATE AUSGEWÄHLT ===")
 	print("Name: %s (ID: %d)" % [province_name, province_id])
@@ -120,3 +128,8 @@ func deselect_province():
 		return
 	print("=== STATE DESELECTED: %s (ID: %d) ===" % [selected_province.get("name", ""), selected_province.get("id", 0)])
 	selected_province.clear()
+
+# Optional: Methode zum Auswählen einer Einheit (wird später vom InputManager genutzt)
+func select_unit(entity: GroundEntity):
+	if entity:
+		unit_selected.emit(entity)
