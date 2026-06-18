@@ -13,7 +13,7 @@ var speed: int = 0
 var paused: bool = true
 
 var _time_accumulator: float = 0.0
-var _seconds_per_day: float = 0.15   # Etwas schneller für Tests
+var _seconds_per_day: float = 0.15
 
 func _ready():
 	print("TimeManager _ready() aufgerufen")
@@ -21,7 +21,6 @@ func _ready():
 	speed = 0
 
 func _process(delta: float):
-	# Debug-Ausgabe jede Sekunde
 	if Engine.get_frames_drawn() % 60 == 0:
 		print("TimeManager _process läuft | speed =", speed, " | paused =", paused)
 
