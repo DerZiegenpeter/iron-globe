@@ -7,6 +7,10 @@ extends Control
 func _ready():
 	hide()
 	
+	# Schriftgröße des RichTextLabels per Code setzen (sicherer Fallback)
+	if info_label:
+		info_label.add_theme_font_size_override("normal_font_size", 24)
+	
 	var game_data = get_node_or_null("/root/GameData")
 	if game_data:
 		game_data.state_selected.connect(_on_state_selected)
