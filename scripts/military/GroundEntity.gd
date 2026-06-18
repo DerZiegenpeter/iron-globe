@@ -13,11 +13,13 @@ var current_lat: float = 0.0
 var current_lon: float = 0.0
 var is_selected: bool = false
 
-var movement_speed: float = 80.0   # Einheiten pro Simulations-Tag
+var movement_speed: float = 80.0
 
 var _move_tween: Tween = null
 var _target_lat: float = 0.0
 var _target_lon: float = 0.0
+var _start_dir: Vector3
+var _end_dir: Vector3
 
 
 func setup(data: Dictionary, type: String = "division"):
@@ -50,17 +52,17 @@ func select():
 func deselect():
 	is_selected = false
 	if sprite:
-		sprite.modulate = Color.WHITE)
+		sprite.modulate = Color.WHITE
 
 
 func move_to(new_lat: float, new_lon: float):
 	var radius := 1002.0
 	var target_pos := _lat_lon_to_vector3(new_lat, new_lon, radius)
 
-	var start_dir := position.normalized()
-	var end_dir := target_pos.normalized()
+	_start_dir = position.normalized()
+	_end_dir = target_pos.normalized()
 
-	var dot := clampf(start_dir.dot(end_dir), -1.0, 1.0)
+	var dot := clampf(_start_dir.dot(_end_dir), -1.0, 1.0)
 	var angle := acos(dot)
 	var arc_length := radius * angle
 
@@ -82,17 +84,14 @@ func move_to(new_lat: float, new_lon: float):
 	_move_tween.set_trans(Tween.TRANS_SINE)
 	_move_tween.set_ease(Tween.EASE_IN_OUT)
 
-	# === KORRIGIERTE VERSION mit Lambda (stabil) ===
-	_move_tween.tween_method(
-		func(progress: float):
-			_update_position_on_sphere(start_dir, end_dir, progress),
-		0.0, 1.0, duration
-	)
-
+	_move_tween.tween_method(_update_position_on_sphere, 0.0, 1.0, duration)
 	_move_tween.finished.connect(_on_movement_finished)
 
 
-func _update_position_on_sphere(start_dir: Vector3, end_dir: Vector3, progress: float):
+func _update_position_on_sphere(progress: float):
+	var start_dir := _start_dir
+	var end_dir := _end_dir
+
 	if start_dir.is_equal_approx(end_dir):
 		position = start_dir * 1002.0
 		return
@@ -119,8 +118,4 @@ func _on_movement_finished():
 func _lat_lon_to_vector3(lat: float, lon: float, r: float) -> Vector3:
 	var lat_rad = deg_to_rad(lat)
 	var lon_rad = deg_to_rad(lon)
-	return Vector3(
-		r * cos(lat_rad) * sin(lon_rad),
-		r * sin(lat_rad),
-		r * cos(lat_rad) * cos(lon_rad)
-	)
+	return Vector3(r * cos(lat_rad) * sin(lon_rad), r * sin(lat_rad), r * cos(lat_rad) * cos(lon_rad))

@@ -35,13 +35,12 @@ func _unhandled_input(event):
 
 	elif button == MOUSE_BUTTON_RIGHT:
 		if selected_entity == null:
-			return  # Kein Befehl ohne Auswahl
+			return
 
 		var target_world_pos: Vector3
 		if result:
 			target_world_pos = result.position
 		else:
-			# Fallback: mathematischer Sphere-Intersect (wie in ClickHandler)
 			var hit_point = _intersect_ray_sphere(from, ray_dir, Vector3.ZERO, 1000.0)
 			if hit_point == Vector3.INF:
 				return
@@ -72,8 +71,6 @@ func _issue_move_order(world_pos: Vector3):
 
 	selected_entity.move_to(new_lat, new_lon)
 
-
-# ====================== HELPER (aus ClickHandler übernommen) ======================
 
 func _intersect_ray_sphere(ray_origin: Vector3, ray_dir: Vector3, sphere_center: Vector3, sphere_radius: float) -> Vector3:
 	var oc = ray_origin - sphere_center

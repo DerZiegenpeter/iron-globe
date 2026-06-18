@@ -1,5 +1,4 @@
 extends Node3D
-class_name GroundEntity
 
 @export var entity_id: String = ""
 @export var entity_name: String = ""
@@ -50,7 +49,7 @@ func select():
 func deselect():
 	is_selected = false
 	if sprite:
-		sprite.modulate = Color.WHITE)
+		sprite.modulate = Color.WHITE
 
 
 func move_to(new_lat: float, new_lon: float):
