@@ -7,6 +7,9 @@ extends Node3D
 
 @onready var polygons_container: Node3D = get_node("../Polygons")
 
+# WICHTIG: Wird von ClickHandler verwendet für Point-in-Polygon Tests
+var region_polygons: Array[Dictionary] = []
+
 func _ready():
 	load_regions()
 
@@ -22,7 +25,9 @@ func load_regions():
 	file.close()
 	
 	var features = json.data.get("features", [])
-	print("Lade ", features.size(), " States...")
+	print("Lade ", features.size(), " States/Regionen...")
+
+	region_polygons.clear()
 
 	for idx in features.size():
 		if idx >= max_features: break
@@ -31,6 +36,12 @@ func load_regions():
 		var rings = _extract_rings(geometry)
 		if rings.is_empty(): continue
 
+		# Properties extrahieren (falls vorhanden im GeoJSON)
+		var props = feature.get("properties", {})
+		var region_name = str(props.get("name", props.get("NAME", props.get("admin", "State_%04d" % (idx + 1)))))
+		var region_id = props.get("id", idx + 1)
+
+		# === VISUELLE BORDER (glowing lines) ===
 		var border_node = MeshInstance3D.new()
 		border_node.name = "Border_%04d" % idx
 		polygons_container.add_child(border_node)
@@ -52,7 +63,7 @@ func load_regions():
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 		border_node.material_override = mat
 
-		# === LAND KOLLISION (StaticBody + CollisionShape) ===
+		# === LAND KOLLISION (StaticBody + CollisionShape) - für zukünftige Physik / optional ===
 		var static_body = StaticBody3D.new()
 		border_node.add_child(static_body)
 
@@ -66,7 +77,16 @@ func load_regions():
 		static_body.collision_layer = 2
 		static_body.collision_mask = 2
 
-	print("✅ ", features.size(), " States mit Kollision geladen.")
+		# === DATEN FÜR CLICKHANDLER SPEICHERN ===
+		region_polygons.append({
+			"index": idx,
+			"id": region_id,
+			"name": region_name,
+			"rings": rings,
+			"properties": props
+		})
+
+	print("✅ ", region_polygons.size(), " States/Regionen mit Daten + Kollision geladen.")
 
 # Hilfsfunktionen
 func _extract_rings(geometry: Dictionary) -> Array:
