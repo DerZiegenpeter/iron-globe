@@ -15,6 +15,10 @@ signal tab_selected(tab_name: String)
 @onready var btn_military: Button   = $HBoxContainer/Tabs/MilitaryButton
 @onready var btn_research: Button   = $HBoxContainer/Tabs/ResearchButton
 
+# Population Window (wird bei Bedarf instanziert)
+var population_window_scene: PackedScene = preload("res://scenes/ui/population_window.tscn")
+var population_window: PopulationWindow = null
+
 
 func _ready():
 	_connect_buttons()
@@ -35,6 +39,22 @@ func _connect_buttons():
 func _on_tab_pressed(tab_name: String):
 	tab_selected.emit(tab_name)
 	print("TopBar → Tab geöffnet: ", tab_name)
+
+	match tab_name:
+		"Population":
+			_open_population_window()
+		"Military":
+			print("→ Military Fenster kommt später")
+		_:
+			print("→ Fenster für '", tab_name, "' wird später implementiert.")
+
+
+func _open_population_window():
+	if not population_window:
+		population_window = population_window_scene.instantiate()
+		get_tree().current_scene.add_child(population_window)
+
+	population_window.open_window()
 
 
 func _update_nation_info():

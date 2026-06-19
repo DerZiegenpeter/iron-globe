@@ -20,6 +20,7 @@ layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer/Header" unique_id=153306506]
 layout_mode = 2
+text = "Population"
 
 [node name="TotalPopulationLabel" type="Label" parent="VBoxContainer/Header" unique_id=2106041906]
 layout_mode = 2
