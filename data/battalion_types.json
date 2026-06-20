@@ -10,15 +10,15 @@
 	"supply_consumption": 0.85,
 	"category": "infantry",
 	"equipment_requirements": {
-	  "rifles_bolt_action": 720,
+	  "bolt_action_rifles": 720,
 	  "light_machine_guns": 42,
 	  "light_mortars": 6,
-	  "anti_tank_launchers_reusable": 9,
+	  "anti_tank_launchers": 9,
 	  "hand_grenades": 1200
 	}
   },
   "motorized_infantry": {
-	"display_name": "Motorized Infantry",
+	"display_name": "Motorized Infantry Battalion",
 	"manpower": 820,
 	"soft_attack": 12,
 	"hard_attack": 5,
@@ -28,51 +28,156 @@
 	"supply_consumption": 1.25,
 	"category": "motorized",
 	"equipment_requirements": {
-	  "rifles_bolt_action": 680,
+	  "bolt_action_rifles": 680,
 	  "light_machine_guns": 48,
 	  "light_mortars": 5,
-	  "anti_tank_launchers_reusable": 12,
-	  "half_tracks_apc": 24,
-	  "light_trucks": 10
+	  "anti_tank_launchers": 12,
+	  "infantry_fighting_vehicle": 18,
+	  "trucks": 12
 	}
   },
-  "tank_bn": {
-	"display_name": "Tank Battalion",
+  "mechanized_infantry": {
+	"display_name": "Mechanized Infantry Battalion",
+	"manpower": 780,
+	"soft_attack": 13,
+	"hard_attack": 7,
+	"defense": 12,
+	"breakthrough": 6,
+	"combat_width": 2,
+	"supply_consumption": 1.55,
+	"category": "mechanized",
+	"equipment_requirements": {
+	  "assault_rifles": 620,
+	  "light_machine_guns": 52,
+	  "light_mortars": 4,
+	  "anti_tank_launchers": 14,
+	  "infantry_fighting_vehicle": 36
+	}
+  },
+  "mountain_infantry": {
+	"display_name": "Mountain Infantry Battalion",
+	"manpower": 800,
+	"soft_attack": 10,
+	"hard_attack": 3,
+	"defense": 14,
+	"breakthrough": 4,
+	"combat_width": 2,
+	"supply_consumption": 0.9,
+	"category": "infantry",
+	"equipment_requirements": {
+	  "bolt_action_rifles": 700,
+	  "light_machine_guns": 38,
+	  "light_mortars": 8,
+	  "anti_tank_launchers": 10
+	}
+  },
+  "airborne_infantry": {
+	"display_name": "Airborne Infantry Battalion",
+	"manpower": 650,
+	"soft_attack": 12,
+	"hard_attack": 5,
+	"defense": 11,
+	"breakthrough": 6,
+	"combat_width": 2,
+	"supply_consumption": 0.95,
+	"category": "infantry",
+	"equipment_requirements": {
+	  "assault_rifles": 580,
+	  "light_machine_guns": 45,
+	  "light_mortars": 6,
+	  "anti_tank_launchers": 12
+	}
+  },
+
+  "light_tank_battalion": {
+	"display_name": "Light Tank Battalion",
+	"manpower": 420,
+	"soft_attack": 14,
+	"hard_attack": 18,
+	"defense": 8,
+	"breakthrough": 16,
+	"combat_width": 2,
+	"supply_consumption": 2.2,
+	"category": "armor",
+	"equipment_requirements": {
+	  "light_tanks": 48,
+	  "trucks": 8
+	}
+  },
+  "medium_tank_battalion": {
+	"display_name": "Medium Tank Battalion",
 	"manpower": 480,
 	"soft_attack": 16,
-	"hard_attack": 28,
+	"hard_attack": 26,
 	"defense": 10,
 	"breakthrough": 24,
 	"combat_width": 2,
-	"supply_consumption": 2.9,
+	"supply_consumption": 2.8,
 	"category": "armor",
 	"equipment_requirements": {
-	  "medium_tanks": 32,
-	  "light_tanks_tankettes": 12,
-	  "assault_guns": 8,
-	  "rifles_bolt_action": 280,
-	  "half_tracks_apc": 10
+	  "medium_tanks": 40
 	}
   },
-  "heavy_tank_bn": {
+  "heavy_tank_battalion": {
 	"display_name": "Heavy Tank Battalion",
 	"manpower": 420,
-	"soft_attack": 12,
-	"hard_attack": 38,
+	"soft_attack": 11,
+	"hard_attack": 36,
 	"defense": 13,
-	"breakthrough": 22,
+	"breakthrough": 20,
 	"combat_width": 2,
-	"supply_consumption": 3.4,
+	"supply_consumption": 3.3,
 	"category": "armor",
 	"equipment_requirements": {
-	  "heavy_tanks": 28,
-	  "medium_tanks": 8,
-	  "rifles_bolt_action": 220,
-	  "half_tracks_apc": 6
+	  "heavy_tanks": 28
 	}
   },
-  "artillery": {
-	"display_name": "Artillery Battalion",
+  "assault_gun_battalion": {
+	"display_name": "Assault Gun Battalion",
+	"manpower": 460,
+	"soft_attack": 18,
+	"hard_attack": 22,
+	"defense": 11,
+	"breakthrough": 18,
+	"combat_width": 2,
+	"supply_consumption": 2.6,
+	"category": "armor",
+	"equipment_requirements": {
+	  "assault_guns": 36
+	}
+  },
+  "tank_destroyer_battalion": {
+	"display_name": "Tank Destroyer Battalion",
+	"manpower": 440,
+	"soft_attack": 8,
+	"hard_attack": 32,
+	"defense": 9,
+	"breakthrough": 14,
+	"combat_width": 2,
+	"supply_consumption": 2.4,
+	"category": "armor",
+	"equipment_requirements": {
+	  "tank_destroyers": 32
+	}
+  },
+
+  "light_field_artillery_battalion": {
+	"display_name": "Light Field Artillery Battalion",
+	"manpower": 500,
+	"soft_attack": 22,
+	"hard_attack": 3,
+	"defense": 7,
+	"breakthrough": 2,
+	"combat_width": 3,
+	"supply_consumption": 1.35,
+	"category": "artillery",
+	"equipment_requirements": {
+	  "light_artillery": 18,
+	  "trucks": 14
+	}
+  },
+  "field_artillery_battalion": {
+	"display_name": "Field Artillery Battalion",
 	"manpower": 520,
 	"soft_attack": 26,
 	"hard_attack": 4,
@@ -82,14 +187,59 @@
 	"supply_consumption": 1.5,
 	"category": "artillery",
 	"equipment_requirements": {
-	  "light_artillery_75_105mm": 16,
-	  "medium_artillery_105_150mm": 4,
-	  "rifles_bolt_action": 320,
-	  "artillery_tractors_prime_movers": 18
+	  "medium_artillery": 16,
+	  "trucks": 16
 	}
   },
-  "anti_tank": {
-	"display_name": "Anti-Tank Battalion",
+  "heavy_artillery_battalion": {
+	"display_name": "Heavy Artillery Battalion",
+	"manpower": 480,
+	"soft_attack": 32,
+	"hard_attack": 6,
+	"defense": 6,
+	"breakthrough": 2,
+	"combat_width": 3,
+	"supply_consumption": 1.9,
+	"category": "artillery",
+	"equipment_requirements": {
+	  "heavy_artillery": 12,
+	  "rocket_artillery": 4,
+	  "trucks": 14
+	}
+  },
+  "rocket_artillery_battalion": {
+	"display_name": "Rocket Artillery Battalion",
+	"manpower": 420,
+	"soft_attack": 38,
+	"hard_attack": 5,
+	"defense": 5,
+	"breakthrough": 3,
+	"combat_width": 3,
+	"supply_consumption": 2.1,
+	"category": "artillery",
+	"equipment_requirements": {
+	  "rocket_artillery": 18,
+	  "trucks": 12
+	}
+  },
+  "self_propelled_artillery_battalion": {
+	"display_name": "Self-Propelled Artillery Battalion",
+	"manpower": 460,
+	"soft_attack": 28,
+	"hard_attack": 5,
+	"defense": 8,
+	"breakthrough": 4,
+	"combat_width": 3,
+	"supply_consumption": 2.3,
+	"category": "artillery",
+	"equipment_requirements": {
+	  "self_propelled_artillery": 16,
+	  "infantry_fighting_vehicle": 6
+	}
+  },
+
+  "anti_tank_battalion": {
+	"display_name": "Anti-Tank Battalion (Towed)",
 	"manpower": 420,
 	"soft_attack": 5,
 	"hard_attack": 22,
@@ -99,13 +249,94 @@
 	"supply_consumption": 0.95,
 	"category": "anti_tank",
 	"equipment_requirements": {
-	  "medium_at_guns_towed": 18,
-	  "light_at_guns_towed": 8,
-	  "anti_tank_launchers_reusable": 14,
-	  "rifles_bolt_action": 280
+	  "medium_at_guns": 20,
+	  "light_at_guns": 10,
+	  "anti_tank_launchers": 16
 	}
   },
-  "engineer": {
+  "self_propelled_anti_tank_battalion": {
+	"display_name": "Self-Propelled Anti-Tank Battalion",
+	"manpower": 440,
+	"soft_attack": 8,
+	"hard_attack": 32,
+	"defense": 9,
+	"breakthrough": 14,
+	"combat_width": 2,
+	"supply_consumption": 2.4,
+	"category": "armor",
+	"equipment_requirements": {
+	  "tank_destroyers": 28,
+	  "self_propelled_at_guns": 6
+	}
+  },
+
+  "anti_air_battalion": {
+	"display_name": "Anti-Aircraft Battalion (Towed)",
+	"manpower": 380,
+	"soft_attack": 4,
+	"hard_attack": 8,
+	"defense": 5,
+	"breakthrough": 1,
+	"combat_width": 1,
+	"supply_consumption": 1.1,
+	"category": "anti_air",
+	"equipment_requirements": {
+	  "light_aa_guns": 16,
+	  "medium_aa_guns": 8
+	}
+  },
+  "self_propelled_anti_air_battalion": {
+	"display_name": "Self-Propelled Anti-Aircraft Battalion",
+	"manpower": 400,
+	"soft_attack": 5,
+	"hard_attack": 10,
+	"defense": 6,
+	"breakthrough": 2,
+	"combat_width": 1,
+	"supply_consumption": 1.4,
+	"category": "anti_air",
+	"equipment_requirements": {
+	  "self_propelled_aa_guns": 12,
+	  "infantry_fighting_vehicle": 6
+	}
+  },
+
+  "reconnaissance_battalion": {
+	"display_name": "Reconnaissance Battalion (Dismounted)",
+	"manpower": 450,
+	"soft_attack": 7,
+	"hard_attack": 5,
+	"defense": 8,
+	"breakthrough": 8,
+	"combat_width": 1,
+	"supply_consumption": 1.15,
+	"category": "recon",
+	"equipment_requirements": {
+	  "bolt_action_rifles": 340,
+	  "light_machine_guns": 22,
+	  "anti_tank_launchers": 8,
+	  "optical_equipment": 120
+	}
+  },
+  "armored_reconnaissance_battalion": {
+	"display_name": "Armored Reconnaissance Battalion",
+	"manpower": 420,
+	"soft_attack": 8,
+	"hard_attack": 7,
+	"defense": 9,
+	"breakthrough": 10,
+	"combat_width": 1,
+	"supply_consumption": 1.35,
+	"category": "recon",
+	"equipment_requirements": {
+	  "reconnaissance_vehicle": 24,
+	  "infantry_fighting_vehicle": 10,
+	  "anti_tank_launchers": 8,
+	  "optical_equipment": 100
+	}
+  },
+
+  "engineer_battalion": {
 	"display_name": "Engineer Battalion",
 	"manpower": 620,
 	"soft_attack": 6,
@@ -116,28 +347,43 @@
 	"supply_consumption": 0.9,
 	"category": "engineer",
 	"equipment_requirements": {
-	  "rifles_bolt_action": 420,
+	  "bolt_action_rifles": 420,
 	  "light_machine_guns": 28,
-	  "engineering_vehicles": 6,
-	  "bridging_equipment": 4
+	  "engineering_vehicles": 8,
+	  "bridging_equipment": 6,
+	  "mine_clearing_equipment": 4
 	}
   },
-  "reconnaissance": {
-	"display_name": "Reconnaissance Battalion",
-	"manpower": 450,
-	"soft_attack": 7,
-	"hard_attack": 5,
-	"defense": 8,
-	"breakthrough": 8,
+  "maintenance_battalion": {
+	"display_name": "Maintenance Battalion",
+	"manpower": 380,
+	"soft_attack": 2,
+	"hard_attack": 2,
+	"defense": 4,
+	"breakthrough": 2,
 	"combat_width": 1,
-	"supply_consumption": 1.15,
-	"category": "recon",
+	"supply_consumption": 0.7,
+	"category": "support",
 	"equipment_requirements": {
-	  "rifles_bolt_action": 340,
-	  "light_machine_guns": 22,
-	  "wheeled_armored_cars": 18,
-	  "half_tracks_apc": 8,
-	  "anti_tank_launchers_reusable": 6
+	  "trucks": 25,
+	  "engineering_vehicles": 6,
+	  "signal_equipment": 80
+	}
+  },
+  "signals_battalion": {
+	"display_name": "Signals Battalion",
+	"manpower": 320,
+	"soft_attack": 1,
+	"hard_attack": 1,
+	"defense": 3,
+	"breakthrough": 1,
+	"combat_width": 1,
+	"supply_consumption": 0.5,
+	"category": "support",
+	"equipment_requirements": {
+	  "signal_equipment": 200,
+	  "trucks": 18,
+	  "optical_equipment": 60
 	}
   }
 }

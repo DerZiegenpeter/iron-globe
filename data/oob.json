@@ -12,7 +12,7 @@
 		"id": "army_group_center",
 		"name": "Heeresgruppe Mitte",
 		"position": { "lat": 53.5, "lon": 25.0 },
-		"children": ["4th_army"]
+		"children": ["4th_army", "3rd_panzer_army"]
 	  }
 	],
 
@@ -22,6 +22,12 @@
 		"name": "4. Armee",
 		"position": { "lat": 53.0, "lon": 24.5 },
 		"children": ["xii_corps"]
+	  },
+	  {
+		"id": "3rd_panzer_army",
+		"name": "3. Panzer-Armee",
+		"position": { "lat": 54.2, "lon": 25.8 },
+		"children": ["xxxix_panzer_corps"]
 	  }
 	],
 
@@ -30,7 +36,13 @@
 		"id": "xii_corps",
 		"name": "XII. Armeekorps",
 		"position": { "lat": 52.8, "lon": 24.0 },
-		"children": ["ger_div_31", "ger_div_34", "ger_brig_1"]
+		"children": ["ger_div_31", "ger_div_34", "ger_div_45"]
+	  },
+	  {
+		"id": "xxxix_panzer_corps",
+		"name": "XXXIX. Panzerkorps",
+		"position": { "lat": 54.0, "lon": 25.5 },
+		"children": ["ger_7th_panzer_div", "ger_20th_panzer_div"]
 	  }
 	],
 
@@ -43,11 +55,11 @@
 		"position": { "lat": 52.6, "lon": 23.8 },
 		"composition": [
 		  { "type": "infantry", "amount": 9 },
-		  { "type": "artillery", "amount": 3 },
-		  { "type": "anti_tank", "amount": 1 },
-		  { "type": "engineer", "amount": 1 }
+		  { "type": "field_artillery_battalion", "amount": 3 },
+		  { "type": "anti_tank_battalion", "amount": 1 },
+		  { "type": "engineer_battalion", "amount": 1 }
 		],
-		"experience": 45
+		"experience": 52
 	  },
 	  {
 		"id": "ger_div_34",
@@ -57,26 +69,54 @@
 		"position": { "lat": 52.9, "lon": 24.3 },
 		"composition": [
 		  { "type": "infantry", "amount": 8 },
-		  { "type": "artillery", "amount": 4 },
-		  { "type": "reconnaissance", "amount": 1 }
+		  { "type": "field_artillery_battalion", "amount": 3 },
+		  { "type": "reconnaissance_battalion", "amount": 1 },
+		  { "type": "anti_tank_battalion", "amount": 1 }
 		],
-		"experience": 38
-	  }
-	],
-
-	"brigades": [
+		"experience": 47
+	  },
 	  {
-		"id": "ger_brig_1",
-		"name": "1. Motorisierte Brigade",
+		"id": "ger_div_45",
+		"name": "45. Infanterie-Division",
+		"type": "infantry",
+		"nation_code": "GER",
+		"position": { "lat": 53.1, "lon": 23.5 },
+		"composition": [
+		  { "type": "infantry", "amount": 9 },
+		  { "type": "light_field_artillery_battalion", "amount": 2 },
+		  { "type": "field_artillery_battalion", "amount": 2 },
+		  { "type": "engineer_battalion", "amount": 1 }
+		],
+		"experience": 41
+	  },
+	  {
+		"id": "ger_7th_panzer_div",
+		"name": "7. Panzer-Division",
 		"type": "motorized",
 		"nation_code": "GER",
-		"position": { "lat": 52.7, "lon": 23.5 },
+		"position": { "lat": 54.1, "lon": 25.6 },
 		"composition": [
-		  { "type": "motorized_infantry", "amount": 4 },
-		  { "type": "artillery", "amount": 1 },
-		  { "type": "medium_tank", "amount": 1 }
+		  { "type": "mechanized_infantry", "amount": 4 },
+		  { "type": "medium_tank_battalion", "amount": 2 },
+		  { "type": "assault_gun_battalion", "amount": 1 },
+		  { "type": "self_propelled_artillery_battalion", "amount": 1 },
+		  { "type": "anti_tank_battalion", "amount": 1 }
 		],
-		"experience": 52
+		"experience": 58
+	  },
+	  {
+		"id": "ger_20th_panzer_div",
+		"name": "20. Panzer-Division",
+		"type": "motorized",
+		"nation_code": "GER",
+		"position": { "lat": 53.9, "lon": 25.2 },
+		"composition": [
+		  { "type": "motorized_infantry", "amount": 5 },
+		  { "type": "medium_tank_battalion", "amount": 2 },
+		  { "type": "tank_destroyer_battalion", "amount": 1 },
+		  { "type": "field_artillery_battalion", "amount": 2 }
+		],
+		"experience": 49
 	  }
 	]
   },
@@ -140,9 +180,9 @@
 		"position": { "lat": 52.2, "lon": 17.5 },
 		"composition": [
 		  { "type": "infantry", "amount": 9 },
-		  { "type": "artillery", "amount": 3 }
+		  { "type": "field_artillery_battalion", "amount": 3 }
 		],
-		"experience": 35
+		"experience": 38
 	  },
 	  {
 		"id": "pol_div_17",
@@ -152,10 +192,10 @@
 		"position": { "lat": 52.5, "lon": 16.8 },
 		"composition": [
 		  { "type": "infantry", "amount": 8 },
-		  { "type": "artillery", "amount": 2 },
-		  { "type": "anti_tank", "amount": 1 }
+		  { "type": "field_artillery_battalion", "amount": 2 },
+		  { "type": "anti_tank_battalion", "amount": 1 }
 		],
-		"experience": 32
+		"experience": 35
 	  },
 	  {
 		"id": "pol_div_10",
@@ -165,9 +205,9 @@
 		"position": { "lat": 51.7, "lon": 19.8 },
 		"composition": [
 		  { "type": "infantry", "amount": 7 },
-		  { "type": "artillery", "amount": 4 }
+		  { "type": "field_artillery_battalion", "amount": 4 }
 		],
-		"experience": 40
+		"experience": 42
 	  },
 	  {
 		"id": "pol_div_6",
@@ -177,25 +217,27 @@
 		"position": { "lat": 50.2, "lon": 20.5 },
 		"composition": [
 		  { "type": "infantry", "amount": 9 },
-		  { "type": "artillery", "amount": 3 },
-		  { "type": "reconnaissance", "amount": 1 }
+		  { "type": "field_artillery_battalion", "amount": 3 },
+		  { "type": "reconnaissance_battalion", "amount": 1 }
 		],
-		"experience": 38
+		"experience": 40
 	  }
 	],
 
 	"brigades": [
 	  {
 		"id": "pol_brig_1",
-		"name": "1. Brygada Motorowa",
+		"name": "1. Brygada Pancerna",
 		"type": "motorized",
 		"nation_code": "POL",
 		"position": { "lat": 50.3, "lon": 19.8 },
 		"composition": [
 		  { "type": "motorized_infantry", "amount": 3 },
-		  { "type": "medium_tank", "amount": 1 }
+		  { "type": "medium_tank_battalion", "amount": 1 },
+		  { "type": "field_artillery_battalion", "amount": 1 },
+		  { "type": "anti_tank_battalion", "amount": 1 }
 		],
-		"experience": 28
+		"experience": 31
 	  }
 	]
   }

@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://equipmentbar"]
+
+[ext_resource type="Script" uid="uid://un111fm72pyf" path="res://scripts/EquipmentBar.gd" id="1"]
+
+[node name="EquipmentBar" type="Control" unique_id=1937908801]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+script = ExtResource("1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1414815367]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ManpowerLabel" type="Label" parent="HBoxContainer" unique_id=899900532]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Manpower: 2.480.000"
+
+[node name="Buttons" type="HBoxContainer" parent="HBoxContainer" unique_id=649924239]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1

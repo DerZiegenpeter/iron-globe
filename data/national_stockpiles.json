@@ -1,105 +1,81 @@
 {
   "GER": {
-	"rifles_bolt_action": 1250000,
-	"semi_automatic_rifles": 95000,
-	"assault_rifles_storm_rifles": 78000,
-	"submachine_guns": 165000,
-	"pistols": 285000,
-	"hand_grenades": 2450000,
-	"rifle_grenades": 185000,
-
+	"bolt_action_rifles": 1250000,
+	"assault_rifles": 95000,
 	"light_machine_guns": 72000,
-	"heavy_machine_guns": 38500,
+	"hand_grenades": 2450000,
+	"anti_tank_launchers": 32500,
 	"light_mortars": 11200,
-	"medium_mortars": 5800,
-	"heavy_mortars": 1850,
-	"anti_tank_launchers_reusable": 32500,
-	"recoilless_rifles": 7200,
 
-	"light_artillery_75_105mm": 16200,
-	"medium_artillery_105_150mm": 8100,
-	"heavy_artillery_150mm_plus": 2750,
-	"rocket_artillery_mrl": 1250,
-	"self_propelled_artillery": 580,
-
-	"light_tanks_tankettes": 980,
+	"light_tanks": 980,
 	"medium_tanks": 2450,
 	"heavy_tanks": 380,
 	"assault_guns": 1420,
-	"tank_destroyers_spat": 850,
+	"tank_destroyers": 850,
 
-	"light_trucks": 42500,
-	"medium_heavy_trucks": 19800,
-	"half_tracks_apc": 16200,
-	"wheeled_armored_cars": 3650,
-	"artillery_tractors_prime_movers": 5850,
-	"engineering_vehicles": 780,
-
-	"light_at_guns_towed": 12800,
-	"medium_at_guns_towed": 7200,
-	"heavy_at_guns_towed": 1650,
+	"self_propelled_artillery": 580,
 	"self_propelled_at_guns": 540,
-
-	"light_aa_guns_20_40mm": 11200,
-	"medium_heavy_aa_guns_75mm_plus": 5850,
 	"self_propelled_aa_guns": 320,
+
+	"infantry_fighting_vehicle": 16200,
+	"reconnaissance_vehicle": 3650,
+	"engineering_vehicles": 780,
+	"trucks": 42500,
+
+	"light_artillery": 16200,
+	"medium_artillery": 8100,
+	"heavy_artillery": 2750,
+	"rocket_artillery": 1250,
+
+	"light_at_guns": 12800,
+	"medium_at_guns": 7200,
+
+	"light_aa_guns": 11200,
+	"medium_aa_guns": 5850,
 
 	"bridging_equipment": 1080,
 	"mine_clearing_equipment": 580,
-	"field_fortification_construction_kits": 3650,
-	"signal_radio_equipment": 16200,
+	"signal_equipment": 16200,
 	"optical_equipment": 2850
   },
 
   "POL": {
-	"rifles_bolt_action": 325000,
-	"semi_automatic_rifles": 24500,
-	"assault_rifles_storm_rifles": 8500,
-	"submachine_guns": 38500,
-	"pistols": 72000,
-	"hand_grenades": 620000,
-	"rifle_grenades": 42000,
-
+	"bolt_action_rifles": 325000,
+	"assault_rifles": 18500,
 	"light_machine_guns": 16200,
-	"heavy_machine_guns": 7200,
+	"hand_grenades": 620000,
+	"anti_tank_launchers": 7200,
 	"light_mortars": 2850,
-	"medium_mortars": 1250,
-	"heavy_mortars": 380,
-	"anti_tank_launchers_reusable": 7200,
-	"recoilless_rifles": 1650,
 
-	"light_artillery_75_105mm": 3650,
-	"medium_artillery_105_150mm": 1650,
-	"heavy_artillery_150mm_plus": 520,
-	"rocket_artillery_mrl": 240,
-	"self_propelled_artillery": 85,
-
-	"light_tanks_tankettes": 280,
+	"light_tanks": 280,
 	"medium_tanks": 580,
 	"heavy_tanks": 75,
 	"assault_guns": 365,
-	"tank_destroyers_spat": 165,
+	"tank_destroyers": 165,
 
-	"light_trucks": 10800,
-	"medium_heavy_trucks": 4850,
-	"half_tracks_apc": 2150,
-	"wheeled_armored_cars": 820,
-	"artillery_tractors_prime_movers": 1250,
-	"engineering_vehicles": 165,
-
-	"light_at_guns_towed": 2850,
-	"medium_at_guns_towed": 1450,
-	"heavy_at_guns_towed": 320,
+	"self_propelled_artillery": 85,
 	"self_propelled_at_guns": 85,
-
-	"light_aa_guns_20_40mm": 2450,
-	"medium_heavy_aa_guns_75mm_plus": 1080,
 	"self_propelled_aa_guns": 55,
+
+	"infantry_fighting_vehicle": 2150,
+	"reconnaissance_vehicle": 820,
+	"engineering_vehicles": 165,
+	"trucks": 10800,
+
+	"light_artillery": 3650,
+	"medium_artillery": 1650,
+	"heavy_artillery": 520,
+	"rocket_artillery": 240,
+
+	"light_at_guns": 2850,
+	"medium_at_guns": 1450,
+
+	"light_aa_guns": 2450,
+	"medium_aa_guns": 1080,
 
 	"bridging_equipment": 280,
 	"mine_clearing_equipment": 125,
-	"field_fortification_construction_kits": 820,
-	"signal_radio_equipment": 3650,
+	"signal_equipment": 3650,
 	"optical_equipment": 620
   }
 }
