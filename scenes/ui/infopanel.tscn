@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cmbot2o5an717" path="res://ui/PieChart.gd" id="1_ia44j"]
 [ext_resource type="Script" uid="uid://iuvbicx42vn5" path="res://ui/InfoPanel.gd" id="1_qhvjt"]
 
-[node name="InfoPanel" type="Control"]
+[node name="InfoPanel" type="Control" unique_id=353123872]
 layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
@@ -11,36 +11,42 @@ anchor_bottom = 1.0
 offset_top = -280.0
 offset_right = 680.0
 grow_vertical = 0
+mouse_filter = 2
 script = ExtResource("1_qhvjt")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1749687462]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=428689701]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 
-[node name="InfoLabel" type="RichTextLabel" parent="VBoxContainer"]
+[node name="InfoLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=530202158]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+mouse_filter = 2
 
-[node name="DetailsButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Details"
+[node name="DetailsButton" type="Button" parent="VBoxContainer" unique_id=2025546161]
 visible = false
-
-[node name="PieChartContainer" type="Control" parent="VBoxContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 120)
+mouse_filter = 2
+text = "Details"
 
-[node name="PieChart" type="Control" parent="VBoxContainer/PieChartContainer"]
+[node name="PieChartContainer" type="Control" parent="VBoxContainer" unique_id=312077960]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PieChart" type="Control" parent="VBoxContainer/PieChartContainer" unique_id=60102342]
 anchors_preset = 0
 offset_right = 200.0
 offset_bottom = 120.0
+mouse_filter = 2
 script = ExtResource("1_ia44j")
 metadata/_custom_type_script = "uid://cmbot2o5an717"

@@ -5,7 +5,7 @@ signal tab_selected(tab_name: String)
 
 @onready var nation_label: Label = $HBoxContainer/NationContainer/NationLabel
 
-# Tabs (Population removed for clean build - will be re-added with proper window later)
+# Tabs
 @onready var btn_government: Button = $HBoxContainer/Tabs/GovernmentButton
 @onready var btn_politics: Button   = $HBoxContainer/Tabs/PoliticsButton
 @onready var btn_diplomacy: Button  = $HBoxContainer/Tabs/DiplomacyButton
@@ -43,9 +43,9 @@ func _on_tab_pressed(tab_name: String):
 
 func _update_nation_info():
 	if nation_label:
-		nation_label.text = "Germany • 1941"
+		nation_label.text = "Germany"        # ← Nur noch der Name, ohne Jahr
 
 
 func set_nation_info(nation_name: String, year: int = 0):
 	if nation_label:
-		nation_label.text = "%s • %d" % [nation_name, year] if year > 0 else nation_name
+		nation_label.text = "%s  •  %d" % [nation_name, year] if year > 0 else nation_name
