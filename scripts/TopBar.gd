@@ -52,7 +52,13 @@ func _on_tab_pressed(tab_name: String):
 func _open_population_window():
 	if not population_window:
 		population_window = population_window_scene.instantiate()
-		get_tree().current_scene.add_child(population_window)
+		# FIX: Zum CanvasLayer "UI" hinzufügen (Elternknoten von TopBar), nicht zum 3D-World!
+		# Das stellt sicher, dass das UI-Fenster korrekt über der 3D-Globe gerendert wird.
+		var ui_parent = get_parent()
+		if ui_parent:
+			ui_parent.add_child(population_window)
+		else:
+			get_tree().current_scene.add_child(population_window)
 
 	population_window.open_window()
 
