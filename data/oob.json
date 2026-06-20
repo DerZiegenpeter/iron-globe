@@ -79,5 +79,124 @@
 		"experience": 52
 	  }
 	]
+  },
+
+  "POL": {
+	"high_command": {
+	  "id": "pol_hq",
+	  "name": "Naczelne Dowództwo Sił Zbrojnych",
+	  "position": { "lat": 52.23, "lon": 21.01 },
+	  "children": ["army_poznan", "army_lodz", "army_krakow"]
+	},
+
+	"armies": [
+	  {
+		"id": "army_poznan",
+		"name": "Armia Poznań",
+		"position": { "lat": 52.4, "lon": 17.0 },
+		"children": ["pol_corps_poznan"]
+	  },
+	  {
+		"id": "army_lodz",
+		"name": "Armia Łódź",
+		"position": { "lat": 51.8, "lon": 19.5 },
+		"children": ["pol_corps_lodz"]
+	  },
+	  {
+		"id": "army_krakow",
+		"name": "Armia Kraków",
+		"position": { "lat": 50.0, "lon": 20.0 },
+		"children": ["pol_corps_krakow"]
+	  }
+	],
+
+	"corps": [
+	  {
+		"id": "pol_corps_poznan",
+		"name": "Korpus Poznań",
+		"position": { "lat": 52.3, "lon": 17.2 },
+		"children": ["pol_div_14", "pol_div_17"]
+	  },
+	  {
+		"id": "pol_corps_lodz",
+		"name": "Korpus Łódź",
+		"position": { "lat": 51.9, "lon": 19.3 },
+		"children": ["pol_div_10"]
+	  },
+	  {
+		"id": "pol_corps_krakow",
+		"name": "Korpus Kraków",
+		"position": { "lat": 50.1, "lon": 20.2 },
+		"children": ["pol_div_6", "pol_brig_1"]
+	  }
+	],
+
+	"divisions": [
+	  {
+		"id": "pol_div_14",
+		"name": "14. Dywizja Piechoty",
+		"type": "infantry",
+		"nation_code": "POL",
+		"position": { "lat": 52.2, "lon": 17.5 },
+		"composition": [
+		  { "type": "infantry", "amount": 9 },
+		  { "type": "artillery", "amount": 3 }
+		],
+		"experience": 35
+	  },
+	  {
+		"id": "pol_div_17",
+		"name": "17. Dywizja Piechoty",
+		"type": "infantry",
+		"nation_code": "POL",
+		"position": { "lat": 52.5, "lon": 16.8 },
+		"composition": [
+		  { "type": "infantry", "amount": 8 },
+		  { "type": "artillery", "amount": 2 },
+		  { "type": "anti_tank", "amount": 1 }
+		],
+		"experience": 32
+	  },
+	  {
+		"id": "pol_div_10",
+		"name": "10. Dywizja Piechoty",
+		"type": "infantry",
+		"nation_code": "POL",
+		"position": { "lat": 51.7, "lon": 19.8 },
+		"composition": [
+		  { "type": "infantry", "amount": 7 },
+		  { "type": "artillery", "amount": 4 }
+		],
+		"experience": 40
+	  },
+	  {
+		"id": "pol_div_6",
+		"name": "6. Dywizja Piechoty",
+		"type": "infantry",
+		"nation_code": "POL",
+		"position": { "lat": 50.2, "lon": 20.5 },
+		"composition": [
+		  { "type": "infantry", "amount": 9 },
+		  { "type": "artillery", "amount": 3 },
+		  { "type": "reconnaissance", "amount": 1 }
+		],
+		"experience": 38
+	  }
+	],
+
+	"brigades": [
+	  {
+		"id": "pol_brig_1",
+		"name": "1. Brygada Motorowa",
+		"type": "motorized",
+		"nation_code": "POL",
+		"position": { "lat": 50.3, "lon": 19.8 },
+		"composition": [
+		  { "type": "motorized_infantry", "amount": 3 },
+		  { "type": "medium_tank", "amount": 1 }
+		],
+		"experience": 28
+	  }
+	]
   }
 }
