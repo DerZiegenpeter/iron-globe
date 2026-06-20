@@ -5,19 +5,14 @@ signal tab_selected(tab_name: String)
 
 @onready var nation_label: Label = $HBoxContainer/NationContainer/NationLabel
 
-# Tabs
+# Tabs (Population removed for clean build - will be re-added with proper window later)
 @onready var btn_government: Button = $HBoxContainer/Tabs/GovernmentButton
 @onready var btn_politics: Button   = $HBoxContainer/Tabs/PoliticsButton
-@onready var btn_population: Button = $HBoxContainer/Tabs/PopulationButton
 @onready var btn_diplomacy: Button  = $HBoxContainer/Tabs/DiplomacyButton
 @onready var btn_industry: Button   = $HBoxContainer/Tabs/IndustryButton
 @onready var btn_economy: Button    = $HBoxContainer/Tabs/EconomyButton
 @onready var btn_military: Button   = $HBoxContainer/Tabs/MilitaryButton
 @onready var btn_research: Button   = $HBoxContainer/Tabs/ResearchButton
-
-# Population Window (wird bei Bedarf instanziert)
-var population_window_scene: PackedScene = preload("res://scenes/ui/population_window.tscn")
-var population_window: PopulationWindow = null
 
 
 func _ready():
@@ -28,7 +23,6 @@ func _ready():
 func _connect_buttons():
 	if btn_government: btn_government.pressed.connect(_on_tab_pressed.bind("Government"))
 	if btn_politics:   btn_politics.pressed.connect(_on_tab_pressed.bind("Politics"))
-	if btn_population: btn_population.pressed.connect(_on_tab_pressed.bind("Population"))
 	if btn_diplomacy:  btn_diplomacy.pressed.connect(_on_tab_pressed.bind("Diplomacy"))
 	if btn_industry:   btn_industry.pressed.connect(_on_tab_pressed.bind("Industry"))
 	if btn_economy:    btn_economy.pressed.connect(_on_tab_pressed.bind("Economy"))
@@ -41,33 +35,17 @@ func _on_tab_pressed(tab_name: String):
 	print("TopBar → Tab geöffnet: ", tab_name)
 
 	match tab_name:
-		"Population":
-			_open_population_window()
 		"Military":
 			print("→ Military Fenster kommt später")
 		_:
 			print("→ Fenster für '", tab_name, "' wird später implementiert.")
 
 
-func _open_population_window():
-	if not population_window:
-		population_window = population_window_scene.instantiate()
-		# FIX: Zum CanvasLayer "UI" hinzufügen (Elternknoten von TopBar), nicht zum 3D-World!
-		# Das stellt sicher, dass das UI-Fenster korrekt über der 3D-Globe gerendert wird.
-		var ui_parent = get_parent()
-		if ui_parent:
-			ui_parent.add_child(population_window)
-		else:
-			get_tree().current_scene.add_child(population_window)
-
-	population_window.open_window()
-
-
 func _update_nation_info():
 	if nation_label:
-		nation_label.text = "Germany  •  1941"
+		nation_label.text = "Germany • 1941"
 
 
 func set_nation_info(nation_name: String, year: int = 0):
 	if nation_label:
-		nation_label.text = "%s  •  %d" % [nation_name, year] if year > 0 else nation_name
+		nation_label.text = "%s • %d" % [nation_name, year] if year > 0 else nation_name
