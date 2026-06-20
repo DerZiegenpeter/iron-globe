@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://drx3y056l7bc1" path="res://scenes/ui/infopanel.tscn" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://78wp6isu28io" path="res://scenes/ui/timecontrol.tscn" id="5_lquwl"]
 [ext_resource type="PackedScene" uid="uid://dlb2ngvdiuv74" path="res://scenes/ui/topbar.tscn" id="6_272bh"]
+[ext_resource type="PackedScene" uid="uid://equipmentbar" path="res://scenes/ui/equipment_bar.tscn" id="7_272bh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
 albedo_color = Color(0, 0, 0, 1)
@@ -57,3 +58,5 @@ grow_horizontal = 2
 
 [node name="TimeControl" parent="UI" unique_id=865041256 instance=ExtResource("5_lquwl")]
 z_index = 10
+
+[node name="EquipmentBar" parent="UI" unique_id=1937908801 instance=ExtResource("7_272bh")]
