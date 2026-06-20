@@ -1,7 +1,7 @@
 {
   "pops": [
 	{
-	  "state_id": 1,
+	  "state_id": 48,
 	  "profession": "worker",
 	  "ethnicity": "german",
 	  "culture": "german",
@@ -9,7 +9,7 @@
 	  "size": 980000
 	},
 	{
-	  "state_id": 1,
+	  "state_id": 48,
 	  "profession": "farmer",
 	  "ethnicity": "german",
 	  "culture": "german",
@@ -17,7 +17,7 @@
 	  "size": 620000
 	},
 	{
-	  "state_id": 1,
+	  "state_id": 48,
 	  "profession": "intellectual",
 	  "ethnicity": "german",
 	  "culture": "german",
