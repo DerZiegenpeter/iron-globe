@@ -1,42 +1,177 @@
 {
-  "rifle": {
-	"display_name": "Sturmgewehr",
-	"category": "small_arms",
-	"weight_per_unit": 4.2
+  "rifles_bolt_action": {
+	"display_name": "Rifles (Bolt-Action)",
+	"category": "Infantry Weapons"
   },
-  "machine_gun": {
-	"display_name": "Maschinengewehr",
-	"category": "small_arms",
-	"weight_per_unit": 11.5
+  "semi_automatic_rifles": {
+	"display_name": "Semi-Automatic Rifles",
+	"category": "Infantry Weapons"
   },
-  "mortar_81mm": {
-	"display_name": "81mm Mörser",
-	"category": "mortar",
-	"weight_per_unit": 38
+  "assault_rifles_storm_rifles": {
+	"display_name": "Assault Rifles / Storm Rifles",
+	"category": "Infantry Weapons"
   },
-  "atgm": {
-	"display_name": "Panzerabwehrlenkrakete (ATGM)",
-	"category": "anti_tank",
-	"weight_per_unit": 14
+  "submachine_guns": {
+	"display_name": "Submachine Guns",
+	"category": "Infantry Weapons"
   },
-  "mbt": {
-	"display_name": "Kampfpanzer (MBT)",
-	"category": "armor",
-	"weight_per_unit": 58
+  "pistols": {
+	"display_name": "Pistols",
+	"category": "Infantry Weapons"
   },
-  "ifv": {
-	"display_name": "Schützenpanzer (IFV)",
-	"category": "armor",
-	"weight_per_unit": 28
+  "hand_grenades": {
+	"display_name": "Hand Grenades",
+	"category": "Infantry Weapons"
   },
-  "artillery_155mm": {
-	"display_name": "155mm Haubitze",
-	"category": "artillery",
-	"weight_per_unit": 9.5
+  "rifle_grenades": {
+	"display_name": "Rifle Grenades",
+	"category": "Infantry Weapons"
   },
-  "apc": {
-	"display_name": "Transportpanzer (APC)",
-	"category": "armor",
-	"weight_per_unit": 22
+
+  "light_machine_guns": {
+	"display_name": "Light Machine Guns",
+	"category": "Support Weapons"
+  },
+  "heavy_machine_guns": {
+	"display_name": "Heavy Machine Guns",
+	"category": "Support Weapons"
+  },
+  "light_mortars": {
+	"display_name": "Light Mortars",
+	"category": "Support Weapons"
+  },
+  "medium_mortars": {
+	"display_name": "Medium Mortars",
+	"category": "Support Weapons"
+  },
+  "heavy_mortars": {
+	"display_name": "Heavy Mortars",
+	"category": "Support Weapons"
+  },
+  "anti_tank_launchers_reusable": {
+	"display_name": "Anti-Tank Launchers (reusable)",
+	"category": "Support Weapons"
+  },
+  "recoilless_rifles": {
+	"display_name": "Recoilless Rifles",
+	"category": "Support Weapons"
+  },
+
+  "light_artillery_75_105mm": {
+	"display_name": "Light Artillery (75–105mm)",
+	"category": "Artillery"
+  },
+  "medium_artillery_105_150mm": {
+	"display_name": "Medium Artillery (105–150mm)",
+	"category": "Artillery"
+  },
+  "heavy_artillery_150mm_plus": {
+	"display_name": "Heavy Artillery (150mm+)",
+	"category": "Artillery"
+  },
+  "rocket_artillery_mrl": {
+	"display_name": "Rocket Artillery / Multiple Rocket Launchers",
+	"category": "Artillery"
+  },
+  "self_propelled_artillery": {
+	"display_name": "Self-Propelled Artillery (all calibers)",
+	"category": "Artillery"
+  },
+
+  "light_tanks_tankettes": {
+	"display_name": "Light Tanks / Tankettes",
+	"category": "Armor"
+  },
+  "medium_tanks": {
+	"display_name": "Medium Tanks",
+	"category": "Armor"
+  },
+  "heavy_tanks": {
+	"display_name": "Heavy Tanks",
+	"category": "Armor"
+  },
+  "assault_guns": {
+	"display_name": "Assault Guns",
+	"category": "Armor"
+  },
+  "tank_destroyers_spat": {
+	"display_name": "Tank Destroyers (SPAT)",
+	"category": "Armor"
+  },
+
+  "light_trucks": {
+	"display_name": "Light Trucks",
+	"category": "Vehicles & Mobility"
+  },
+  "medium_heavy_trucks": {
+	"display_name": "Medium/Heavy Trucks",
+	"category": "Vehicles & Mobility"
+  },
+  "half_tracks_apc": {
+	"display_name": "Half-Tracks / Armored Personnel Carriers",
+	"category": "Vehicles & Mobility"
+  },
+  "wheeled_armored_cars": {
+	"display_name": "Wheeled Armored Cars / Recon Vehicles",
+	"category": "Vehicles & Mobility"
+  },
+  "artillery_tractors_prime_movers": {
+	"display_name": "Artillery Tractors / Prime Movers",
+	"category": "Vehicles & Mobility"
+  },
+  "engineering_vehicles": {
+	"display_name": "Engineering Vehicles",
+	"category": "Vehicles & Mobility"
+  },
+
+  "light_at_guns_towed": {
+	"display_name": "Light Anti-Tank Guns (towed)",
+	"category": "Anti-Tank"
+  },
+  "medium_at_guns_towed": {
+	"display_name": "Medium Anti-Tank Guns (towed)",
+	"category": "Anti-Tank"
+  },
+  "heavy_at_guns_towed": {
+	"display_name": "Heavy Anti-Tank Guns (towed)",
+	"category": "Anti-Tank"
+  },
+  "self_propelled_at_guns": {
+	"display_name": "Self-Propelled Anti-Tank Guns",
+	"category": "Anti-Tank"
+  },
+
+  "light_aa_guns_20_40mm": {
+	"display_name": "Light Anti-Air Guns (20–40mm)",
+	"category": "Anti-Air"
+  },
+  "medium_heavy_aa_guns_75mm_plus": {
+	"display_name": "Medium/Heavy Anti-Air Guns (75mm+)",
+	"category": "Anti-Air"
+  },
+  "self_propelled_aa_guns": {
+	"display_name": "Self-Propelled Anti-Air Guns",
+	"category": "Anti-Air"
+  },
+
+  "bridging_equipment": {
+	"display_name": "Bridging Equipment",
+	"category": "Engineering & Logistics"
+  },
+  "mine_clearing_equipment": {
+	"display_name": "Mine-Clearing Equipment",
+	"category": "Engineering & Logistics"
+  },
+  "field_fortification_construction_kits": {
+	"display_name": "Field Fortification / Construction Kits",
+	"category": "Engineering & Logistics"
+  },
+  "signal_radio_equipment": {
+	"display_name": "Signal / Radio Equipment",
+	"category": "Engineering & Logistics"
+  },
+  "optical_equipment": {
+	"display_name": "Optical Equipment (Rangefinders, Binoculars etc.)",
+	"category": "Engineering & Logistics"
   }
 }
