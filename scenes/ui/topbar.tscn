@@ -7,7 +7,7 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 44.0
-mouse_filter = 2
+mouse_filter = 0
 script = ExtResource("1_gqrek")
 
 [node name="Background" type="ColorRect" parent="."]
@@ -15,7 +15,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
+mouse_filter = 0
 color = Color(0.06, 0.06, 0.1, 0.95)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -27,62 +27,62 @@ offset_left = 16.0
 offset_top = 8.0
 offset_right = -16.0
 offset_bottom = -8.0
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="NationContainer" type="HBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="NationLabel" type="Label" parent="HBoxContainer/NationContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Germany"
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="Tabs" type="HBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="GovernmentButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
 text = "Government"
 flat = true
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="PoliticsButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
 text = "Politics"
 flat = true
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="DiplomacyButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
 text = "Diplomacy"
 flat = true
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="IndustryButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
 text = "Industry"
 flat = true
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="EconomyButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
 text = "Economy"
 flat = true
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="MilitaryButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
 text = "Military"
 flat = true
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="ResearchButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
 text = "Research"
 flat = true
-mouse_filter = 2
+mouse_filter = 0

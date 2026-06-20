@@ -12,7 +12,6 @@ offset_top = 6.0
 offset_right = -10.0
 offset_bottom = 50.0
 grow_horizontal = 0
-mouse_filter = 2
 script = ExtResource("1_6brcj")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=862940857]
@@ -23,7 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 layout_direction = 3
-mouse_filter = 2
+mouse_filter = 0
 
 [node name="DateLabel" type="Label" parent="HBoxContainer" unique_id=1509453045]
 layout_mode = 2
@@ -31,25 +30,20 @@ theme_override_font_sizes/font_size = 16
 
 [node name="Speed10Button" type="Button" parent="HBoxContainer" unique_id=1526655909]
 layout_mode = 2
-mouse_filter = 2
 text = "10x"
 
 [node name="Speed5Button" type="Button" parent="HBoxContainer" unique_id=418968361]
 layout_mode = 2
-mouse_filter = 2
 text = "5x"
 
 [node name="Speed2Button" type="Button" parent="HBoxContainer" unique_id=1019849982]
 layout_mode = 2
-mouse_filter = 2
 text = "2x"
 
 [node name="Speed1Button" type="Button" parent="HBoxContainer" unique_id=1914672945]
 layout_mode = 2
-mouse_filter = 2
 text = "1x"
 
 [node name="PauseButton" type="Button" parent="HBoxContainer" unique_id=1692415221]
 layout_mode = 2
-mouse_filter = 2
 text = "Pause"
