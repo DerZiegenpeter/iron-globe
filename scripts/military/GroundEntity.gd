@@ -42,6 +42,11 @@ var raw_data: Dictionary = {}
 
 var _battalion_definitions: Dictionary = {}
 
+# ====================== EQUIPMENT ======================
+var equipment_readiness: float = 1.0
+var required_equipment: Dictionary = {}
+var missing_equipment: Dictionary = {}
+
 
 func _ready():
 	_load_battalion_definitions()
@@ -50,7 +55,7 @@ func _ready():
 func _load_battalion_definitions():
 	var path = "res://data/battalion_types.json"
 	if not FileAccess.file_exists(path):
-		print("⚠️ battalion_types.json nicht gefunden!")
+		print("Warning: battalion_types.json nicht gefunden!")
 		return
 
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -59,7 +64,7 @@ func _load_battalion_definitions():
 	file.close()
 
 	_battalion_definitions = json.data
-	print("✅ Battalion Types geladen:", _battalion_definitions.keys())
+	print("Success: Battalion Types geladen:", _battalion_definitions.keys())
 
 
 func setup(data: Dictionary, type: String = "division"):
@@ -86,8 +91,6 @@ func setup(data: Dictionary, type: String = "division"):
 
 
 func _apply_type_properties():
-	# Nutzt die ground_entity_types.json aus vorherigem Schritt
-	var type_data = {}  # Hier später die Typ-Definitionen laden wenn gewünscht
 	type_display_name = entity_type.capitalize()
 	is_combat_unit = entity_type in ["division", "brigade"]
 
@@ -98,7 +101,6 @@ func _calculate_stats_from_composition():
 
 	var composition = raw_data.get("composition", [])
 	if composition.is_empty():
-		# Fallback: alte flache Werte falls keine Composition vorhanden
 		manpower = raw_data.get("manpower", 8000)
 		max_manpower = raw_data.get("max_manpower", manpower)
 		organization = raw_data.get("organization", 80.0)
@@ -110,7 +112,6 @@ func _calculate_stats_from_composition():
 		supply_consumption = raw_data.get("supply_consumption", 3.5)
 		return
 
-	# === Stats aus Composition berechnen ===
 	manpower = 0
 	max_manpower = 0
 	soft_attack = 0.0
@@ -125,7 +126,7 @@ func _calculate_stats_from_composition():
 		var bat_data = _battalion_definitions.get(bat_type, {})
 
 		if bat_data.is_empty():
-			print("⚠️ Unbekannter Battalion-Typ:", bat_type)
+			print("Warning: Unbekannter Battalion-Typ:", bat_type)
 			continue
 
 		manpower += int(bat_data.get("manpower", 0)) * amount
@@ -136,11 +137,61 @@ func _calculate_stats_from_composition():
 		breakthrough += float(bat_data.get("breakthrough", 0)) * amount
 		supply_consumption += float(bat_data.get("supply_consumption", 0)) * amount
 
-	# Basis-Organisation & Experience (später erweiterbar)
 	organization = 75.0
 	max_organization = 100.0
 	experience = raw_data.get("experience", 30.0)
 
+	# Equipment Readiness berechnen
+	calculate_equipment_readiness()
+
+
+# ====================== EQUIPMENT SYSTEM ======================
+
+func calculate_equipment_readiness():
+	var equip_manager = get_node_or_null("/root/EquipmentManager")
+	if not equip_manager or not is_combat_unit:
+		equipment_readiness = 1.0
+		return
+
+	required_equipment = equip_manager.get_required_equipment(raw_data.get("composition", []))
+
+	if required_equipment.is_empty():
+		equipment_readiness = 1.0
+		return
+
+	var nation = nation_code
+	var stock = equip_manager.get_stockpile(nation)
+
+	var total_shortage := 0.0
+	var total_required := 0
+
+	for equip_id in required_equipment:
+		var needed = required_equipment[equip_id]
+		var available = stock.get(equip_id, 0)
+		total_required += needed
+
+		if available < needed:
+			total_shortage += (needed - available)
+
+	if total_required <= 0:
+		equipment_readiness = 1.0
+	else:
+		equipment_readiness = clamp(1.0 - (total_shortage / total_required), 0.0, 1.0)
+
+	# Fehlende Ausrüstung speichern
+	missing_equipment.clear()
+	for equip_id in required_equipment:
+		var needed = required_equipment[equip_id]
+		var available = stock.get(equip_id, 0)
+		if available < needed:
+			missing_equipment[equip_id] = needed - available
+
+
+func get_readiness_multiplier() -> float:
+	return equipment_readiness
+
+
+# ====================== REST ======================
 
 func _ready_after_add():
 	add_to_group("ground_entities")

@@ -1,0 +1,42 @@
+{
+  "rifle": {
+	"display_name": "Sturmgewehr",
+	"category": "small_arms",
+	"weight_per_unit": 4.2
+  },
+  "machine_gun": {
+	"display_name": "Maschinengewehr",
+	"category": "small_arms",
+	"weight_per_unit": 11.5
+  },
+  "mortar_81mm": {
+	"display_name": "81mm Mörser",
+	"category": "mortar",
+	"weight_per_unit": 38
+  },
+  "atgm": {
+	"display_name": "Panzerabwehrlenkrakete (ATGM)",
+	"category": "anti_tank",
+	"weight_per_unit": 14
+  },
+  "mbt": {
+	"display_name": "Kampfpanzer (MBT)",
+	"category": "armor",
+	"weight_per_unit": 58
+  },
+  "ifv": {
+	"display_name": "Schützenpanzer (IFV)",
+	"category": "armor",
+	"weight_per_unit": 28
+  },
+  "artillery_155mm": {
+	"display_name": "155mm Haubitze",
+	"category": "artillery",
+	"weight_per_unit": 9.5
+  },
+  "apc": {
+	"display_name": "Transportpanzer (APC)",
+	"category": "armor",
+	"weight_per_unit": 22
+  }
+}

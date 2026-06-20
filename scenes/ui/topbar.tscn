@@ -3,28 +3,20 @@
 [ext_resource type="Script" uid="uid://eh7evmawwiwf" path="res://scripts/TopBar.gd" id="1_gqrek"]
 
 [node name="Topbar" type="Control" unique_id=1001731856]
-layout_mode = 1
-anchors_preset = 0
+layout_mode = 3
+anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 40.0
 script = ExtResource("1_gqrek")
 
 [node name="Background" type="ColorRect" parent="." unique_id=987654321]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
 color = Color(0.06, 0.06, 0.1, 0.92)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1506632266]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = 6.0
-offset_right = -12.0
-offset_bottom = -6.0
+layout_mode = 0
+offset_right = 725.0
+offset_bottom = 31.0
 
 [node name="NationContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=664943735]
 layout_mode = 2
@@ -34,10 +26,6 @@ size_flags_horizontal = 0
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Germany • 1941"
-
-[node name="Spacer" type="Control" parent="HBoxContainer" unique_id=112233445]
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="Tabs" type="HBoxContainer" parent="HBoxContainer" unique_id=2093441589]
 layout_mode = 2
