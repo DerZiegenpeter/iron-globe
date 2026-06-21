@@ -4,6 +4,8 @@ class_name GroundEntity
 @onready var sprite: Sprite3D = $Sprite3D
 @onready var label: Label3D = $Label3D
 @onready var click_area: Area3D = $ClickArea
+@onready var info_panel_node: Node3D = $InfoPanel
+@onready var collision_area_node: Area3D = $CollisionArea
 
 var entity_id: String = ""
 var entity_name: String = ""
@@ -42,6 +44,13 @@ var required_equipment: Array = []
 var supply: float = 75.0
 
 const POSITION_ROTATION_DEGREES := 180.0
+
+var info_panel: Node3D = null
+var collision_area: Area3D = null
+
+const MIN_SEPARATION_DISTANCE := 4.8
+const COLLISION_RADIUS := 3.2
+
 
 func _ready():
 	if has_meta("unit_data"):
@@ -113,7 +122,7 @@ func _ready():
 	add_to_group("ground_entities")
 
 	if is_combat_unit:
-		call_deferred("_create_info_panel")
+		call_deferred("_setup_info_panel_and_collision")
 
 
 func _apply_orientation():
@@ -145,40 +154,40 @@ func move_to(new_lat: float, new_lon: float):
 
 
 func _process(delta: float):
-	if not _has_target:
-		return
+	if _has_target:
+		var tm = get_node_or_null("/root/TimeManager")
+		if tm and not tm.paused and tm.speed > 0:
+			var sim_speed = float(tm.speed)
+			var max_move_distance = (movement_speed * sim_speed * delta) / GLOBE_RADIUS * (180.0 / PI)
 
-	var tm = get_node_or_null("/root/TimeManager")
-	if not tm or tm.paused or tm.speed <= 0:
-		return
+			var current_pos = global_position.normalized()
+			var target_pos = _lat_lon_to_vector3(_target_lat, _target_lon, GLOBE_RADIUS).normalized()
+			var angle_to_target = acos(clampf(current_pos.dot(target_pos), -1.0, 1.0))
 
-	var sim_speed = float(tm.speed)
-	var max_move_distance = (movement_speed * sim_speed * delta) / GLOBE_RADIUS * (180.0 / PI)
+			if angle_to_target <= max_move_distance or angle_to_target < 0.001:
+				global_position = target_pos * GLOBE_RADIUS
+				current_lat = _target_lat
+				current_lon = _target_lon
+				_has_target = false
+				_on_arrival()
+			else:
+				var axis = current_pos.cross(target_pos).normalized()
+				if axis.length() < 0.001:
+					axis = Vector3.UP
+				var partial_quat = Quaternion(axis, max_move_distance)
+				var new_dir = partial_quat * current_pos
+				global_position = new_dir * GLOBE_RADIUS
 
-	var current_pos = global_position.normalized()
-	var target_pos = _lat_lon_to_vector3(_target_lat, _target_lon, GLOBE_RADIUS).normalized()
-	var angle_to_target = acos(clampf(current_pos.dot(target_pos), -1.0, 1.0))
+				var mag = global_position.length()
+				current_lat = rad_to_deg(asin(global_position.y / mag))
+				current_lon = rad_to_deg(atan2(global_position.x, global_position.z))
 
-	if angle_to_target <= max_move_distance or angle_to_target < 0.001:
-		global_position = target_pos * GLOBE_RADIUS
-		current_lat = _target_lat
-		current_lon = _target_lon
-		_has_target = false
-		_on_arrival()
-	else:
-		var axis = current_pos.cross(target_pos).normalized()
-		if axis.length() < 0.001:
-			axis = Vector3.UP
-		var partial_quat = Quaternion(axis, max_move_distance)
-		var new_dir = partial_quat * current_pos
-		global_position = new_dir * GLOBE_RADIUS
+				var normal = global_position.normalized()
+				look_at(global_position + normal * 50.0, Vector3.UP)
 
-		var mag = global_position.length()
-		current_lat = rad_to_deg(asin(global_position.y / mag))
-		current_lon = rad_to_deg(atan2(global_position.x, global_position.z))
-
-		var normal = global_position.normalized()
-		look_at(global_position + normal * 50.0, Vector3.UP)
+	_resolve_unit_collisions(delta)
+	if info_panel:
+		_billboard_info_panel()
 
 
 func _on_arrival():
@@ -203,42 +212,81 @@ func is_division() -> bool:
 
 
 # ============================================
-# Kompaktes Info-Panel direkt an der Einheit
+# Name + 3 Balken DIREKT AUF der Einheit
+# Genau wie auf deinem Screenshot:
+# - Name oben auf/oberhalb des Icons
+# - ORG / MAN / SUP Balken direkt darunter (kompakt)
 # ============================================
-func _create_info_panel():
+func _setup_info_panel_and_collision():
+	if info_panel_node != null:
+		info_panel = info_panel_node
+	else:
+		info_panel = Node3D.new()
+		info_panel.name = "InfoPanel"
+		add_child(info_panel)
+
+	# Sehr nah an der Einheit + leicht vorne
+	info_panel.position = Vector3(0, -0.85, 0.42)
+
+	if collision_area_node != null:
+		collision_area = collision_area_node
+	else:
+		collision_area = Area3D.new()
+		collision_area.name = "CollisionArea"
+		add_child(collision_area)
+
+	if collision_area.get_child_count() == 0 or not collision_area.get_child(0) is CollisionShape3D:
+		var col_shape_node = CollisionShape3D.new()
+		var sphere = SphereShape3D.new()
+		sphere.radius = COLLISION_RADIUS
+		col_shape_node.shape = sphere
+		collision_area.add_child(col_shape_node)
+
+	collision_area.collision_layer = 1 << 1
+	collision_area.collision_mask = 1 << 1
+	collision_area.monitoring = true
+	collision_area.monitorable = true
+
+	_create_bars_inside_panel()
+
+
+func _create_bars_inside_panel():
+	if info_panel == null:
+		return
+
+	for child in info_panel.get_children():
+		if child.name.begins_with("InfoBackground") or child.name.begins_with("Bar") or child.name.begins_with("BarLabel"):
+			child.queue_free()
+
 	var org_percent = clamp(organization, 0.0, 100.0)
-	var man_percent = clamp(float(manpower) / max_manpower * 100.0, 0.0, 100.0)
+	var man_percent = clamp(float(manpower) / float(max_manpower) * 100.0, 0.0, 100.0)
 	var sup_percent = clamp(supply, 0.0, 100.0)
 
-	# === Kompakte Werte ===
-	var panel_offset_y = -3.2          # näher an der Einheit
-	var bar_spacing = 0.95
-	var bar_max_width = 4.2
-	var bar_height = 0.48
+	var bar_max_width = 3.5
+	var bar_height = 0.37
+	var bar_spacing = 0.68
 
-	# Hintergrund-Rechteck (kompakt)
+	# Hintergrund
 	var bg = MeshInstance3D.new()
 	bg.name = "InfoBackground"
 	var bg_mesh = PlaneMesh.new()
-	bg_mesh.size = Vector2(bar_max_width + 1.2, 4.2)
+	bg_mesh.size = Vector2(bar_max_width + 1.0, 4.0)
 	bg.mesh = bg_mesh
-
 	var bg_mat = StandardMaterial3D.new()
-	bg_mat.albedo_color = Color(0.06, 0.06, 0.1, 0.82)
+	bg_mat.albedo_color = Color(0.04, 0.04, 0.07, 0.75)
 	bg_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	bg_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	bg.material_override = bg_mat
+	info_panel.add_child(bg)
+	bg.position = Vector3(0, 0.3, 0)
 
-	add_child(bg)
-	bg.position = Vector3(0, panel_offset_y, 0.25)
-
-	# Name (etwas höher)
-	if label:
-		label.position = Vector3(0, panel_offset_y + 2.1, 0.5)
-		label.font_size = 26
+	# NAME oben auf der Einheit
+	if label and label.get_parent() != info_panel:
+		label.reparent(info_panel)
+		label.position = Vector3(0, 2.75, 0.5)
+		label.font_size = 21
 		label.modulate = Color(1, 1, 1, 0.95)
 
-	# Die 3 Balken
 	var bars_data = [
 		{"label": "ORG", "percent": org_percent, "color": Color(0.3, 0.75, 1.0)},
 		{"label": "MAN", "percent": man_percent, "color": Color(0.35, 0.9, 0.45)},
@@ -247,49 +295,122 @@ func _create_info_panel():
 
 	for i in range(bars_data.size()):
 		var data = bars_data[i]
-		var y_pos = panel_offset_y - (i * bar_spacing) - 0.3
+		var y_pos = 0.15 - (i * bar_spacing)
 
-		# Balken-Hintergrund
 		var bar_bg = MeshInstance3D.new()
 		bar_bg.name = "BarBG_" + data.label
 		var bar_bg_mesh = PlaneMesh.new()
 		bar_bg_mesh.size = Vector2(bar_max_width, bar_height)
 		bar_bg.mesh = bar_bg_mesh
-
 		var bar_bg_mat = StandardMaterial3D.new()
-		bar_bg_mat.albedo_color = Color(0.12, 0.12, 0.15, 0.95)
+		bar_bg_mat.albedo_color = Color(0.1, 0.1, 0.13, 0.92)
 		bar_bg_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		bar_bg_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 		bar_bg.material_override = bar_bg_mat
+		info_panel.add_child(bar_bg)
+		bar_bg.position = Vector3(0, y_pos, 0.08)
 
-		add_child(bar_bg)
-		bar_bg.position = Vector3(0, y_pos, 0.35)
-
-		# Farbiger Balken
 		var bar = MeshInstance3D.new()
 		bar.name = "Bar_" + data.label
 		var bar_mesh = PlaneMesh.new()
 		bar_mesh.size = Vector2(bar_max_width, bar_height)
 		bar.mesh = bar_mesh
-
 		var bar_mat = StandardMaterial3D.new()
 		bar_mat.albedo_color = data.color
 		bar_mat.emission_enabled = true
-		bar_mat.emission = data.color * 0.65
+		bar_mat.emission = data.color * 0.6
 		bar_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 		bar.material_override = bar_mat
+		info_panel.add_child(bar)
 
-		add_child(bar)
-		bar.position = Vector3(0, y_pos, 0.4)
+		var p = data.percent / 100.0
+		bar.position = Vector3(-bar_max_width / 2.0 + (bar_max_width * p / 2.0), y_pos, 0.12)
+		bar.scale = Vector3(p, 1.0, 1.0)
 
-		bar.scale.x = data.percent / 100.0
-		bar.scale.y = 1.0
-		bar.scale.z = 1.0
-
-		# Kleines Label links
 		var bar_label = Label3D.new()
+		bar_label.name = "BarLabel_" + data.label
 		bar_label.text = data.label
-		bar_label.font_size = 16
-		bar_label.modulate = Color(0.85, 0.85, 0.9)
-		bar_label.position = Vector3(-bar_max_width/2 - 0.95, y_pos, 0.45)
-		add_child(bar_label)
+		bar_label.font_size = 12
+		bar_label.modulate = Color(0.92, 0.92, 0.94)
+		bar_label.position = Vector3(-bar_max_width/2 - 0.72, y_pos, 0.15)
+		info_panel.add_child(bar_label)
+
+
+func _billboard_info_panel():
+	if info_panel == null:
+		return
+	var cam = get_viewport().get_camera_3d()
+	if cam:
+		info_panel.look_at(cam.global_position, Vector3.UP)
+
+
+func _get_strength() -> float:
+	return float(manpower) * clamp(organization / 100.0, 0.2, 1.5) + 10.0
+
+
+func _resolve_unit_collisions(delta: float):
+	if collision_area == null or not is_combat_unit:
+		return
+	var overlaps = collision_area.get_overlapping_areas()
+	for oa in overlaps:
+		var parent = oa.get_parent()
+		if parent == self or not (parent is GroundEntity):
+			continue
+		var other: GroundEntity = parent
+		if not other.is_combat_unit:
+			continue
+
+		var to_self = global_position - other.global_position
+		var dist = to_self.length()
+		if dist < 0.001:
+			global_position += Vector3(randf_range(-1,1), randf_range(-1,1), randf_range(-1,1)).normalized() * 0.3
+			global_position = global_position.normalized() * GLOBE_RADIUS
+			_apply_orientation()
+			continue
+
+		if dist >= MIN_SEPARATION_DISTANCE:
+			continue
+
+		var push_dir = to_self.normalized()
+		var sep_needed = MIN_SEPARATION_DISTANCE - dist
+
+		var my_str = _get_strength()
+		var ot_str = other._get_strength()
+		var inv_my = 1.0 / max(my_str, 1.0)
+		var inv_ot = 1.0 / max(ot_str, 1.0)
+		var total_inv = inv_my + inv_ot
+		if total_inv <= 0.0:
+			continue
+
+		var disp = push_dir * sep_needed * 0.65
+		var self_move = disp * (inv_my / total_inv)
+
+		global_position += self_move
+		global_position = global_position.normalized() * GLOBE_RADIUS
+		_apply_orientation()
+
+
+func update_info_bars():
+	if info_panel == null:
+		return
+	var org_p = clamp(organization / 100.0, 0.0, 1.0)
+	var man_p = clamp(float(manpower) / float(max_manpower), 0.0, 1.0)
+	var sup_p = clamp(supply / 100.0, 0.0, 1.0)
+
+	var bar_org = info_panel.find_child("Bar_ORG", true, false)
+	if bar_org:
+		var p = org_p
+		bar_org.position.x = -3.5 / 2.0 + (3.5 * p / 2.0)
+		bar_org.scale.x = p
+
+	var bar_man = info_panel.find_child("Bar_MAN", true, false)
+	if bar_man:
+		var p = man_p
+		bar_man.position.x = -3.5 / 2.0 + (3.5 * p / 2.0)
+		bar_man.scale.x = p
+
+	var bar_sup = info_panel.find_child("Bar_SUP", true, false)
+	if bar_sup:
+		var p = sup_p
+		bar_sup.position.x = -3.5 / 2.0 + (3.5 * p / 2.0)
+		bar_sup.scale.x = p

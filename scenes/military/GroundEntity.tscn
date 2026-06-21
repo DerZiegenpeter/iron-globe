@@ -18,3 +18,7 @@ texture = ExtResource("2_qn474")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ClickArea" unique_id=597687404]
 shape = SubResource("BoxShape3D_wih7h")
+
+[node name="InfoPanel" type="Node3D" parent="." unique_id=684874348]
+
+[node name="CollisionArea" type="Area3D" parent="." unique_id=2096495153]
