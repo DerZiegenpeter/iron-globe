@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cmbot2o5an717" path="res://ui/PieChart.gd" id="1_ia44j"]
 [ext_resource type="Script" uid="uid://iuvbicx42vn5" path="res://ui/InfoPanel.gd" id="1_qhvjt"]
 
-[node name="InfoPanel" type="Control" unique_id=353123872]
+[node name="InfoPanel" type="Control"]
 layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
@@ -14,7 +14,15 @@ grow_vertical = 0
 mouse_filter = 0
 script = ExtResource("1_qhvjt")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1749687462]
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+color = Color(1, 1, 1, 0.95)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,27 +31,30 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=428689701]
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 
-[node name="InfoLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=530202158]
+[node name="InfoLabel" type="RichTextLabel" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 mouse_filter = 0
 
-[node name="DetailsButton" type="Button" parent="VBoxContainer" unique_id=2025546161]
+[node name="DetailsButton" type="Button" parent="VBoxContainer"]
 visible = false
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 mouse_filter = 0
 text = "Details"
 
-[node name="PieChartContainer" type="Control" parent="VBoxContainer" unique_id=312077960]
+[node name="PieChartContainer" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 mouse_filter = 0
 
-[node name="PieChart" type="Control" parent="VBoxContainer/PieChartContainer" unique_id=60102342]
+[node name="PieChart" type="Control" parent="VBoxContainer/PieChartContainer"]
 anchors_preset = 0
 offset_right = 200.0
 offset_bottom = 120.0

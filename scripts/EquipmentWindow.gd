@@ -6,26 +6,27 @@ extends Control
 
 var equip_manager: Node
 
-
 func _ready():
 	close_button.pressed.connect(close_window)
 	equip_manager = get_node_or_null("/root/EquipmentManager")
 	hide()
 
-
 func open_for_category(category: String, nation: String = "GER"):
 	if not equip_manager:
-		print("EquipmentManager nicht gefunden!")
+		content_label.text = "EquipmentManager nicht gefunden!"
+		show()
+		move_to_front()
 		return
 
 	show()
+	move_to_front()                    # ← Wichtig: Fenster kommt über die Topbar
 	title_label.text = "%s - %s" % [nation, category]
 
 	var stock = equip_manager.call("get_stockpile", nation)
 	var definitions = equip_manager.get("equipment_definitions")
 
-	if definitions == null:
-		content_label.text = "Fehler beim Laden der Ausrüstung."
+	if definitions == null or definitions.is_empty():
+		content_label.text = "Fehler beim Laden der Ausrüstung.\n\n(Möglicherweise sind die Daten im EquipmentManager noch nicht geladen.)"
 		return
 
 	var text := ""
@@ -41,7 +42,6 @@ func open_for_category(category: String, nation: String = "GER"):
 		text += "[b]%s[/b]\n   Bestand: %d\n\n" % [name, amount]
 
 	content_label.text = text if text != "" else "Keine Einträge in dieser Kategorie."
-
 
 func close_window():
 	hide()

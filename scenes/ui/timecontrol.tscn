@@ -1,48 +1,75 @@
 [gd_scene format=3 uid="uid://78wp6isu28io"]
 
 [ext_resource type="Script" uid="uid://c6fppv3g5b7d4" path="res://ui/TimeControl.gd" id="1_6brcj"]
+[ext_resource type="FontFile" path="res://fonts/TypeLightSans.otf" id="font_main"]
 
-[node name="TimeControl" type="Control" unique_id=268924806]
+[node name="TimeControl" type="Control"]
 layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -370.0
-offset_right = -90.0
-offset_bottom = 44.0
+offset_left = -450.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = 50.0
 grow_horizontal = 0
 script = ExtResource("1_6brcj")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=862940857]
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+color = Color(1, 1, 1, 0.95)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-layout_direction = 3
 mouse_filter = 0
 
-[node name="DateLabel" type="Label" parent="HBoxContainer" unique_id=1509453045]
+[node name="Speed10Button" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
-
-[node name="Speed10Button" type="Button" parent="HBoxContainer" unique_id=1526655909]
-layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "10x"
 
-[node name="Speed5Button" type="Button" parent="HBoxContainer" unique_id=418968361]
+[node name="Speed5Button" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "5x"
 
-[node name="Speed2Button" type="Button" parent="HBoxContainer" unique_id=1019849982]
+[node name="Speed2Button" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "2x"
 
-[node name="Speed1Button" type="Button" parent="HBoxContainer" unique_id=1914672945]
+[node name="Speed1Button" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "1x"
 
-[node name="PauseButton" type="Button" parent="HBoxContainer" unique_id=1692415221]
+[node name="PauseButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Pause"
+
+[node name="DateLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 2

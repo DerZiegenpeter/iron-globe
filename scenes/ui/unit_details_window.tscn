@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://4qdk3lbawmhy" path="res://scripts/UnitDetailsWindow.gd" id="1_details"]
 
-[node name="UnitDetailsWindow" type="Control" unique_id=2018190052]
+[node name="UnitDetailsWindow" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 680.0
@@ -11,7 +11,15 @@ offset_right = 1180.0
 offset_bottom = 620.0
 script = ExtResource("1_details")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=699026106]
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+color = Color(1, 1, 1, 0.95)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,23 +27,27 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1158213289]
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Unit Details"
 
-[node name="StatsLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=497723995]
+[node name="StatsLabel" type="RichTextLabel" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 fit_content = true
 
-[node name="EquipmentLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=1851632575]
+[node name="EquipmentLabel" type="RichTextLabel" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 fit_content = true
 
-[node name="CloseButton" type="Button" parent="VBoxContainer" unique_id=1079124689]
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Schließen"

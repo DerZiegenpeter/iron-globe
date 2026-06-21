@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://dlb2ngvdiuv74"]
 
 [ext_resource type="Script" uid="uid://eh7evmawwiwf" path="res://scripts/TopBar.gd" id="1_gqrek"]
+[ext_resource type="FontFile" path="res://fonts/TypeLightSans.otf" id="font_main"]
 
 [node name="Topbar" type="Control"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 44.0
+offset_bottom = 50.0
 mouse_filter = 0
 script = ExtResource("1_gqrek")
 
@@ -16,7 +17,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 0
-color = Color(0.06, 0.06, 0.1, 0.95)
+color = Color(1, 1, 1, 0.95)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -36,7 +37,9 @@ mouse_filter = 0
 
 [node name="NationLabel" type="Label" parent="HBoxContainer/NationContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
 theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Germany"
 mouse_filter = 0
 
@@ -47,42 +50,63 @@ mouse_filter = 0
 
 [node name="GovernmentButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Government"
-flat = true
+
 mouse_filter = 0
 
 [node name="PoliticsButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Politics"
-flat = true
+
 mouse_filter = 0
 
 [node name="DiplomacyButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Diplomacy"
-flat = true
+
 mouse_filter = 0
 
 [node name="IndustryButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Industry"
-flat = true
+
 mouse_filter = 0
 
 [node name="EconomyButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Economy"
-flat = true
+
 mouse_filter = 0
 
 [node name="MilitaryButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Military"
-flat = true
+
 mouse_filter = 0
 
 [node name="ResearchButton" type="Button" parent="HBoxContainer/Tabs"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_main")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Research"
-flat = true
+
 mouse_filter = 0
