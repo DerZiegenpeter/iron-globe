@@ -8,11 +8,22 @@ var selected_province: Dictionary = {}
 
 @onready var pop_manager: Node = get_node_or_null("/root/PopManager")
 
+# ====================== AKTUELLE NATION (SPIELER) ======================
+var current_nation: String = "GER"
+# ============================================================
+# TODO: Später durch Nation-Auswahl-Menü / Kampagnen-Start setzen.
+# Beispiel:
+#   GameData.current_nation = "POL"
+#
+# Dann wird überall automatisch das richtige Land verwendet
+# (Topbar, MilitaryManager, EquipmentWindow, InfoPanel etc.).
+# ============================================================
+
 # ====================== SIGNALE ======================
 signal state_selected(info: Dictionary)
 signal state_deselected
-signal unit_selected(entity: GroundEntity)
-signal unit_deselected          # NEU für sauberes Schließen des InfoPanels
+signal unit_selected(entity: Node)     # ← Typ auf Node geändert (vermeidet Compile-Fehler)
+signal unit_deselected
 
 
 func _ready():
@@ -68,6 +79,19 @@ func load_ownership():
 		province_to_controller[pid] = controller
 
 	print("✅ Ownership geladen:", province_to_owner.size(), "Provinzen")
+
+
+# ====================== HELPER FÜR AKTUELLE NATION ======================
+
+func get_current_nation_name() -> String:
+	if nations.has(current_nation):
+		return nations[current_nation].get("name", current_nation)
+	
+	# Fallback falls "GER" statt "DEU" verwendet wird
+	if current_nation == "GER" and nations.has("DEU"):
+		return nations["DEU"].get("name", "Germany")
+	
+	return current_nation
 
 
 # ====================== PROVINCE INFO ======================

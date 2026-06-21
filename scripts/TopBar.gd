@@ -43,7 +43,10 @@ func _on_tab_pressed(tab_name: String):
 
 func _update_nation_info():
 	if nation_label:
-		nation_label.text = "Germany"        # ← Nur noch der Name, ohne Jahr
+		if GameData:
+			nation_label.text = GameData.get_current_nation_name()
+		else:
+			nation_label.text = "Germany"
 
 
 func set_nation_info(nation_name: String, year: int = 0):

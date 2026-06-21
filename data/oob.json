@@ -1,122 +1,85 @@
 {
   "GER": {
 	"high_command": {
-	  "id": "ger_okh",
-	  "name": "Oberkommando des Heeres (OKH)",
-	  "position": { "lat": 52.52, "lon": 13.40 },
-	  "children": ["army_group_center"]
+	  "id": "ger_hq",
+	  "name": "German High Command",
+	  "position": [1200, 80, 0],
+	  "children": ["ger_army_group_1"]
 	},
-
 	"army_groups": [
 	  {
-		"id": "army_group_center",
-		"name": "Heeresgruppe Mitte",
-		"position": { "lat": 53.5, "lon": 25.0 },
-		"children": ["4th_army", "3rd_panzer_army"]
+		"id": "ger_army_group_1",
+		"name": "Army Group Center",
+		"position": [1150, 60, 0],
+		"children": ["ger_army_1"]
 	  }
 	],
-
 	"armies": [
 	  {
-		"id": "4th_army",
-		"name": "4. Armee",
-		"position": { "lat": 53.0, "lon": 24.5 },
-		"children": ["xii_corps"]
-	  },
-	  {
-		"id": "3rd_panzer_army",
-		"name": "3. Panzer-Armee",
-		"position": { "lat": 54.2, "lon": 25.8 },
-		"children": ["xxxix_panzer_corps"]
+		"id": "ger_army_1",
+		"name": "9th Army",
+		"position": [1100, 40, 0],
+		"children": ["ger_corps_1"]
 	  }
 	],
-
 	"corps": [
 	  {
-		"id": "xii_corps",
-		"name": "XII. Armeekorps",
-		"position": { "lat": 52.8, "lon": 24.0 },
-		"children": ["ger_div_31", "ger_div_34", "ger_div_45"]
-	  },
-	  {
-		"id": "xxxix_panzer_corps",
-		"name": "XXXIX. Panzerkorps",
-		"position": { "lat": 54.0, "lon": 25.5 },
-		"children": ["ger_7th_panzer_div", "ger_20th_panzer_div"]
+		"id": "ger_corps_1",
+		"name": "XXXXI Corps",
+		"position": [1050, 20, 0],
+		"children": ["ger_div_1", "ger_div_2", "ger_div_3", "ger_brig_1"]
 	  }
 	],
-
 	"divisions": [
 	  {
-		"id": "ger_div_31",
-		"name": "31. Infanterie-Division",
+		"id": "ger_div_1",
+		"name": "1st Infantry Division",
 		"type": "infantry",
 		"nation_code": "GER",
-		"position": { "lat": 52.6, "lon": 23.8 },
+		"position": [1000, 0, 0],
+		"experience": 75,
 		"composition": [
-		  { "type": "infantry", "amount": 9 },
-		  { "type": "field_artillery_battalion", "amount": 3 },
-		  { "type": "anti_tank_battalion", "amount": 1 },
-		  { "type": "engineer_battalion", "amount": 1 }
-		],
-		"experience": 52
+		  {"type": "infantry", "amount": 12000},
+		  {"type": "artillery", "amount": 48}
+		]
 	  },
 	  {
-		"id": "ger_div_34",
-		"name": "34. Infanterie-Division",
+		"id": "ger_div_2",
+		"name": "2nd Infantry Division",
 		"type": "infantry",
 		"nation_code": "GER",
-		"position": { "lat": 52.9, "lon": 24.3 },
+		"position": [980, -30, 0],
+		"experience": 70,
 		"composition": [
-		  { "type": "infantry", "amount": 8 },
-		  { "type": "field_artillery_battalion", "amount": 3 },
-		  { "type": "reconnaissance_battalion", "amount": 1 },
-		  { "type": "anti_tank_battalion", "amount": 1 }
-		],
-		"experience": 47
+		  {"type": "infantry", "amount": 11500},
+		  {"type": "artillery", "amount": 42}
+		]
 	  },
 	  {
-		"id": "ger_div_45",
-		"name": "45. Infanterie-Division",
-		"type": "infantry",
+		"id": "ger_div_3",
+		"name": "3rd Panzer Division",
+		"type": "armor",
 		"nation_code": "GER",
-		"position": { "lat": 53.1, "lon": 23.5 },
+		"position": [960, -60, 0],
+		"experience": 80,
 		"composition": [
-		  { "type": "infantry", "amount": 9 },
-		  { "type": "light_field_artillery_battalion", "amount": 2 },
-		  { "type": "field_artillery_battalion", "amount": 2 },
-		  { "type": "engineer_battalion", "amount": 1 }
-		],
-		"experience": 41
-	  },
+		  {"type": "tank", "amount": 180},
+		  {"type": "motorized_infantry", "amount": 6500}
+		]
+	  }
+	],
+	"brigades": [
 	  {
-		"id": "ger_7th_panzer_div",
-		"name": "7. Panzer-Division",
+		"id": "ger_brig_1",
+		"name": "1st Motorized Brigade",
 		"type": "motorized",
 		"nation_code": "GER",
-		"position": { "lat": 54.1, "lon": 25.6 },
+		"position": [940, -90, 0],
+		"experience": 65,
 		"composition": [
-		  { "type": "mechanized_infantry", "amount": 4 },
-		  { "type": "medium_tank_battalion", "amount": 2 },
-		  { "type": "assault_gun_battalion", "amount": 1 },
-		  { "type": "self_propelled_artillery_battalion", "amount": 1 },
-		  { "type": "anti_tank_battalion", "amount": 1 }
-		],
-		"experience": 58
-	  },
-	  {
-		"id": "ger_20th_panzer_div",
-		"name": "20. Panzer-Division",
-		"type": "motorized",
-		"nation_code": "GER",
-		"position": { "lat": 53.9, "lon": 25.2 },
-		"composition": [
-		  { "type": "motorized_infantry", "amount": 5 },
-		  { "type": "medium_tank_battalion", "amount": 2 },
-		  { "type": "tank_destroyer_battalion", "amount": 1 },
-		  { "type": "field_artillery_battalion", "amount": 2 }
-		],
-		"experience": 49
+		  {"type": "motorized_infantry", "amount": 4200},
+		  {"type": "recon", "amount": 800}
+		]
 	  }
 	]
   },
@@ -124,120 +87,83 @@
   "POL": {
 	"high_command": {
 	  "id": "pol_hq",
-	  "name": "Naczelne Dowództwo Sił Zbrojnych",
-	  "position": { "lat": 52.23, "lon": 21.01 },
-	  "children": ["army_poznan", "army_lodz", "army_krakow"]
+	  "name": "Polish High Command",
+	  "position": [600, 120, 0],
+	  "children": ["pol_army_group_1"]
 	},
-
+	"army_groups": [
+	  {
+		"id": "pol_army_group_1",
+		"name": "Polish Army Group",
+		"position": [580, 100, 0],
+		"children": ["pol_army_1"]
+	  }
+	],
 	"armies": [
 	  {
-		"id": "army_poznan",
-		"name": "Armia Poznań",
-		"position": { "lat": 52.4, "lon": 17.0 },
-		"children": ["pol_corps_poznan"]
-	  },
-	  {
-		"id": "army_lodz",
-		"name": "Armia Łódź",
-		"position": { "lat": 51.8, "lon": 19.5 },
-		"children": ["pol_corps_lodz"]
-	  },
-	  {
-		"id": "army_krakow",
-		"name": "Armia Kraków",
-		"position": { "lat": 50.0, "lon": 20.0 },
-		"children": ["pol_corps_krakow"]
+		"id": "pol_army_1",
+		"name": "Army Poznan",
+		"position": [560, 80, 0],
+		"children": ["pol_corps_1"]
 	  }
 	],
-
 	"corps": [
 	  {
-		"id": "pol_corps_poznan",
-		"name": "Korpus Poznań",
-		"position": { "lat": 52.3, "lon": 17.2 },
-		"children": ["pol_div_14", "pol_div_17"]
-	  },
-	  {
-		"id": "pol_corps_lodz",
-		"name": "Korpus Łódź",
-		"position": { "lat": 51.9, "lon": 19.3 },
-		"children": ["pol_div_10"]
-	  },
-	  {
-		"id": "pol_corps_krakow",
-		"name": "Korpus Kraków",
-		"position": { "lat": 50.1, "lon": 20.2 },
-		"children": ["pol_div_6", "pol_brig_1"]
+		"id": "pol_corps_1",
+		"name": "Polish Corps",
+		"position": [540, 60, 0],
+		"children": ["pol_div_1", "pol_div_2", "pol_div_3", "pol_brig_1"]
 	  }
 	],
-
 	"divisions": [
 	  {
-		"id": "pol_div_14",
-		"name": "14. Dywizja Piechoty",
+		"id": "pol_div_1",
+		"name": "1st Polish Infantry Division",
 		"type": "infantry",
 		"nation_code": "POL",
-		"position": { "lat": 52.2, "lon": 17.5 },
+		"position": [520, 40, 0],
+		"experience": 60,
 		"composition": [
-		  { "type": "infantry", "amount": 9 },
-		  { "type": "field_artillery_battalion", "amount": 3 }
-		],
-		"experience": 38
+		  {"type": "infantry", "amount": 11000},
+		  {"type": "artillery", "amount": 36}
+		]
 	  },
 	  {
-		"id": "pol_div_17",
-		"name": "17. Dywizja Piechoty",
+		"id": "pol_div_2",
+		"name": "2nd Polish Infantry Division",
 		"type": "infantry",
 		"nation_code": "POL",
-		"position": { "lat": 52.5, "lon": 16.8 },
+		"position": [500, 10, 0],
+		"experience": 55,
 		"composition": [
-		  { "type": "infantry", "amount": 8 },
-		  { "type": "field_artillery_battalion", "amount": 2 },
-		  { "type": "anti_tank_battalion", "amount": 1 }
-		],
-		"experience": 35
+		  {"type": "infantry", "amount": 10500},
+		  {"type": "artillery", "amount": 32}
+		]
 	  },
 	  {
-		"id": "pol_div_10",
-		"name": "10. Dywizja Piechoty",
+		"id": "pol_div_3",
+		"name": "3rd Polish Infantry Division",
 		"type": "infantry",
 		"nation_code": "POL",
-		"position": { "lat": 51.7, "lon": 19.8 },
+		"position": [480, -20, 0],
+		"experience": 58,
 		"composition": [
-		  { "type": "infantry", "amount": 7 },
-		  { "type": "field_artillery_battalion", "amount": 4 }
-		],
-		"experience": 42
-	  },
-	  {
-		"id": "pol_div_6",
-		"name": "6. Dywizja Piechoty",
-		"type": "infantry",
-		"nation_code": "POL",
-		"position": { "lat": 50.2, "lon": 20.5 },
-		"composition": [
-		  { "type": "infantry", "amount": 9 },
-		  { "type": "field_artillery_battalion", "amount": 3 },
-		  { "type": "reconnaissance_battalion", "amount": 1 }
-		],
-		"experience": 40
+		  {"type": "infantry", "amount": 10800},
+		  {"type": "artillery", "amount": 34}
+		]
 	  }
 	],
-
 	"brigades": [
 	  {
 		"id": "pol_brig_1",
-		"name": "1. Brygada Pancerna",
-		"type": "motorized",
+		"name": "Polish Cavalry Brigade",
+		"type": "cavalry",
 		"nation_code": "POL",
-		"position": { "lat": 50.3, "lon": 19.8 },
+		"position": [460, -50, 0],
+		"experience": 50,
 		"composition": [
-		  { "type": "motorized_infantry", "amount": 3 },
-		  { "type": "medium_tank_battalion", "amount": 1 },
-		  { "type": "field_artillery_battalion", "amount": 1 },
-		  { "type": "anti_tank_battalion", "amount": 1 }
-		],
-		"experience": 31
+		  {"type": "cavalry", "amount": 2800}
+		]
 	  }
 	]
   }

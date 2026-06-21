@@ -19,27 +19,29 @@ func open_for_category(category: String, nation: String = "GER"):
 		return
 
 	show()
-	move_to_front()                    # ← Wichtig: Fenster kommt über die Topbar
+	move_to_front()
 	title_label.text = "%s - %s" % [nation, category]
 
-	var stock = equip_manager.call("get_stockpile", nation)
-	var definitions = equip_manager.get("equipment_definitions")
+	var stock = equip_manager.get_stockpile(nation)
+	var equipment_types = equip_manager.get("equipment_types")
 
-	if definitions == null or definitions.is_empty():
-		content_label.text = "Fehler beim Laden der Ausrüstung.\n\n(Möglicherweise sind die Daten im EquipmentManager noch nicht geladen.)"
+	if equipment_types == null or equipment_types.is_empty():
+		content_label.text = "Fehler beim Laden der Ausrüstung.\n\n(Die Datei equipment_types.json wurde nicht geladen.)"
 		return
 
 	var text := ""
 
-	for equip_id in definitions:
-		var cat = equip_manager.call("get_equipment_category", equip_id)
+	for equip_id in equipment_types:
+		var data = equipment_types[equip_id]
+		var cat = data.get("category", "")
+
 		if cat != category:
 			continue
 
-		var name = equip_manager.call("get_equipment_display_name", equip_id)
+		var display_name = data.get("display_name", equip_id)
 		var amount = stock.get(equip_id, 0)
 
-		text += "[b]%s[/b]\n   Bestand: %d\n\n" % [name, amount]
+		text += "[b]%s[/b]\n   Bestand: %d\n\n" % [display_name, amount]
 
 	content_label.text = text if text != "" else "Keine Einträge in dieser Kategorie."
 
