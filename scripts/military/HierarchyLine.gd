@@ -1,5 +1,9 @@
 extends MeshInstance3D
 
+# HierarchyLine - Zeichnet eine gebogene, leuchtende Linie zwischen zwei Einheiten
+# (z.B. Division → Corps → Army). Folgt den Einheiten dynamisch.
+# Wird von MilitaryManager in create_hierarchy_lines() erzeugt.
+
 var from_entity: Node3D = null
 var to_entity: Node3D = null
 var segments: int = 18
@@ -27,7 +31,7 @@ func _update_line():
 		var t = float(i) / segments
 		var p = from_pos.lerp(to_pos, t)
 		var bow = sin(t * PI) * bow_height
-		p = p.normalized() * (p.length() + bow)
+		p = p.normalized() * (p.length() + bow)   # Bogen nach außen
 		points.append(p)
 	
 	var st = SurfaceTool.new()
@@ -38,8 +42,9 @@ func _update_line():
 	
 	if not material_override:
 		var mat = StandardMaterial3D.new()
-		mat.albedo_color = Color(1.0, 1.0, 1.0)
+		mat.albedo_color = Color(0.6, 0.8, 1.0)
 		mat.emission_enabled = true
-		mat.emission = Color(0.7, 0.85, 1.0) * 4.0
+		mat.emission = Color(0.4, 0.7, 1.0) * 5.0
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		material_override = mat
