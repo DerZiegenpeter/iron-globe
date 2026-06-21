@@ -4,7 +4,6 @@ class_name GroundEntity
 @onready var sprite: Sprite3D = $Sprite3D
 @onready var label: Label3D = $Label3D
 @onready var click_area: Area3D = $ClickArea
-@onready var info_panel_node: Node3D = $InfoPanel
 @onready var collision_area_node: Area3D = $CollisionArea
 
 var entity_id: String = ""
@@ -45,7 +44,7 @@ var supply: float = 75.0
 
 const POSITION_ROTATION_DEGREES := 180.0
 
-var info_panel: Node3D = null
+var status_bars: Array = []
 var collision_area: Area3D = null
 
 const MIN_SEPARATION_DISTANCE := 4.8
@@ -122,7 +121,8 @@ func _ready():
 	add_to_group("ground_entities")
 
 	if is_combat_unit:
-		call_deferred("_setup_info_panel_and_collision")
+		call_deferred("_setup_status_on_unit")
+		call_deferred("_setup_collision_area")
 
 
 func _apply_orientation():
@@ -186,8 +186,6 @@ func _process(delta: float):
 				look_at(global_position + normal * 50.0, Vector3.UP)
 
 	_resolve_unit_collisions(delta)
-	if info_panel:
-		_billboard_info_panel()
 
 
 func _on_arrival():
@@ -212,22 +210,90 @@ func is_division() -> bool:
 
 
 # ============================================
-# Name + 3 Balken DIREKT AUF der Einheit
-# Genau wie auf deinem Screenshot:
-# - Name oben auf/oberhalb des Icons
-# - ORG / MAN / SUP Balken direkt darunter (kompakt)
+# Name + 3 Balken FEST auf der Einheit (ohne Billboard)
+# Ganz easy, sauber, direkt am Icon
 # ============================================
-func _setup_info_panel_and_collision():
-	if info_panel_node != null:
-		info_panel = info_panel_node
-	else:
-		info_panel = Node3D.new()
-		info_panel.name = "InfoPanel"
-		add_child(info_panel)
+func _setup_status_on_unit():
+	# Name direkt über der Einheit
+	if label:
+		label.position = Vector3(0, 2.4, 0.35)
+		label.font_size = 20
+		label.modulate = Color(1, 1, 1, 0.95)
 
-	# Sehr nah an der Einheit + leicht vorne
-	info_panel.position = Vector3(0, -0.85, 0.42)
+	_create_status_bars()
 
+
+func _create_status_bars():
+	for bar in status_bars:
+		if is_instance_valid(bar):
+			bar.queue_free()
+	status_bars.clear()
+
+	var org_percent = clamp(organization, 0.0, 100.0)
+	var man_percent = clamp(float(manpower) / float(max_manpower) * 100.0, 0.0, 100.0)
+	var sup_percent = clamp(supply, 0.0, 100.0)
+
+	var bar_max_width = 3.2
+	var bar_height = 0.32
+	var bar_spacing = 0.55
+	var start_y = -1.55
+
+	var bars_data = [
+		{"label": "ORG", "percent": org_percent, "color": Color(0.3, 0.75, 1.0)},
+		{"label": "MAN", "percent": man_percent, "color": Color(0.35, 0.9, 0.45)},
+		{"label": "SUP", "percent": sup_percent, "color": Color(1.0, 0.7, 0.25)}
+	]
+
+	for i in range(bars_data.size()):
+		var data = bars_data[i]
+		var y_pos = start_y - (i * bar_spacing)
+
+		# Balken-Hintergrund
+		var bar_bg = MeshInstance3D.new()
+		bar_bg.name = "BarBG_" + data.label
+		var bar_bg_mesh = PlaneMesh.new()
+		bar_bg_mesh.size = Vector2(bar_max_width, bar_height)
+		bar_bg.mesh = bar_bg_mesh
+		var bar_bg_mat = StandardMaterial3D.new()
+		bar_bg_mat.albedo_color = Color(0.08, 0.08, 0.1, 0.9)
+		bar_bg_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		bar_bg_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		bar_bg.material_override = bar_bg_mat
+		add_child(bar_bg)
+		bar_bg.position = Vector3(0, y_pos, 0.25)
+		status_bars.append(bar_bg)
+
+		# Farbiger Balken
+		var bar = MeshInstance3D.new()
+		bar.name = "Bar_" + data.label
+		var bar_mesh = PlaneMesh.new()
+		bar_mesh.size = Vector2(bar_max_width, bar_height)
+		bar.mesh = bar_mesh
+		var bar_mat = StandardMaterial3D.new()
+		bar_mat.albedo_color = data.color
+		bar_mat.emission_enabled = true
+		bar_mat.emission = data.color * 0.55
+		bar_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		bar.material_override = bar_mat
+		add_child(bar)
+		
+		var p = data.percent / 100.0
+		bar.position = Vector3(-bar_max_width / 2.0 + (bar_max_width * p / 2.0), y_pos, 0.28)
+		bar.scale = Vector3(p, 1.0, 1.0)
+		status_bars.append(bar)
+
+		# Kleines Label
+		var bar_label = Label3D.new()
+		bar_label.name = "BarLabel_" + data.label
+		bar_label.text = data.label
+		bar_label.font_size = 11
+		bar_label.modulate = Color(0.9, 0.9, 0.92)
+		bar_label.position = Vector3(-bar_max_width/2 - 0.65, y_pos, 0.3)
+		add_child(bar_label)
+		status_bars.append(bar_label)
+
+
+func _setup_collision_area():
 	if collision_area_node != null:
 		collision_area = collision_area_node
 	else:
@@ -246,106 +312,6 @@ func _setup_info_panel_and_collision():
 	collision_area.collision_mask = 1 << 1
 	collision_area.monitoring = true
 	collision_area.monitorable = true
-
-	_create_bars_inside_panel()
-
-
-func _create_bars_inside_panel():
-	if info_panel == null:
-		return
-
-	for child in info_panel.get_children():
-		if child.name.begins_with("InfoBackground") or child.name.begins_with("Bar") or child.name.begins_with("BarLabel"):
-			child.queue_free()
-
-	var org_percent = clamp(organization, 0.0, 100.0)
-	var man_percent = clamp(float(manpower) / float(max_manpower) * 100.0, 0.0, 100.0)
-	var sup_percent = clamp(supply, 0.0, 100.0)
-
-	var bar_max_width = 3.5
-	var bar_height = 0.37
-	var bar_spacing = 0.68
-
-	# Hintergrund
-	var bg = MeshInstance3D.new()
-	bg.name = "InfoBackground"
-	var bg_mesh = PlaneMesh.new()
-	bg_mesh.size = Vector2(bar_max_width + 1.0, 4.0)
-	bg.mesh = bg_mesh
-	var bg_mat = StandardMaterial3D.new()
-	bg_mat.albedo_color = Color(0.04, 0.04, 0.07, 0.75)
-	bg_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	bg_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	bg.material_override = bg_mat
-	info_panel.add_child(bg)
-	bg.position = Vector3(0, 0.3, 0)
-
-	# NAME oben auf der Einheit
-	if label and label.get_parent() != info_panel:
-		label.reparent(info_panel)
-		label.position = Vector3(0, 2.75, 0.5)
-		label.font_size = 21
-		label.modulate = Color(1, 1, 1, 0.95)
-
-	var bars_data = [
-		{"label": "ORG", "percent": org_percent, "color": Color(0.3, 0.75, 1.0)},
-		{"label": "MAN", "percent": man_percent, "color": Color(0.35, 0.9, 0.45)},
-		{"label": "SUP", "percent": sup_percent, "color": Color(1.0, 0.7, 0.25)}
-	]
-
-	for i in range(bars_data.size()):
-		var data = bars_data[i]
-		var y_pos = 0.15 - (i * bar_spacing)
-
-		var bar_bg = MeshInstance3D.new()
-		bar_bg.name = "BarBG_" + data.label
-		var bar_bg_mesh = PlaneMesh.new()
-		bar_bg_mesh.size = Vector2(bar_max_width, bar_height)
-		bar_bg.mesh = bar_bg_mesh
-		var bar_bg_mat = StandardMaterial3D.new()
-		bar_bg_mat.albedo_color = Color(0.1, 0.1, 0.13, 0.92)
-		bar_bg_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		bar_bg_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		bar_bg.material_override = bar_bg_mat
-		info_panel.add_child(bar_bg)
-		bar_bg.position = Vector3(0, y_pos, 0.08)
-
-		var bar = MeshInstance3D.new()
-		bar.name = "Bar_" + data.label
-		var bar_mesh = PlaneMesh.new()
-		bar_mesh.size = Vector2(bar_max_width, bar_height)
-		bar.mesh = bar_mesh
-		var bar_mat = StandardMaterial3D.new()
-		bar_mat.albedo_color = data.color
-		bar_mat.emission_enabled = true
-		bar_mat.emission = data.color * 0.6
-		bar_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		bar.material_override = bar_mat
-		info_panel.add_child(bar)
-
-		var p = data.percent / 100.0
-		bar.position = Vector3(-bar_max_width / 2.0 + (bar_max_width * p / 2.0), y_pos, 0.12)
-		bar.scale = Vector3(p, 1.0, 1.0)
-
-		var bar_label = Label3D.new()
-		bar_label.name = "BarLabel_" + data.label
-		bar_label.text = data.label
-		bar_label.font_size = 12
-		bar_label.modulate = Color(0.92, 0.92, 0.94)
-		bar_label.position = Vector3(-bar_max_width/2 - 0.72, y_pos, 0.15)
-		info_panel.add_child(bar_label)
-
-
-func _billboard_info_panel():
-	if info_panel == null:
-		return
-	var cam = get_viewport().get_camera_3d()
-	if cam:
-		info_panel.look_at(cam.global_position, Vector3.UP)
-
-
-func _get_strength() -> float:
-	return float(manpower) * clamp(organization / 100.0, 0.2, 1.5) + 10.0
 
 
 func _resolve_unit_collisions(delta: float):
@@ -390,27 +356,9 @@ func _resolve_unit_collisions(delta: float):
 		_apply_orientation()
 
 
+func _get_strength() -> float:
+	return float(manpower) * clamp(organization / 100.0, 0.2, 1.5) + 10.0
+
+
 func update_info_bars():
-	if info_panel == null:
-		return
-	var org_p = clamp(organization / 100.0, 0.0, 1.0)
-	var man_p = clamp(float(manpower) / float(max_manpower), 0.0, 1.0)
-	var sup_p = clamp(supply / 100.0, 0.0, 1.0)
-
-	var bar_org = info_panel.find_child("Bar_ORG", true, false)
-	if bar_org:
-		var p = org_p
-		bar_org.position.x = -3.5 / 2.0 + (3.5 * p / 2.0)
-		bar_org.scale.x = p
-
-	var bar_man = info_panel.find_child("Bar_MAN", true, false)
-	if bar_man:
-		var p = man_p
-		bar_man.position.x = -3.5 / 2.0 + (3.5 * p / 2.0)
-		bar_man.scale.x = p
-
-	var bar_sup = info_panel.find_child("Bar_SUP", true, false)
-	if bar_sup:
-		var p = sup_p
-		bar_sup.position.x = -3.5 / 2.0 + (3.5 * p / 2.0)
-		bar_sup.scale.x = p
+	pass
