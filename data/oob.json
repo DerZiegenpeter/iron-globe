@@ -1,169 +1,170 @@
 {
+  "metadata": {
+	"description": "German and Polish forces facing each other. Combat units closer to the front, higher commands further back."
+  },
   "GER": {
 	"high_command": {
-	  "id": "ger_hq",
-	  "name": "German High Command",
-	  "position": [1200, 80, 0],
+	  "id": "ger_high_command_1",
+	  "name": "German High Command 1",
+	  "type": "high_command",
+	  "position": [1250, 80, -30],
 	  "children": ["ger_army_group_1"]
 	},
 	"army_groups": [
 	  {
 		"id": "ger_army_group_1",
-		"name": "Army Group Center",
-		"position": [1150, 60, 0],
+		"name": "German Army Group 1",
+		"type": "army_group",
+		"position": [1180, 60, -20],
 		"children": ["ger_army_1"]
 	  }
 	],
 	"armies": [
 	  {
 		"id": "ger_army_1",
-		"name": "9th Army",
-		"position": [1100, 40, 0],
-		"children": ["ger_corps_1"]
+		"name": "German Army 1",
+		"type": "army",
+		"position": [1120, 45, -10],
+		"children": ["ger_corps_1", "ger_corps_2"]
 	  }
 	],
 	"corps": [
 	  {
 		"id": "ger_corps_1",
-		"name": "XXXXI Corps",
-		"position": [1050, 20, 0],
-		"children": ["ger_div_1", "ger_div_2", "ger_div_3", "ger_brig_1"]
+		"name": "German Corps 1",
+		"type": "corps",
+		"position": [1060, 35, 5],
+		"children": ["ger_division_1", "ger_division_2", "ger_brigade_1"]
+	  },
+	  {
+		"id": "ger_corps_2",
+		"name": "German Corps 2",
+		"type": "corps",
+		"position": [1040, 30, -5],
+		"children": ["ger_division_3", "ger_brigade_2"]
 	  }
 	],
 	"divisions": [
 	  {
-		"id": "ger_div_1",
-		"name": "1st Infantry Division",
-		"type": "infantry",
-		"nation_code": "GER",
-		"position": [1000, 0, 0],
-		"experience": 75,
-		"composition": [
-		  {"type": "infantry", "amount": 12000},
-		  {"type": "artillery", "amount": 48}
-		]
+		"id": "ger_division_1",
+		"name": "German Division 1",
+		"type": "division",
+		"position": [990, 28, 12],
+		"manpower": 16000,
+		"max_manpower": 16500,
+		"organization": 88,
+		"experience": 45
 	  },
 	  {
-		"id": "ger_div_2",
-		"name": "2nd Infantry Division",
-		"type": "infantry",
-		"nation_code": "GER",
-		"position": [980, -30, 0],
-		"experience": 70,
-		"composition": [
-		  {"type": "infantry", "amount": 11500},
-		  {"type": "artillery", "amount": 42}
-		]
+		"id": "ger_division_2",
+		"name": "German Division 2",
+		"type": "division",
+		"position": [975, 25, 8],
+		"manpower": 15800,
+		"max_manpower": 16300,
+		"organization": 85,
+		"experience": 40
 	  },
 	  {
-		"id": "ger_div_3",
-		"name": "3rd Panzer Division",
-		"type": "armor",
-		"nation_code": "GER",
-		"position": [960, -60, 0],
-		"experience": 80,
-		"composition": [
-		  {"type": "tank", "amount": 180},
-		  {"type": "motorized_infantry", "amount": 6500}
-		]
+		"id": "ger_division_3",
+		"name": "German Division 3",
+		"type": "division",
+		"position": [960, 22, -8],
+		"manpower": 16200,
+		"max_manpower": 16700,
+		"organization": 87,
+		"experience": 48
 	  }
 	],
 	"brigades": [
 	  {
-		"id": "ger_brig_1",
-		"name": "1st Motorized Brigade",
-		"type": "motorized",
-		"nation_code": "GER",
-		"position": [940, -90, 0],
-		"experience": 65,
-		"composition": [
-		  {"type": "motorized_infantry", "amount": 4200},
-		  {"type": "recon", "amount": 800}
-		]
+		"id": "ger_brigade_1",
+		"name": "German Brigade 1",
+		"type": "brigade",
+		"position": [985, 30, 15],
+		"manpower": 4000,
+		"max_manpower": 4300,
+		"organization": 90,
+		"experience": 55
+	  },
+	  {
+		"id": "ger_brigade_2",
+		"name": "German Brigade 2",
+		"type": "brigade",
+		"position": [950, 20, -12],
+		"manpower": 3800,
+		"max_manpower": 4100,
+		"organization": 82,
+		"experience": 42
 	  }
 	]
   },
-
   "POL": {
 	"high_command": {
-	  "id": "pol_hq",
-	  "name": "Polish High Command",
-	  "position": [600, 120, 0],
-	  "children": ["pol_army_group_1"]
+	  "id": "pol_high_command_1",
+	  "name": "Polish High Command 1",
+	  "type": "high_command",
+	  "position": [820, 70, 40],
+	  "children": ["pol_army_1"]
 	},
-	"army_groups": [
-	  {
-		"id": "pol_army_group_1",
-		"name": "Polish Army Group",
-		"position": [580, 100, 0],
-		"children": ["pol_army_1"]
-	  }
-	],
+	"army_groups": [],
 	"armies": [
 	  {
 		"id": "pol_army_1",
-		"name": "Army Poznan",
-		"position": [560, 80, 0],
-		"children": ["pol_corps_1"]
+		"name": "Polish Army 1",
+		"type": "army",
+		"position": [880, 55, 25],
+		"children": ["pol_corps_1", "pol_corps_2"]
 	  }
 	],
 	"corps": [
 	  {
 		"id": "pol_corps_1",
-		"name": "Polish Corps",
-		"position": [540, 60, 0],
-		"children": ["pol_div_1", "pol_div_2", "pol_div_3", "pol_brig_1"]
+		"name": "Polish Corps 1",
+		"type": "corps",
+		"position": [930, 45, 15],
+		"children": ["pol_division_1", "pol_brigade_1"]
+	  },
+	  {
+		"id": "pol_corps_2",
+		"name": "Polish Corps 2",
+		"type": "corps",
+		"position": [910, 40, 5],
+		"children": ["pol_division_2"]
 	  }
 	],
 	"divisions": [
 	  {
-		"id": "pol_div_1",
-		"name": "1st Polish Infantry Division",
-		"type": "infantry",
-		"nation_code": "POL",
-		"position": [520, 40, 0],
-		"experience": 60,
-		"composition": [
-		  {"type": "infantry", "amount": 11000},
-		  {"type": "artillery", "amount": 36}
-		]
+		"id": "pol_division_1",
+		"name": "Polish Division 1",
+		"type": "division",
+		"position": [960, 38, 18],
+		"manpower": 14000,
+		"max_manpower": 14500,
+		"organization": 78,
+		"experience": 32
 	  },
 	  {
-		"id": "pol_div_2",
-		"name": "2nd Polish Infantry Division",
-		"type": "infantry",
-		"nation_code": "POL",
-		"position": [500, 10, 0],
-		"experience": 55,
-		"composition": [
-		  {"type": "infantry", "amount": 10500},
-		  {"type": "artillery", "amount": 32}
-		]
-	  },
-	  {
-		"id": "pol_div_3",
-		"name": "3rd Polish Infantry Division",
-		"type": "infantry",
-		"nation_code": "POL",
-		"position": [480, -20, 0],
-		"experience": 58,
-		"composition": [
-		  {"type": "infantry", "amount": 10800},
-		  {"type": "artillery", "amount": 34}
-		]
+		"id": "pol_division_2",
+		"name": "Polish Division 2",
+		"type": "division",
+		"position": [945, 35, 8],
+		"manpower": 13800,
+		"max_manpower": 14300,
+		"organization": 75,
+		"experience": 35
 	  }
 	],
 	"brigades": [
 	  {
-		"id": "pol_brig_1",
-		"name": "Polish Cavalry Brigade",
-		"type": "cavalry",
-		"nation_code": "POL",
-		"position": [460, -50, 0],
-		"experience": 50,
-		"composition": [
-		  {"type": "cavalry", "amount": 2800}
-		]
+		"id": "pol_brigade_1",
+		"name": "Polish Brigade 1",
+		"type": "brigade",
+		"position": [970, 40, 22],
+		"manpower": 3900,
+		"max_manpower": 4200,
+		"organization": 80,
+		"experience": 38
 	  }
 	]
   }
