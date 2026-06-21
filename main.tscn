@@ -51,14 +51,10 @@ script = ExtResource("2_0xm2m")
 
 [node name="Topbar" parent="UI" unique_id=1001731856 instance=ExtResource("6_272bh")]
 layout_mode = 3
-offset_top = 0.0
-offset_bottom = 50.0
 grow_horizontal = 2
 
 [node name="EquipmentBar" parent="UI" unique_id=1937908801 instance=ExtResource("7_272bh")]
-layout_mode = 3
 offset_top = 55.0
-grow_horizontal = 2
 
 [node name="InfoPanel" parent="UI" unique_id=357459841 instance=ExtResource("4_1bvp3")]
 

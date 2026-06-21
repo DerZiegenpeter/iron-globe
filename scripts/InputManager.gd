@@ -1,6 +1,6 @@
 extends Node
 
-var selected_entity: GroundEntity = null
+var selected_entity: Node = null
 
 func _unhandled_input(event):
 	if not (event is InputEventMouseButton and event.pressed):
@@ -49,12 +49,14 @@ func _unhandled_input(event):
 		_issue_move_order(target_world_pos)
 
 
-func _select(entity: GroundEntity):
+func _select(entity: Node):
 	_deselect()
 	selected_entity = entity
-	entity.select()
+	
+	if entity.has_method("select"):
+		entity.select()
 
-	# Signal an InfoPanel senden (für Unit-Info-Fenster)
+	# Signal an GameData senden
 	var game_data = get_node_or_null("/root/GameData")
 	if game_data:
 		game_data.unit_selected.emit(entity)
@@ -66,7 +68,8 @@ func _deselect():
 		if gd:
 			gd.unit_deselected.emit()
 
-		selected_entity.deselect()
+		if selected_entity.has_method("deselect"):
+			selected_entity.deselect()
 		selected_entity = null
 
 
@@ -74,11 +77,11 @@ func _issue_move_order(world_pos: Vector3):
 	if selected_entity == null:
 		return
 
-	var target_pos = world_pos.normalized() * 1002.0
-	var new_lat = rad_to_deg(asin(target_pos.y / 1002.0))
-	var new_lon = rad_to_deg(atan2(target_pos.x, target_pos.z))
-
-	selected_entity.move_to(new_lat, new_lon)
+	if selected_entity.has_method("move_to"):
+		var target_pos = world_pos.normalized() * 1002.0
+		var new_lat = rad_to_deg(asin(target_pos.y / 1002.0))
+		var new_lon = rad_to_deg(atan2(target_pos.x, target_pos.z))
+		selected_entity.move_to(new_lat, new_lon)
 
 
 func _intersect_ray_sphere(ray_origin: Vector3, ray_dir: Vector3, sphere_center: Vector3, sphere_radius: float) -> Vector3:
