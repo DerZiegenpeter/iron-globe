@@ -39,7 +39,12 @@ var is_combat_unit: bool = true
 var type_display_name: String = "Division"
 var required_equipment: Array = []
 
-# === HIER DEN WERT ÄNDERN, bis die Einheiten in Europa erscheinen ===
+var supply: float = 75.0   # Wird aus unit_data geladen oder Default
+
+# Positionierung über oob.json + 180° Rotation um Y (UP).
+# Mit aktualisierten Positionen in oob.json (inverse der DE/PL Koordinaten) 
+# erscheinen die Einheiten jetzt korrekt an der deutsch-polnischen Grenze 
+# (GER westlich, POL östlich, Front nah beieinander, Higher Commands weiter zurück).
 const POSITION_ROTATION_DEGREES := 180.0
 
 func _ready():
@@ -67,6 +72,12 @@ func _ready():
 		equipment_readiness = data.get("equipment_readiness", equipment_readiness)
 		experience = data.get("experience", experience)
 		required_equipment = data.get("required_equipment", [])
+		
+		# Supply für später (aktuell noch nicht in oob.json → Default 75)
+		if not data.has("supply"):
+			supply = 75.0
+		else:
+			supply = data.get("supply", 75.0)
 
 	if entity_name == "":
 		entity_name = name
@@ -77,12 +88,27 @@ func _ready():
 
 	if sprite:
 		sprite.visible = true
-		if entity_type in ["high_command", "army_group", "army", "corps"]:
-			sprite.scale = Vector3(1.8, 1.8, 1.8)
-			is_combat_unit = false
-		else:
-			sprite.scale = Vector3(1.2, 1.2, 1.2)
-			is_combat_unit = true
+		
+		# Staffelung der Größen auf der Map (dezent aber klar erkennbar)
+		match entity_type:
+			"high_command":
+				sprite.scale = Vector3(2.6, 2.6, 2.6)
+				is_combat_unit = false
+			"army_group":
+				sprite.scale = Vector3(2.2, 2.2, 2.2)
+				is_combat_unit = false
+			"army":
+				sprite.scale = Vector3(1.9, 1.9, 1.9)
+				is_combat_unit = false
+			"corps":
+				sprite.scale = Vector3(1.55, 1.55, 1.55)
+				is_combat_unit = false
+			"brigade":
+				sprite.scale = Vector3(1.15, 1.15, 1.15)
+				is_combat_unit = true
+			_:
+				sprite.scale = Vector3(1.2, 1.2, 1.2)  # Division als Standard
+				is_combat_unit = true
 
 	type_display_name = entity_type.capitalize()
 

@@ -1,13 +1,13 @@
 {
   "metadata": {
-	"description": "German and Polish forces facing each other. Combat units closer to the front, higher commands further back."
+	"description": "German and Polish forces facing each other at the German-Polish border. Combat units closer to the front line (around 52N 14.5E), higher commands positioned further back in their respective territories."
   },
   "GER": {
 	"high_command": {
 	  "id": "ger_high_command_1",
 	  "name": "German High Command 1",
 	  "type": "high_command",
-	  "position": [1250, 80, -30],
+	  "position": [-106.7, 830.2, -713.7],
 	  "children": ["ger_army_group_1"]
 	},
 	"army_groups": [
@@ -15,7 +15,7 @@
 		"id": "ger_army_group_1",
 		"name": "German Army Group 1",
 		"type": "army_group",
-		"position": [1180, 60, -20],
+		"position": [-122.3, 845.1, -693.4],
 		"children": ["ger_army_1"]
 	  }
 	],
@@ -24,7 +24,7 @@
 		"id": "ger_army_1",
 		"name": "German Army 1",
 		"type": "army",
-		"position": [1120, 45, -10],
+		"position": [-141.0, 857.3, -674.7],
 		"children": ["ger_corps_1", "ger_corps_2"]
 	  }
 	],
@@ -33,14 +33,14 @@
 		"id": "ger_corps_1",
 		"name": "German Corps 1",
 		"type": "corps",
-		"position": [1060, 35, 5],
+		"position": [-152.3, 866.8, -659.9],
 		"children": ["ger_division_1", "ger_division_2", "ger_brigade_1"]
 	  },
 	  {
 		"id": "ger_corps_2",
 		"name": "German Corps 2",
 		"type": "corps",
-		"position": [1040, 30, -5],
+		"position": [-149.9, 863.3, -665.1],
 		"children": ["ger_division_3", "ger_brigade_2"]
 	  }
 	],
@@ -49,7 +49,7 @@
 		"id": "ger_division_1",
 		"name": "German Division 1",
 		"type": "division",
-		"position": [990, 28, 12],
+		"position": [-157.8, 871.5, -652.3],
 		"manpower": 16000,
 		"max_manpower": 16500,
 		"organization": 88,
@@ -59,7 +59,7 @@
 		"id": "ger_division_2",
 		"name": "German Division 2",
 		"type": "division",
-		"position": [975, 25, 8],
+		"position": [-156.2, 869.2, -655.8],
 		"manpower": 15800,
 		"max_manpower": 16300,
 		"organization": 85,
@@ -69,7 +69,7 @@
 		"id": "ger_division_3",
 		"name": "German Division 3",
 		"type": "division",
-		"position": [960, 22, -8],
+		"position": [-159.7, 872.7, -650.3],
 		"manpower": 16200,
 		"max_manpower": 16700,
 		"organization": 87,
@@ -81,7 +81,7 @@
 		"id": "ger_brigade_1",
 		"name": "German Brigade 1",
 		"type": "brigade",
-		"position": [985, 30, 15],
+		"position": [-157.0, 870.3, -654.1],
 		"manpower": 4000,
 		"max_manpower": 4300,
 		"organization": 90,
@@ -91,7 +91,7 @@
 		"id": "ger_brigade_2",
 		"name": "German Brigade 2",
 		"type": "brigade",
-		"position": [950, 20, -12],
+		"position": [-154.3, 868.0, -657.9],
 		"manpower": 3800,
 		"max_manpower": 4100,
 		"organization": 82,
@@ -104,7 +104,7 @@
 	  "id": "pol_high_command_1",
 	  "name": "Polish High Command 1",
 	  "type": "high_command",
-	  "position": [820, 70, 40],
+	  "position": [-258.6, 830.2, -673.7],
 	  "children": ["pol_army_1"]
 	},
 	"army_groups": [],
@@ -113,7 +113,7 @@
 		"id": "pol_army_1",
 		"name": "Polish Army 1",
 		"type": "army",
-		"position": [880, 55, 25],
+		"position": [-209.1, 852.4, -663.1],
 		"children": ["pol_corps_1", "pol_corps_2"]
 	  }
 	],
@@ -122,14 +122,14 @@
 		"id": "pol_corps_1",
 		"name": "Polish Corps 1",
 		"type": "corps",
-		"position": [930, 45, 15],
+		"position": [-177.6, 866.8, -653.5],
 		"children": ["pol_division_1", "pol_brigade_1"]
 	  },
 	  {
 		"id": "pol_corps_2",
 		"name": "Polish Corps 2",
 		"type": "corps",
-		"position": [910, 40, 5],
+		"position": [-175.7, 862.1, -660.3],
 		"children": ["pol_division_2"]
 	  }
 	],
@@ -138,7 +138,7 @@
 		"id": "pol_division_1",
 		"name": "Polish Division 1",
 		"type": "division",
-		"position": [960, 38, 18],
+		"position": [-170.3, 871.5, -649.2],
 		"manpower": 14000,
 		"max_manpower": 14500,
 		"organization": 78,
@@ -148,7 +148,7 @@
 		"id": "pol_division_2",
 		"name": "Polish Division 2",
 		"type": "division",
-		"position": [945, 35, 8],
+		"position": [-168.8, 869.2, -652.7],
 		"manpower": 13800,
 		"max_manpower": 14300,
 		"organization": 75,
@@ -160,7 +160,7 @@
 		"id": "pol_brigade_1",
 		"name": "Polish Brigade 1",
 		"type": "brigade",
-		"position": [970, 40, 22],
+		"position": [-171.8, 870.3, -650.4],
 		"manpower": 3900,
 		"max_manpower": 4200,
 		"organization": 80,

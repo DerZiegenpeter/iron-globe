@@ -108,6 +108,6 @@ func create_hierarchy_lines():
 			container.add_child(line)
 			line.set_script(load("res://scripts/military/HierarchyLine.gd"))
 			if line.has_method("setup"):
-				line.setup(entities[parent_id], entities[child_id], 18, 32.0)
+				line.setup(entities[parent_id], entities[child_id], 24, 120.0)
 			count += 1
-	print("✅ %d Hierarchy Lines erstellt" % count)
+	print("Checkmark %d Hierarchy Lines erstellt" % count)
