@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b0flgwwh11slf"]
+[gd_scene format=3 uid="uid://digf0ec65c4ic"]
 
 [ext_resource type="Script" uid="uid://ceu0hloerj26d" path="res://scripts/military/GroundEntity.gd" id="1_wih7h"]
 [ext_resource type="Texture2D" uid="uid://bp1bh6v43us03" path="res://sprites/division_ground.png" id="2_qn474"]
