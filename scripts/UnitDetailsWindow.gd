@@ -23,37 +23,35 @@ func open_for_entity(entity: GroundEntity):
 
 	title_label.text = "%s (%s)" % [entity.entity_name, entity.entity_type.capitalize()]
 
-	# === STATS ===
+	# === STATS (kompakt) ===
 	var stats_text := ""
-	stats_text += "[b]Readiness:[/b] %.1f%%\n" % (entity.equipment_readiness * 100)
-	stats_text += "[b]Manpower:[/b] %d / %d\n" % [entity.manpower, entity.max_manpower]
-	stats_text += "[b]Organization:[/b] %.1f / %.1f\n" % [entity.organization, entity.max_organization]
-	stats_text += "[b]Experience:[/b] %.1f\n\n" % entity.experience
-	stats_text += "[b]Soft Attack:[/b] %.1f\n" % entity.soft_attack
-	stats_text += "[b]Hard Attack:[/b] %.1f\n" % entity.hard_attack
-	stats_text += "[b]Defense:[/b] %.1f\n" % entity.defense
-	stats_text += "[b]Breakthrough:[/b] %.1f\n" % entity.breakthrough
+	stats_text += "[b]Readiness:[/b] %.1f%%   |   [b]Manpower:[/b] %d/%d   |   [b]Org:[/b] %.1f/%.1f\n" % [
+		entity.equipment_readiness * 100, entity.manpower, entity.max_manpower,
+		entity.organization, entity.max_organization
+	]
+	stats_text += "[b]Experience:[/b] %.1f   |   [b]Soft:[/b] %.1f   [b]Hard:[/b] %.1f   [b]Def:[/b] %.1f   [b]Break:[/b] %.1f\n" % [
+		entity.experience, entity.soft_attack, entity.hard_attack, entity.defense, entity.breakthrough
+	]
 	stats_text += "[b]Supply Consumption:[/b] %.2f\n" % entity.supply_consumption
 
 	stats_label.text = stats_text
 
-	# === EQUIPMENT ===
-	var equip_text := "[b]AUSRÜSTUNG[/b]\n\n"
+	# === EQUIPMENT (soll/ist) - bleibt kompakt ===
+	var equip_text := "[b]AUSRÜSTUNG (soll / ist)[/b]\n"
 
 	if entity.required_equipment.is_empty():
-		equip_text += "Keine Ausrüstungsanforderungen."
+		equip_text += "Keine Ausrüstungsanforderungen.\n"
 	else:
 		for equip_id in entity.required_equipment:
 			var needed = entity.required_equipment[equip_id]
 			var missing = entity.missing_equipment.get(equip_id, 0)
 			var fulfilled = needed - missing
-
-			equip_text += "%s\n" % equip_id.capitalize()
-			equip_text += "  Benötigt:   %d\n" % needed
-			equip_text += "  Erfüllt:    %d\n" % fulfilled
-			equip_text += "  Fehlend:    %d\n\n" % missing
+			equip_text += "%s:  %d / %d  (fehlt %d)\n" % [equip_id.capitalize(), fulfilled, needed, missing]
 
 	equipment_label.text = equip_text
+
+	# Hinweis: Für die volle Komposition (Bataillone) siehe unten oder erweitere das Fenster.
+	# Wenn du die Komposition hier sehen willst, drücke auf einen Button oder erweitere das UI-Fenster.
 
 
 func close_window():

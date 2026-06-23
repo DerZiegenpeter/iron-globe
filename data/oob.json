@@ -1,108 +1,59 @@
 {
   "metadata": {
-	"description": "German and Polish forces facing each other at the German-Polish border. Combat units closer to the front line (around 52N 14.5E), higher commands positioned further back in their respective territories."
+	"description": "Zwei Divisionen (deutsch und polnisch) mit voller Befehlskette stehen sich an der deutsch-polnischen Grenze gegenüber. Bataillone definieren die Werte der Divisionen. Generische, logische Kompositionen für Bodentruppen."
   },
   "GER": {
 	"high_command": {
-	  "id": "ger_high_command_1",
-	  "name": "German High Command 1",
+	  "id": "ger_hc_1",
+	  "name": "Oberkommando des Heeres",
 	  "type": "high_command",
 	  "position": [-106.7, 830.2, -713.7],
-	  "children": ["ger_army_group_1"]
+	  "children": ["ger_army_1"]
 	},
-	"army_groups": [
-	  {
-		"id": "ger_army_group_1",
-		"name": "German Army Group 1",
-		"type": "army_group",
-		"position": [-122.3, 845.1, -693.4],
-		"children": ["ger_army_1"]
-	  }
-	],
+	"army_groups": [],
 	"armies": [
 	  {
 		"id": "ger_army_1",
-		"name": "German Army 1",
+		"name": "8. Armee",
 		"type": "army",
-		"position": [-141.0, 857.3, -674.7],
-		"children": ["ger_corps_1", "ger_corps_2"]
+		"position": [-122.3, 845.1, -693.4],
+		"children": ["ger_corps_1"]
 	  }
 	],
 	"corps": [
 	  {
 		"id": "ger_corps_1",
-		"name": "German Corps 1",
+		"name": "XXXX. Armeekorps",
 		"type": "corps",
 		"position": [-152.3, 866.8, -659.9],
-		"children": ["ger_division_1", "ger_division_2", "ger_brigade_1"]
-	  },
-	  {
-		"id": "ger_corps_2",
-		"name": "German Corps 2",
-		"type": "corps",
-		"position": [-149.9, 863.3, -665.1],
-		"children": ["ger_division_3", "ger_brigade_2"]
+		"children": ["ger_div_1"]
 	  }
 	],
 	"divisions": [
 	  {
-		"id": "ger_division_1",
-		"name": "German Division 1",
+		"id": "ger_div_1",
+		"name": "1. Infanterie-Division (Ost)",
 		"type": "division",
 		"position": [-157.8, 871.5, -652.3],
-		"manpower": 16000,
-		"max_manpower": 16500,
-		"organization": 88,
-		"experience": 45
-	  },
-	  {
-		"id": "ger_division_2",
-		"name": "German Division 2",
-		"type": "division",
-		"position": [-156.2, 869.2, -655.8],
-		"manpower": 15800,
-		"max_manpower": 16300,
-		"organization": 85,
-		"experience": 40
-	  },
-	  {
-		"id": "ger_division_3",
-		"name": "German Division 3",
-		"type": "division",
-		"position": [-159.7, 872.7, -650.3],
-		"manpower": 16200,
-		"max_manpower": 16700,
-		"organization": 87,
-		"experience": 48
+		"equipment_readiness": 0.88,
+		"battalions": [
+		  {"id": "ger_d1_b1", "name": "1. Grenadier-Bataillon", "type": "infantry"},
+		  {"id": "ger_d1_b2", "name": "2. Grenadier-Bataillon", "type": "infantry"},
+		  {"id": "ger_d1_b3", "name": "3. Grenadier-Bataillon", "type": "infantry"},
+		  {"id": "ger_d1_b4", "name": "I. Panzer-Bataillon", "type": "medium_tank_battalion"},
+		  {"id": "ger_d1_b5", "name": "II. Panzer-Bataillon", "type": "medium_tank_battalion"},
+		  {"id": "ger_d1_b6", "name": "1. Feldartillerie-Bataillon", "type": "field_artillery_battalion"},
+		  {"id": "ger_d1_b7", "name": "2. Leichte Artillerie-Bataillon", "type": "light_field_artillery_battalion"},
+		  {"id": "ger_d1_b8", "name": "Panzerjäger-Bataillon 1", "type": "tank_destroyer_battalion"}
+		]
 	  }
 	],
-	"brigades": [
-	  {
-		"id": "ger_brigade_1",
-		"name": "German Brigade 1",
-		"type": "brigade",
-		"position": [-157.0, 870.3, -654.1],
-		"manpower": 4000,
-		"max_manpower": 4300,
-		"organization": 90,
-		"experience": 55
-	  },
-	  {
-		"id": "ger_brigade_2",
-		"name": "German Brigade 2",
-		"type": "brigade",
-		"position": [-154.3, 868.0, -657.9],
-		"manpower": 3800,
-		"max_manpower": 4100,
-		"organization": 82,
-		"experience": 42
-	  }
-	]
+	"brigades": []
   },
   "POL": {
 	"high_command": {
-	  "id": "pol_high_command_1",
-	  "name": "Polish High Command 1",
+	  "id": "pol_hc_1",
+	  "name": "Naczelne Dowództwo",
 	  "type": "high_command",
 	  "position": [-258.6, 830.2, -673.7],
 	  "children": ["pol_army_1"]
@@ -111,61 +62,40 @@
 	"armies": [
 	  {
 		"id": "pol_army_1",
-		"name": "Polish Army 1",
+		"name": "Armia Poznań",
 		"type": "army",
 		"position": [-209.1, 852.4, -663.1],
-		"children": ["pol_corps_1", "pol_corps_2"]
+		"children": ["pol_corps_1"]
 	  }
 	],
 	"corps": [
 	  {
 		"id": "pol_corps_1",
-		"name": "Polish Corps 1",
+		"name": "I Korpus",
 		"type": "corps",
 		"position": [-177.6, 866.8, -653.5],
-		"children": ["pol_division_1", "pol_brigade_1"]
-	  },
-	  {
-		"id": "pol_corps_2",
-		"name": "Polish Corps 2",
-		"type": "corps",
-		"position": [-175.7, 862.1, -660.3],
-		"children": ["pol_division_2"]
+		"children": ["pol_div_1"]
 	  }
 	],
 	"divisions": [
 	  {
-		"id": "pol_division_1",
-		"name": "Polish Division 1",
+		"id": "pol_div_1",
+		"name": "10. Dywizja Piechoty",
 		"type": "division",
 		"position": [-170.3, 871.5, -649.2],
-		"manpower": 14000,
-		"max_manpower": 14500,
-		"organization": 78,
-		"experience": 32
-	  },
-	  {
-		"id": "pol_division_2",
-		"name": "Polish Division 2",
-		"type": "division",
-		"position": [-168.8, 869.2, -652.7],
-		"manpower": 13800,
-		"max_manpower": 14300,
-		"organization": 75,
-		"experience": 35
+		"equipment_readiness": 0.76,
+		"battalions": [
+		  {"id": "pol_d1_b1", "name": "1. Batalion Strzelców", "type": "infantry"},
+		  {"id": "pol_d1_b2", "name": "2. Batalion Strzelców", "type": "infantry"},
+		  {"id": "pol_d1_b3", "name": "3. Batalion Strzelców", "type": "infantry"},
+		  {"id": "pol_d1_b4", "name": "4. Batalion Strzelców", "type": "infantry"},
+		  {"id": "pol_d1_b5", "name": "I. Batalion Czołgów Lekkich", "type": "light_tank_battalion"},
+		  {"id": "pol_d1_b6", "name": "1. Batalion Artylerii", "type": "field_artillery_battalion"},
+		  {"id": "pol_d1_b7", "name": "2. Batalion Artylerii", "type": "light_field_artillery_battalion"},
+		  {"id": "pol_d1_b8", "name": "Batalion Motorowy", "type": "motorized_infantry"}
+		]
 	  }
 	],
-	"brigades": [
-	  {
-		"id": "pol_brigade_1",
-		"name": "Polish Brigade 1",
-		"type": "brigade",
-		"position": [-171.8, 870.3, -650.4],
-		"manpower": 3900,
-		"max_manpower": 4200,
-		"organization": 80,
-		"experience": 38
-	  }
-	]
+	"brigades": []
   }
 }

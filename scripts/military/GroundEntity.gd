@@ -35,6 +35,19 @@ var org_bar: MeshInstance3D
 var man_bar: MeshInstance3D
 var sup_bar: MeshInstance3D
 
+# Neue Variablen für Bataillons-Komposition und Ausrüstung (soll/ist)
+var battalions: Array = []
+var required_equipment: Dictionary = {}
+var missing_equipment: Dictionary = {}
+var soft_attack: float = 0.0
+var hard_attack: float = 0.0
+var defense: float = 0.0
+var breakthrough: float = 0.0
+var supply_consumption: float = 0.0
+var experience: float = 40.0
+var max_organization: float = 100.0
+var equipment_fulfillment: float = 0.85
+
 
 func _ready():
 	if has_meta("unit_data"):
@@ -74,15 +87,120 @@ func _ready():
 	if collision_shape:
 		collision_shape.visible = false
 
-	# Balken nebeneinander positionieren
+	# Balken nebeneinander positionieren (jetzt mit Equipment als 3. Balken für Ausrüstung soll/ist)
 	_setup_bars_side_by_side()
 
 	_apply_scale_by_type()
 	create_wireframe_cube()
+	
+	# Aggregation aus Bataillonen (falls vorhanden) - das gibt die Werte für die Division!
+	if is_combat_unit and raw_data.has("battalions") and raw_data.battalions is Array:
+		_aggregate_from_battalions(raw_data.battalions)
+	
 	update_bars()
 	_apply_orientation()
 
 	add_to_group("ground_entities")
+
+
+func _load_battalion_templates() -> Dictionary:
+	var path = "res://data/battalion_types.json"
+	if not FileAccess.file_exists(path):
+		return {}
+	var file = FileAccess.open(path, FileAccess.READ)
+	var json = JSON.new()
+	json.parse(file.get_as_text())
+	file.close()
+	return json.data
+
+
+func _aggregate_from_battalions(bn_list: Array):
+	var total_man = 0
+	var total_max_man = 0
+	var total_org = 0.0
+	var total_exp = 0.0
+	var count = 0
+	var total_soft = 0.0
+	var total_hard = 0.0
+	var total_def = 0.0
+	var total_break = 0.0
+	var total_supply = 0.0
+	
+	required_equipment.clear()
+	battalions.clear()
+	missing_equipment.clear()
+	
+	var bn_templates = _load_battalion_templates()
+	
+	for bn_data in bn_list:
+		if not bn_data is Dictionary:
+			continue
+		var bn_id = bn_data.get("id", "")
+		var bn_name = bn_data.get("name", bn_id)
+		var bn_type = bn_data.get("type", "infantry")
+		
+		var template = bn_templates.get(bn_type, {})
+		if template.is_empty():
+			continue
+		
+		# Resolved battalion for composition view
+		var resolved = bn_data.duplicate(true)
+		resolved["template"] = template
+		resolved["display_type"] = template.get("display_name", bn_type)
+		battalions.append(resolved)
+		
+		# Aggregate (use bn_data overrides if present, else template)
+		var bn_man = bn_data.get("manpower", template.get("manpower", 500))
+		total_man += bn_man
+		total_max_man += bn_data.get("max_manpower", bn_man)
+		
+		var bn_org = bn_data.get("organization", template.get("organization", 80))
+		total_org += bn_org
+		
+		var bn_exp = bn_data.get("experience", 40)
+		total_exp += bn_exp
+		count += 1
+		
+		total_soft += template.get("soft_attack", 0)
+		total_hard += template.get("hard_attack", 0)
+		total_def += template.get("defense", 0)
+		total_break += template.get("breakthrough", 0)
+		total_supply += template.get("supply_consumption", 0)
+		
+		# Equipment requirements sum (soll)
+		var eq_req = template.get("equipment_requirements", {})
+		for eq_id in eq_req:
+			var amt = eq_req[eq_id]
+			if required_equipment.has(eq_id):
+				required_equipment[eq_id] += amt
+			else:
+				required_equipment[eq_id] = amt
+	
+	if count > 0:
+		manpower = total_man
+		max_manpower = total_max_man if total_max_man > total_man else total_man
+		organization = total_org / count
+		experience = total_exp / count
+		soft_attack = total_soft
+		hard_attack = total_hard
+		defense = total_def
+		breakthrough = total_break
+		supply_consumption = total_supply
+		
+		# Equipment fulfillment (ist) aus equipment_readiness oder raw
+		equipment_fulfillment = raw_data.get("equipment_readiness", equipment_readiness)
+		equipment_readiness = equipment_fulfillment
+		
+		# Demo: missing = needed * (1 - fulfillment)  => zeigt schön soll/ist
+		for eq_id in required_equipment:
+			var needed = required_equipment[eq_id]
+			var miss = int(needed * (1.0 - equipment_fulfillment))
+			missing_equipment[eq_id] = miss
+	
+	# Fallbacks falls keine Bataillone
+	if raw_data.has("soft_attack"):
+		soft_attack = raw_data.soft_attack
+	# ... weitere Fallbacks bei Bedarf
 
 
 func _setup_bars_side_by_side():
@@ -91,10 +209,11 @@ func _setup_bars_side_by_side():
 	sup_bar = get_node_or_null("Bars/SupBar")
 
 	var bars = [org_bar, man_bar, sup_bar]
+	# Farben: Org blau, Manpower grün, Equipment (Ausrüstung soll/ist) gold/gelb
 	var colors = [
 		Color(0.3, 0.75, 1.0),   # ORG - blau
 		Color(0.35, 0.9, 0.45),  # MAN - grün
-		Color(1.0, 0.7, 0.25)    # SUP - orange
+		Color(0.95, 0.75, 0.2)   # EQUIPMENT (Ausrüstung) - gold
 	]
 
 	# Drei Balken nebeneinander (horizontal angeordnet)
@@ -106,13 +225,9 @@ func _setup_bars_side_by_side():
 		if not bar:
 			continue
 
-		# Position nebeneinander
 		bar.position = Vector3(start_x + (i * spacing), 0.8, 0.5)
-		
-		# Rotation für vertikale Balken
 		bar.rotation_degrees = Vector3(-90, 0, 0)
 
-		# Material
 		if not bar.material_override:
 			var mat := StandardMaterial3D.new()
 			mat.albedo_color = colors[i]
@@ -126,7 +241,6 @@ func _setup_bars_side_by_side():
 			bar.material_override.cull_mode = BaseMaterial3D.CULL_DISABLED
 			bar.material_override.emission = colors[i] * 6.0
 
-		# Etwas Dicke + kleine Startgröße
 		bar.scale = Vector3(0.7, 0.15, 0.7)
 
 
@@ -191,11 +305,12 @@ func update_bars():
 
 	var org_percent = clamp(organization / 100.0, 0.0, 1.0)
 	var man_percent = clamp(float(manpower) / float(max_manpower), 0.0, 1.0)
-	var sup_percent = clamp(supply / 100.0, 0.0, 1.0)
+	var equip_percent = clamp(equipment_fulfillment, 0.0, 1.0)  # Ausrüstung soll/ist Status
 
 	_set_vertical_bar(org_bar, org_percent, Color(0.3, 0.75, 1.0))
 	_set_vertical_bar(man_bar, man_percent, Color(0.35, 0.9, 0.45))
-	_set_vertical_bar(sup_bar, sup_percent, Color(1.0, 0.7, 0.25))
+	# 3. Balken jetzt Equipment Readiness (neben der Einheit schwebend)
+	_set_vertical_bar(sup_bar, equip_percent, Color(0.95, 0.75, 0.2))
 
 
 func _set_vertical_bar(bar: MeshInstance3D, percent: float, color: Color):
