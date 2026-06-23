@@ -24,7 +24,7 @@ const POSITION_ROTATION_DEGREES := 180.0
 var is_selected: bool = false
 var raw_data: Dictionary = {}
 
-var movement_speed: float = 0.65
+var movement_speed: float = 0.12
 var current_lat: float = 0.0
 var current_lon: float = 0.0
 var _target_lat: float = 0.0
@@ -35,7 +35,16 @@ var org_bar: MeshInstance3D
 var man_bar: MeshInstance3D
 var sup_bar: MeshInstance3D
 
-# Neue Variablen für Bataillons-Komposition und Ausrüstung (soll/ist)
+# Kampf
+var current_organization: float = 80.0
+var max_organization: float = 100.0
+var current_manpower: int = 8000
+var initiative: float = 0.0
+var in_combat: bool = false
+var current_enemy: GroundEntity = null
+var combat_line: MeshInstance3D = null
+var is_attacker: bool = false
+
 var battalions: Array = []
 var required_equipment: Dictionary = {}
 var missing_equipment: Dictionary = {}
@@ -45,7 +54,6 @@ var defense: float = 0.0
 var breakthrough: float = 0.0
 var supply_consumption: float = 0.0
 var experience: float = 40.0
-var max_organization: float = 100.0
 var equipment_fulfillment: float = 0.85
 
 
@@ -71,7 +79,9 @@ func _ready():
 		supply = data.get("supply", 75.0)
 		equipment_readiness = data.get("equipment_readiness", equipment_readiness)
 
-	# Name
+	current_organization = organization
+	current_manpower = manpower
+
 	if name_label:
 		name_label.text = entity_name
 		name_label.font_size = 60
@@ -79,7 +89,6 @@ func _ready():
 		name_label.modulate = Color(0.95, 0.97, 1.0, 0.95)
 		name_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 
-	# Collision unsichtbar
 	if collision_area:
 		collision_area.visible = false
 		collision_area.monitoring = true
@@ -87,26 +96,21 @@ func _ready():
 	if collision_shape:
 		collision_shape.visible = false
 
-	# Balken nebeneinander positionieren (jetzt mit Equipment als 3. Balken für Ausrüstung soll/ist)
 	_setup_bars_side_by_side()
-
 	_apply_scale_by_type()
 	create_wireframe_cube()
-	
-	# Aggregation aus Bataillonen (falls vorhanden) - das gibt die Werte für die Division!
+
 	if is_combat_unit and raw_data.has("battalions") and raw_data.battalions is Array:
 		_aggregate_from_battalions(raw_data.battalions)
-	
+
 	update_bars()
 	_apply_orientation()
-
 	add_to_group("ground_entities")
 
 
 func _load_battalion_templates() -> Dictionary:
 	var path = "res://data/battalion_types.json"
-	if not FileAccess.file_exists(path):
-		return {}
+	if not FileAccess.file_exists(path): return {}
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json = JSON.new()
 	json.parse(file.get_as_text())
@@ -119,88 +123,67 @@ func _aggregate_from_battalions(bn_list: Array):
 	var total_max_man = 0
 	var total_org = 0.0
 	var total_exp = 0.0
+	var total_init = 0.0
 	var count = 0
 	var total_soft = 0.0
 	var total_hard = 0.0
 	var total_def = 0.0
 	var total_break = 0.0
 	var total_supply = 0.0
-	
+
 	required_equipment.clear()
 	battalions.clear()
 	missing_equipment.clear()
-	
+
 	var bn_templates = _load_battalion_templates()
-	
+
 	for bn_data in bn_list:
-		if not bn_data is Dictionary:
-			continue
-		var bn_id = bn_data.get("id", "")
-		var bn_name = bn_data.get("name", bn_id)
+		if not bn_data is Dictionary: continue
 		var bn_type = bn_data.get("type", "infantry")
-		
 		var template = bn_templates.get(bn_type, {})
-		if template.is_empty():
-			continue
-		
-		# Resolved battalion for composition view
+		if template.is_empty(): continue
+
 		var resolved = bn_data.duplicate(true)
 		resolved["template"] = template
 		resolved["display_type"] = template.get("display_name", bn_type)
 		battalions.append(resolved)
-		
-		# Aggregate (use bn_data overrides if present, else template)
-		var bn_man = bn_data.get("manpower", template.get("manpower", 500))
-		total_man += bn_man
-		total_max_man += bn_data.get("max_manpower", bn_man)
-		
-		var bn_org = bn_data.get("organization", template.get("organization", 80))
-		total_org += bn_org
-		
-		var bn_exp = bn_data.get("experience", 40)
-		total_exp += bn_exp
+
+		total_man += bn_data.get("manpower", template.get("manpower", 500))
+		total_max_man += bn_data.get("max_manpower", total_man)
+		total_org += bn_data.get("organization", template.get("organization", 80))
+		total_exp += bn_data.get("experience", 40)
+		total_init += template.get("initiative", 6)
 		count += 1
-		
+
 		total_soft += template.get("soft_attack", 0)
 		total_hard += template.get("hard_attack", 0)
 		total_def += template.get("defense", 0)
 		total_break += template.get("breakthrough", 0)
 		total_supply += template.get("supply_consumption", 0)
-		
-		# Equipment requirements sum (soll)
+
 		var eq_req = template.get("equipment_requirements", {})
 		for eq_id in eq_req:
-			var amt = eq_req[eq_id]
-			if required_equipment.has(eq_id):
-				required_equipment[eq_id] += amt
-			else:
-				required_equipment[eq_id] = amt
-	
+			required_equipment[eq_id] = required_equipment.get(eq_id, 0) + eq_req[eq_id]
+
 	if count > 0:
 		manpower = total_man
-		max_manpower = total_max_man if total_max_man > total_man else total_man
+		max_manpower = total_max_man
 		organization = total_org / count
 		experience = total_exp / count
+		initiative = total_init / count
 		soft_attack = total_soft
 		hard_attack = total_hard
 		defense = total_def
 		breakthrough = total_break
 		supply_consumption = total_supply
-		
-		# Equipment fulfillment (ist) aus equipment_readiness oder raw
-		equipment_fulfillment = raw_data.get("equipment_readiness", equipment_readiness)
+		equipment_fulfillment = raw_data.get("equipment_readiness", 0.85)
 		equipment_readiness = equipment_fulfillment
-		
-		# Demo: missing = needed * (1 - fulfillment)  => zeigt schön soll/ist
+
 		for eq_id in required_equipment:
-			var needed = required_equipment[eq_id]
-			var miss = int(needed * (1.0 - equipment_fulfillment))
-			missing_equipment[eq_id] = miss
-	
-	# Fallbacks falls keine Bataillone
-	if raw_data.has("soft_attack"):
-		soft_attack = raw_data.soft_attack
-	# ... weitere Fallbacks bei Bedarf
+			missing_equipment[eq_id] = int(required_equipment[eq_id] * (1.0 - equipment_fulfillment))
+
+	current_organization = organization
+	current_manpower = manpower
 
 
 func _setup_bars_side_by_side():
@@ -209,39 +192,20 @@ func _setup_bars_side_by_side():
 	sup_bar = get_node_or_null("Bars/SupBar")
 
 	var bars = [org_bar, man_bar, sup_bar]
-	# Farben: Org blau, Manpower grün, Equipment (Ausrüstung soll/ist) gold/gelb
-	var colors = [
-		Color(0.3, 0.75, 1.0),   # ORG - blau
-		Color(0.35, 0.9, 0.45),  # MAN - grün
-		Color(0.95, 0.75, 0.2)   # EQUIPMENT (Ausrüstung) - gold
-	]
-
-	# Drei Balken nebeneinander (horizontal angeordnet)
-	var start_x = 2.6
-	var spacing = 0.85
+	var colors = [Color(0.3, 0.75, 1.0), Color(0.35, 0.9, 0.45), Color(0.95, 0.75, 0.2)]
 
 	for i in range(bars.size()):
 		var bar = bars[i]
-		if not bar:
-			continue
-
-		bar.position = Vector3(start_x + (i * spacing), 0.8, 0.5)
+		if not bar: continue
+		bar.position = Vector3(2.6 + i * 0.85, 0.8, 0.5)
 		bar.rotation_degrees = Vector3(-90, 0, 0)
-
 		if not bar.material_override:
 			var mat := StandardMaterial3D.new()
 			mat.albedo_color = colors[i]
 			mat.emission_enabled = true
 			mat.emission = colors[i] * 6.0
 			mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-			mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 			bar.material_override = mat
-		else:
-			bar.material_override.cull_mode = BaseMaterial3D.CULL_DISABLED
-			bar.material_override.emission = colors[i] * 6.0
-
-		bar.scale = Vector3(0.7, 0.15, 0.7)
 
 
 func _apply_scale_by_type():
@@ -259,70 +223,42 @@ func _apply_scale_by_type():
 
 	if collision_shape and collision_shape.shape is BoxShape3D:
 		var buffer := 1.1
-		var collision_size := visual_scale * 2.0 + buffer
-		collision_shape.shape.size = Vector3(collision_size, collision_size, collision_size)
+		collision_shape.shape.size = Vector3(visual_scale * 2.0 + buffer, visual_scale * 2.0 + buffer, visual_scale * 2.0 + buffer)
 
 
 func create_wireframe_cube():
-	if not wire_cube:
-		return
-
+	if not wire_cube: return
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_LINES)
-
 	var s := 1.0
 	var v := [
-		Vector3(-s, -s, -s), Vector3( s, -s, -s),
-		Vector3( s,  s, -s), Vector3(-s,  s, -s),
-		Vector3(-s, -s,  s), Vector3( s, -s,  s),
-		Vector3( s,  s,  s), Vector3(-s,  s,  s)
+		Vector3(-s, -s, -s), Vector3(s, -s, -s), Vector3(s, s, -s), Vector3(-s, s, -s),
+		Vector3(-s, -s, s), Vector3(s, -s, s), Vector3(s, s, s), Vector3(-s, s, s)
 	]
-	var edges := [
-		[0,1],[1,2],[2,3],[3,0],
-		[4,5],[5,6],[6,7],[7,4],
-		[0,4],[1,5],[2,6],[3,7]
-	]
+	var edges := [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]
 	for e in edges:
 		st.add_vertex(v[e[0]])
 		st.add_vertex(v[e[1]])
-
 	wire_cube.mesh = st.commit()
-
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color(0.45, 0.82, 1.0, 0.9)
 	mat.emission_enabled = true
 	mat.emission = Color(0.35, 0.75, 1.0) * 5.5
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-
 	wire_cube.material_override = mat
 
 
 func update_bars():
-	if not org_bar and not man_bar and not sup_bar:
-		return
-
-	var org_percent = clamp(organization / 100.0, 0.0, 1.0)
-	var man_percent = clamp(float(manpower) / float(max_manpower), 0.0, 1.0)
-	var equip_percent = clamp(equipment_fulfillment, 0.0, 1.0)  # Ausrüstung soll/ist Status
-
-	_set_vertical_bar(org_bar, org_percent, Color(0.3, 0.75, 1.0))
-	_set_vertical_bar(man_bar, man_percent, Color(0.35, 0.9, 0.45))
-	# 3. Balken jetzt Equipment Readiness (neben der Einheit schwebend)
-	_set_vertical_bar(sup_bar, equip_percent, Color(0.95, 0.75, 0.2))
+	if not org_bar or not man_bar or not sup_bar: return
+	_set_vertical_bar(org_bar, clamp(current_organization / 100.0, 0.0, 1.0), Color(0.3, 0.75, 1.0))
+	_set_vertical_bar(man_bar, clamp(float(current_manpower) / float(max_manpower), 0.0, 1.0), Color(0.35, 0.9, 0.45))
+	_set_vertical_bar(sup_bar, clamp(equipment_fulfillment, 0.0, 1.0), Color(0.95, 0.75, 0.2))
 
 
 func _set_vertical_bar(bar: MeshInstance3D, percent: float, color: Color):
-	if not bar or not bar.material_override:
-		return
-
+	if not bar or not bar.material_override: return
 	bar.material_override.albedo_color = color
 	bar.material_override.emission = color * 5.5
-	bar.material_override.cull_mode = BaseMaterial3D.CULL_DISABLED
-
-	var height = max(percent, 0.1)
-	bar.scale = Vector3(0.7, height, 0.7)
+	bar.scale = Vector3(0.7, max(percent, 0.1), 0.7)
 
 
 func _apply_orientation():
@@ -350,17 +286,27 @@ func move_to(new_lat: float, new_lon: float):
 
 
 func _process(delta: float):
+	# === BEWEGUNG MIT SANFTER BESCHLEUNIGUNG + VERLANGSAMUNG ===
 	if _has_target:
 		var tm = get_node_or_null("/root/TimeManager")
 		if tm and not tm.paused and tm.speed > 0:
 			var sim_speed = float(tm.speed)
-			var max_move_distance = (movement_speed * sim_speed * delta) / GLOBE_RADIUS * (180.0 / PI)
+			var base_speed = movement_speed * sim_speed
 
+			# Sanfte Beschleunigung am Start + sanfte Verlangsamung am Ziel
+			var progress = 1.0
 			var current_pos = global_position.normalized()
 			var target_pos = _lat_lon_to_vector3(_target_lat, _target_lon, GLOBE_RADIUS).normalized()
+			var total_angle = acos(clampf(current_pos.dot(target_pos), -1.0, 1.0))
+
+			if total_angle > 0.01:
+				progress = clamp(1.0 - (total_angle / (total_angle + 1.2)), 0.25, 1.0)
+
+			var move_distance = (base_speed * progress * delta) / GLOBE_RADIUS * (180.0 / PI)
+
 			var angle_to_target = acos(clampf(current_pos.dot(target_pos), -1.0, 1.0))
 
-			if angle_to_target <= max_move_distance or angle_to_target < 0.001:
+			if angle_to_target <= move_distance or angle_to_target < 0.001:
 				global_position = target_pos * GLOBE_RADIUS
 				current_lat = _target_lat
 				current_lon = _target_lon
@@ -370,7 +316,7 @@ func _process(delta: float):
 				var axis = current_pos.cross(target_pos).normalized()
 				if axis.length() < 0.001:
 					axis = Vector3.UP
-				var partial_quat = Quaternion(axis, max_move_distance)
+				var partial_quat = Quaternion(axis, move_distance)
 				var new_dir = partial_quat * current_pos
 				global_position = new_dir * GLOBE_RADIUS
 
@@ -378,11 +324,24 @@ func _process(delta: float):
 				current_lat = rad_to_deg(asin(global_position.y / mag))
 				current_lon = rad_to_deg(atan2(global_position.x, global_position.z))
 
-				var normal = global_position.normalized()
-				look_at(global_position + normal * 50.0, Vector3.UP)
+				_apply_orientation()
+
+	# Rote Linie live aktualisieren
+	if in_combat and current_enemy and combat_line and is_instance_valid(combat_line):
+		_update_combat_line()
 
 	if is_combat_unit:
 		_resolve_unit_collisions(delta)
+
+
+func _update_combat_line():
+	if not combat_line or not current_enemy: return
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_LINES)
+	st.add_vertex(Vector3.ZERO)
+	st.add_vertex(current_enemy.global_position - global_position)
+	combat_line.mesh = st.commit()
+	combat_line.global_position = global_position
 
 
 func _on_arrival():
@@ -399,50 +358,116 @@ func _lat_lon_to_vector3(lat: float, lon: float, r: float) -> Vector3:
 	)
 
 
-const MIN_SEPARATION_DISTANCE := 4.8
-
 func _resolve_unit_collisions(delta: float):
-	if not collision_shape or not is_combat_unit:
-		return
-
+	if not collision_shape: return
 	var overlaps = collision_area.get_overlapping_areas() if collision_area else []
+
 	for oa in overlaps:
-		var parent = oa.get_parent()
-		if parent == self or not (parent is GroundEntity):
-			continue
-		var other: GroundEntity = parent
-		if not other.is_combat_unit:
+		var other = oa.get_parent()
+		if not (other is GroundEntity) or other == self or not other.is_combat_unit:
 			continue
 
-		var to_self = global_position - other.global_position
-		var dist = to_self.length()
-		if dist < 0.001:
-			global_position += Vector3(randf_range(-1,1), randf_range(-1,1), randf_range(-1,1)).normalized() * 0.3
+		if not is_at_war_with(other.nation_code):
+			continue
+
+		var dist = global_position.distance_to(other.global_position)
+
+		# Kampf starten (ohne Positionsveränderung!)
+		if not in_combat and dist < 35.0:
+			start_combat(other)
+			if other and not other.in_combat:
+				other.start_combat(self)
+			continue
+
+		# Sanftes Festhalten im Kampf (nur auseinander schieben wenn zu nah)
+		if in_combat and current_enemy == other:
+			var min_dist = 26.0
+
+			if dist < min_dist:
+				var push_dir = (global_position - other.global_position).normalized()
+				var push_force = 8.0 * delta * _get_push_multiplier(other)
+
+				if _get_strength() > other._get_strength():
+					other.global_position += push_dir * push_force
+				else:
+					global_position += push_dir * -push_force
+
 			global_position = global_position.normalized() * GLOBE_RADIUS
-			_apply_orientation()
+			other.global_position = other.global_position.normalized() * GLOBE_RADIUS
 			continue
 
-		if dist >= MIN_SEPARATION_DISTANCE:
-			continue
+		# Normales Ausweichen
+		if dist < 14.0:
+			var push = (global_position - other.global_position).normalized()
+			global_position += push * 10.0 * delta
+			global_position = global_position.normalized() * GLOBE_RADIUS
 
-		var push_dir = to_self.normalized()
-		var sep_needed = MIN_SEPARATION_DISTANCE - dist
 
-		var my_str = _get_strength()
-		var ot_str = other._get_strength()
-		var inv_my = 1.0 / max(my_str, 1.0)
-		var inv_ot = 1.0 / max(ot_str, 1.0)
-		var total_inv = inv_my + inv_ot
-		if total_inv <= 0.0:
-			continue
-
-		var disp = push_dir * sep_needed * 0.65
-		var self_move = disp * (inv_my / total_inv)
-
-		global_position += self_move
-		global_position = global_position.normalized() * GLOBE_RADIUS
-		_apply_orientation()
+func _get_push_multiplier(other: GroundEntity) -> float:
+	var my_str = _get_strength()
+	var other_str = other._get_strength()
+	if other_str <= 0: return 2.0
+	return clamp(my_str / other_str, 0.6, 2.3)
 
 
 func _get_strength() -> float:
-	return float(manpower) * clamp(organization / 100.0, 0.2, 1.5) + 10.0
+	return float(current_manpower) * clamp(current_organization / 100.0, 0.3, 1.4)
+
+
+# ====================== KAMPF METHODEN ======================
+
+func is_at_war_with(other_nation: String) -> bool:
+	var diplomacy = get_node_or_null("/root/DiplomacyManager")
+	if diplomacy and diplomacy.has_method("is_at_war"):
+		return diplomacy.is_at_war(nation_code, other_nation)
+	return nation_code != other_nation and ((nation_code == "GER" and other_nation == "POL") or (nation_code == "POL" and other_nation == "GER"))
+
+
+func start_combat(enemy: GroundEntity, attacker_side: bool = false):
+	if in_combat or enemy == self: return
+	in_combat = true
+	current_enemy = enemy
+	is_attacker = attacker_side
+	_create_combat_line(enemy)
+
+
+func end_combat():
+	in_combat = false
+	current_enemy = null
+	is_attacker = false
+	if combat_line and is_instance_valid(combat_line):
+		combat_line.queue_free()
+	combat_line = null
+
+
+func _create_combat_line(enemy: GroundEntity):
+	if combat_line and is_instance_valid(combat_line):
+		combat_line.queue_free()
+
+	combat_line = MeshInstance3D.new()
+	get_tree().current_scene.add_child(combat_line)
+
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_LINES)
+	st.add_vertex(Vector3.ZERO)
+	st.add_vertex(enemy.global_position - global_position)
+	combat_line.mesh = st.commit()
+
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(1.0, 0.1, 0.1, 0.9)
+	mat.emission_enabled = true
+	mat.emission = Color(1.0, 0.2, 0.2) * 5.0
+	combat_line.material_override = mat
+	combat_line.global_position = global_position
+
+
+func take_combat_damage(soft_dmg: float, hard_dmg: float, org_dmg: float):
+	current_manpower = max(0, current_manpower - int(soft_dmg + hard_dmg * 0.65))
+	current_organization = max(0.0, current_organization - org_dmg)
+	update_bars()
+	if current_organization < 20.0:
+		end_combat()
+
+
+func gain_experience(amount: float):
+	experience = min(100.0, experience + amount)

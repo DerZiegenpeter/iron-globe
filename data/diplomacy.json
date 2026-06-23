@@ -1,0 +1,8 @@
+{
+  "wars": {
+	"GER": ["POL"],
+	"POL": ["GER"]
+  },
+  "alliances": {},
+  "guarantees": {}
+}

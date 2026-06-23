@@ -15,11 +15,12 @@ var speed: int = 0
 var paused: bool = true
 
 var _time_accumulator: float = 0.0
-var _seconds_per_hour: float = 0.05
+var _seconds_per_hour: float = 1.0          # ← Hier war der große Unterschied (früher 0.05)
 
 func _ready():
 	paused = true
 	speed = 0
+	print("TimeManager geladen (langsame Zeit)")
 
 func _process(delta: float):
 	if paused or speed <= 0:
@@ -34,7 +35,7 @@ func _process(delta: float):
 func advance_hour():
 	current_hour += 1
 	hour_passed.emit()
-	time_advanced.emit(0)           # ← Wichtig für deine UI
+	time_advanced.emit(0)
 
 	if current_hour >= 24:
 		current_hour = 0
@@ -51,12 +52,14 @@ func advance_day(days: int = 1):
 				current_year += 1
 
 		day_passed.emit()
+
 		if current_day % 7 == 0:
 			week_passed.emit()
+
 		if current_day == 1:
 			month_passed.emit()
 
-	time_advanced.emit(days)
+		time_advanced.emit(days)
 
 func set_speed(new_speed: int):
 	speed = new_speed
