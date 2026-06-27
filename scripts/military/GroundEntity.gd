@@ -24,22 +24,31 @@ const POSITION_ROTATION_DEGREES := 180.0
 var is_selected: bool = false
 var raw_data: Dictionary = {}
 
-# ====================== ORIGINAL BEWEGUNG ======================
-var movement_speed: float = 0.12
+# ====================== BEWEGUNG (KONSTANTE GESCHWINDIGKEIT) ======================
+var movement_speed: float = 0.12  # Grad pro Sekunde (bei sim_speed=1)
 var current_lat: float = 0.0
 var current_lon: float = 0.0
 var _target_lat: float = 0.0
 var _target_lon: float = 0.0
 var _has_target: bool = false
 
-# ====================== ENGAGEMENT ======================
+# ====================== ENGAGEMENT / KAMPF (mit ANKER + KLEBER) ======================
 var engaged_with: GroundEntity = null
 var is_attacker_in_engagement: bool = false
 var combat_dot: MeshInstance3D = null
+var combat_anchor: Vector3 = Vector3.ZERO
+var retreat_accumulator: float = 0.0
+var anchored_distance: float = 0.0   # Distanz beim ersten Berühren (wird beibehalten)
+
+const MAX_RETREAT_TIME := 4.5
+const ENGAGEMENT_BREAK_DIST := 42.0
 
 var in_combat: bool = false
 var current_enemy: GroundEntity = null
 var is_attacker: bool = false
+
+# Für CombatManager Kompatibilität (falls Rote Linie erwartet wird)
+var combat_line: MeshInstance3D = null
 
 var org_bar: MeshInstance3D
 var man_bar: MeshInstance3D
@@ -112,12 +121,24 @@ func _ready():
 	add_to_group("ground_entities")
 
 
-# ====================== BEWEGUNG (mit Fix für kurze Strecken) ======================
+# ====================== GANZ ANDERE VARIANTE: Progress-basiertes Great-Circle Movement ======================
+# Kein inkrementelles Drehen mehr → sauberes, exaktes Ankommen ohne Zucken
+
+var _move_start_dir: Vector3 = Vector3.ZERO
+var _move_target_dir: Vector3 = Vector3.ZERO
+var _move_total_angle: float = 0.0
+var _move_progress: float = 0.0
 
 func move_to(new_lat: float, new_lon: float):
 	_target_lat = new_lat
 	_target_lon = new_lon
 	_has_target = true
+
+	# Progress-System zurücksetzen
+	_move_start_dir = global_position.normalized()
+	_move_target_dir = _lat_lon_to_vector3(new_lat, new_lon, GLOBE_RADIUS).normalized()
+	_move_total_angle = acos(clampf(_move_start_dir.dot(_move_target_dir), -1.0, 1.0))
+	_move_progress = 0.0
 
 
 func _process(delta: float):
@@ -125,59 +146,61 @@ func _process(delta: float):
 		var tm = get_node_or_null("/root/TimeManager")
 		if tm and not tm.paused and tm.speed > 0:
 			var sim_speed = float(tm.speed)
-			var base_speed = movement_speed * sim_speed
+			var angular_speed = deg_to_rad(movement_speed * sim_speed)
 
-			var current_pos = global_position.normalized()
-			var target_pos = _lat_lon_to_vector3(_target_lat, _target_lon, GLOBE_RADIUS).normalized()
-			var total_angle = acos(clampf(current_pos.dot(target_pos), -1.0, 1.0))
-
-			var progress = 1.0
-			if total_angle > 0.01:
-				progress = clamp(1.0 - (total_angle / (total_angle + 1.2)), 0.05, 1.0)
-
-			var move_distance = (base_speed * progress * delta) / GLOBE_RADIUS * (180.0 / PI)
-			var angle_to_target = acos(clampf(current_pos.dot(target_pos), -1.0, 1.0))
-
-			# === FIX FÜR KURZE STRECKE: Immer weich landen ===
-			if angle_to_target < 0.08:          # bei kurzen Wegen immer soft
-				global_position = global_position.lerp(target_pos * GLOBE_RADIUS, 10.0 * delta)
-				if global_position.distance_to(target_pos * GLOBE_RADIUS) < 0.25:
-					global_position = target_pos * GLOBE_RADIUS
-					current_lat = _target_lat
-					current_lon = _target_lon
-					_has_target = false
-					_on_arrival()
-			elif angle_to_target <= move_distance:
-				global_position = target_pos * GLOBE_RADIUS
+			if _move_total_angle < 0.001:
+				# Extrem kurze Strecke → direkt hin
+				global_position = _move_target_dir * GLOBE_RADIUS
 				current_lat = _target_lat
 				current_lon = _target_lon
 				_has_target = false
 				_on_arrival()
-			else:
-				var axis = current_pos.cross(target_pos).normalized()
-				if axis.length() < 0.001:
-					axis = Vector3.UP
-				var partial_quat = Quaternion(axis, move_distance)
-				var new_dir = partial_quat * current_pos
-				global_position = new_dir * GLOBE_RADIUS
+				_apply_orientation()
+				return
 
-				var mag = global_position.length()
-				current_lat = rad_to_deg(asin(global_position.y / mag))
-				current_lon = rad_to_deg(atan2(global_position.x, global_position.z))
+			# Fortschritt erhöhen
+			_move_progress += (angular_speed * delta) / _move_total_angle
+			_move_progress = clamp(_move_progress, 0.0, 1.0)
 
+			# Exakte Position auf dem Großkreis
+			var new_dir = _move_start_dir.slerp(_move_target_dir, _move_progress)
+			global_position = new_dir * GLOBE_RADIUS
+
+			var mag = global_position.length()
+			current_lat = rad_to_deg(asin(global_position.y / mag))
+			current_lon = rad_to_deg(atan2(global_position.x, global_position.z))
+
+			_apply_orientation()
+
+			# Sauberes Ende
+			if _move_progress >= 1.0:
+				global_position = _move_target_dir * GLOBE_RADIUS
+				current_lat = _target_lat
+				current_lon = _target_lon
+				_has_target = false
+				_on_arrival()
 				_apply_orientation()
 
-	# Engagement
-	if engaged_with and is_instance_valid(engaged_with):
+	# === ENGAGEMENT / KAMPF (nur wenn Zeit läuft) ===
+	var tm = get_node_or_null("/root/TimeManager")
+	var time_running = tm and not tm.paused and tm.speed > 0
+
+	if engaged_with and is_instance_valid(engaged_with) and time_running:
 		_update_engagement_forces(delta)
+		_check_disengage_conditions(delta)
 	else:
+		if combat_anchor.length_squared() > 1.0 or retreat_accumulator > 0.0 or anchored_distance > 0.1:
+			combat_anchor = Vector3.ZERO
+			retreat_accumulator = 0.0
+			anchored_distance = 0.0
 		_resolve_unit_collisions(delta)
 
 
-# ====================== ENGAGEMENT ======================
+# ====================== ENGAGEMENT SYSTEM - NEU: Runder Anker-Punkt + Kleber ======================
 
 func start_engagement(enemy: GroundEntity, am_i_attacker: bool = false):
-	if engaged_with == enemy or enemy == self: return
+	if engaged_with == enemy or enemy == self or not is_instance_valid(enemy):
+		return
 	end_engagement()
 
 	engaged_with = enemy
@@ -186,23 +209,60 @@ func start_engagement(enemy: GroundEntity, am_i_attacker: bool = false):
 	current_enemy = enemy
 	is_attacker = am_i_attacker
 
-	_create_combat_dot()
+	# Runden Anker-Punkt (roter leuchtender Punkt) erzeugen / teilen
+	if not combat_dot or not is_instance_valid(combat_dot):
+		_create_combat_dot()
+	if engaged_with and (not engaged_with.combat_dot or not is_instance_valid(engaged_with.combat_dot)):
+		engaged_with.combat_dot = combat_dot
+
+	# Anker-Position wo sie sich treffen (initialer Treffpunkt) - leicht über der Oberfläche
+	if combat_anchor.length_squared() < 10.0:
+		combat_anchor = _get_mid_anchor()
+	if engaged_with and engaged_with.combat_anchor.length_squared() < 10.0:
+		engaged_with.combat_anchor = combat_anchor
+
+	# Distanz beim ersten Kontakt merken (wird während des Engagements beibehalten)
+	if anchored_distance < 0.1:
+		anchored_distance = clamp(global_position.distance_to(engaged_with.global_position), 6.0, 38.0)
+	if engaged_with and engaged_with.anchored_distance < 0.1:
+		engaged_with.anchored_distance = anchored_distance
+
+	# === EXAKTES EINFRIEREN der Kontakt-Distanz (kein Rutschen beim ersten Treffen) ===
+	var cur_dist = global_position.distance_to(engaged_with.global_position)
+	if cur_dist > 0.5:
+		var mid = (global_position + engaged_with.global_position) * 0.5
+		var ddir = (engaged_with.global_position - global_position).normalized()
+		var half = cur_dist * 0.5
+		global_position = (mid - ddir * half).normalized() * GLOBE_RADIUS
+		engaged_with.global_position = (mid + ddir * half).normalized() * GLOBE_RADIUS
+
+	_update_combat_dot()
 
 
 func end_engagement():
-	if engaged_with and is_instance_valid(engaged_with):
-		if engaged_with.engaged_with == self:
-			engaged_with.end_engagement()
-
+	var other = engaged_with
 	engaged_with = null
 	is_attacker_in_engagement = false
 	in_combat = false
 	current_enemy = null
 	is_attacker = false
+	combat_anchor = Vector3.ZERO
+	retreat_accumulator = 0.0
+	anchored_distance = 0.0
 
 	if combat_dot and is_instance_valid(combat_dot):
 		combat_dot.queue_free()
 	combat_dot = null
+
+	if other and is_instance_valid(other) and other.engaged_with == self:
+		other.end_engagement()
+
+
+func _get_mid_anchor() -> Vector3:
+	if not engaged_with or not is_instance_valid(engaged_with):
+		return global_position
+	var mid_dir = (global_position.normalized() + engaged_with.global_position.normalized()).normalized()
+	return mid_dir * (GLOBE_RADIUS + 1.8)  # etwas über der Kugeloberfläche für Sichtbarkeit
 
 
 func _update_engagement_forces(delta: float):
@@ -210,41 +270,85 @@ func _update_engagement_forces(delta: float):
 		return
 
 	var my_pos = global_position
-	var enemy_pos = engaged_with.global_position
-	var to_enemy = enemy_pos - my_pos
-	var dist = to_enemy.length()
-	if dist < 0.1: return
+	var en_pos = engaged_with.global_position
+	var to_en = en_pos - my_pos
+	var dist = to_en.length()
+	if dist < 0.8:
+		return
 
-	var dir = to_enemy.normalized()
+	var dir = to_en.normalized()
 	var my_str = _get_strength()
-	var enemy_str = engaged_with._get_strength()
-	var relative = my_str / max(enemy_str, 1.0)
+	var en_str = engaged_with._get_strength()
+	var rel = my_str / max(en_str, 1.0)
 
-	var desired_dist := 13.5
+	# === 1. HARTE MINIMUM-DISTANZ (nur bei echtem Clip verhindern) ===
+	var min_dist: float = max(anchored_distance * 0.5, 8.0)
+	if dist < min_dist:
+		var push_away = (min_dist - dist) * 8.0 * delta
+		global_position -= dir * push_away * 0.5
+		engaged_with.global_position += dir * push_away * 0.5
 
-	if dist < desired_dist:
-		var penetration = desired_dist - dist
-		var correction = dir * penetration * 1.2
-		global_position -= correction * 0.6
-		engaged_with.global_position += correction * 0.6
+	# === 2. KLEBER zum Anker + Stärke-Push (Distanz wird nicht aktiv korrigiert) ===
+	# Die Distanz beim ersten Berühren bleibt weitestgehend erhalten (kein aktives Hin- und Her-Rutschen)
+	if combat_anchor.length_squared() > 10.0:
+		var to_anchor_my = combat_anchor - my_pos
+		var anchor_d = to_anchor_my.length()
+		if anchor_d > 16.0:
+			var glue = clamp((anchor_d - 16.0) / 14.0, 0.0, 1.8) * 8.0 * delta
+			global_position += to_anchor_my.normalized() * glue * 0.55
 
-	var push_base = 6.5 * delta
-	if is_attacker_in_engagement or relative > 0.78:
-		var push = dir * push_base * clamp(relative, 0.5, 1.8)
-		global_position += push * 0.45
-		engaged_with.global_position -= push * 0.3
+	# === 4. Angreifer-Vorteil / Kampf-Dynamik (etwas abgeschwächt) ===
+	var push_base = 4.8 * delta
+	if is_attacker_in_engagement or rel > 0.82:
+		var push = dir * push_base * clamp(rel, 0.5, 1.6)
+		global_position += push * 0.42
+		engaged_with.global_position -= push * 0.30
 	else:
-		global_position -= dir * push_base * 0.35
+		global_position -= dir * push_base * 0.22
 
+	# Auf Kugeloberfläche projizieren
 	global_position = global_position.normalized() * GLOBE_RADIUS
 	engaged_with.global_position = engaged_with.global_position.normalized() * GLOBE_RADIUS
 
 	_update_combat_dot()
 
 
+func _check_disengage_conditions(delta: float):
+	if not engaged_with or not is_instance_valid(engaged_with):
+		return
+
+	# Distanz zu groß → beide haben sich wegbewegt
+	var dist = global_position.distance_to(engaged_with.global_position)
+	if dist > ENGAGEMENT_BREAK_DIST:
+		end_engagement()
+		return
+
+	# Rückwärts-Lauf Timer (eine Einheit läuft lang genug rückwärts)
+	if _has_target:
+		var target_pos = _lat_lon_to_vector3(_target_lat, _target_lon, GLOBE_RADIUS)
+		var to_target = (target_pos - global_position).normalized()
+		var to_enemy = (engaged_with.global_position - global_position).normalized()
+		var alignment = to_target.dot(to_enemy)  # positiv = vorwärts/zum Feind, negativ = rückwärts
+
+		var tm = get_node_or_null("/root/TimeManager")
+		var sim_dt = delta * (float(tm.speed) if tm and tm.speed > 0 else 1.0)
+
+		if alignment < -0.28:  # klar rückwärts
+			retreat_accumulator += sim_dt
+			if retreat_accumulator > MAX_RETREAT_TIME:
+				print(entity_name + " zieht sich zurück → Engagement beendet")
+				end_engagement()
+				return
+		else:
+			retreat_accumulator = max(0.0, retreat_accumulator - sim_dt * 1.8)
+
+
 func _update_combat_dot():
-	if not combat_dot or not engaged_with or not is_instance_valid(combat_dot): return
-	combat_dot.global_position = (global_position + engaged_with.global_position) * 0.5
+	if not combat_dot or not is_instance_valid(combat_dot) or not engaged_with or not is_instance_valid(engaged_with):
+		return
+	# Mittelpunkt leicht über der Oberfläche (runder Punkt)
+	var mid_dir = (global_position.normalized() + engaged_with.global_position.normalized()).normalized()
+	combat_dot.global_position = mid_dir * (GLOBE_RADIUS + 2.2)
 
 
 func _create_combat_dot():
@@ -254,37 +358,35 @@ func _create_combat_dot():
 	combat_dot = MeshInstance3D.new()
 	get_tree().current_scene.add_child(combat_dot)
 
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var s := 0.8
-	var v := [
-		Vector3(-s,-s,-s), Vector3(s,-s,-s), Vector3(s,s,-s), Vector3(-s,s,-s),
-		Vector3(-s,-s,s), Vector3(s,-s,s), Vector3(s,s,s), Vector3(-s,s,s)
-	]
-	var faces := [0,1,2, 2,3,0, 4,5,6, 6,7,4, 0,4,7, 7,3,0, 1,5,6, 6,2,1, 0,1,5, 5,4,0, 3,2,6, 6,7,3]
-	for f in faces:
-		st.add_vertex(v[f])
-	combat_dot.mesh = st.commit()
+	var sphere := SphereMesh.new()
+	sphere.radius = 0.65
+	sphere.height = 1.3
+	combat_dot.mesh = sphere
 
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(1.0, 0.05, 0.05, 1.0)
+	mat.albedo_color = Color(0.95, 0.08, 0.08, 0.92)
 	mat.emission_enabled = true
-	mat.emission = Color(1.0, 0.1, 0.1) * 8.0
+	mat.emission = Color(1.0, 0.15, 0.1) * 5.5
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	combat_dot.material_override = mat
+	combat_dot.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
 func _resolve_unit_collisions(delta: float):
-	if not collision_area: return
+	if not collision_area:
+		return
 	var overlaps = collision_area.get_overlapping_areas()
 	for oa in overlaps:
 		var other = oa.get_parent()
-		if not (other is GroundEntity) or other == self or not other.is_combat_unit: continue
-		if not is_at_war_with(other.nation_code): continue
+		if not (other is GroundEntity) or other == self or not other.is_combat_unit:
+			continue
+		if not is_at_war_with(other.nation_code):
+			continue
 		var dist = global_position.distance_to(other.global_position)
-		if not engaged_with and dist < 30.0:
-			var i_am_attacker = _get_strength() > other._get_strength() * 0.8
+		if not engaged_with and dist < 28.0:
+			var i_am_attacker = _get_strength() > other._get_strength() * 0.82
 			start_engagement(other, i_am_attacker)
-			if other and not other.engaged_with:
+			if other and not other.engaged_with and is_instance_valid(other):
 				other.start_engagement(self, not i_am_attacker)
 
 
@@ -320,14 +422,16 @@ func deselect():
 
 
 func update_bars():
-	if not org_bar or not man_bar or not sup_bar: return
+	if not org_bar or not man_bar or not sup_bar:
+		return
 	_set_vertical_bar(org_bar, clamp(current_organization / 100.0, 0.0, 1.0), Color(0.3, 0.75, 1.0))
 	_set_vertical_bar(man_bar, clamp(float(current_manpower) / float(max_manpower), 0.0, 1.0), Color(0.35, 0.9, 0.45))
 	_set_vertical_bar(sup_bar, clamp(equipment_fulfillment, 0.0, 1.0), Color(0.95, 0.75, 0.2))
 
 
 func _set_vertical_bar(bar: MeshInstance3D, percent: float, color: Color):
-	if not bar or not bar.material_override: return
+	if not bar or not bar.material_override:
+		return
 	bar.material_override.albedo_color = color
 	bar.material_override.emission = color * 5.5
 	bar.scale = Vector3(0.7, max(percent, 0.1), 0.7)
@@ -343,7 +447,8 @@ func _setup_bars_side_by_side():
 
 	for i in range(bars.size()):
 		var bar = bars[i]
-		if not bar: continue
+		if not bar:
+			continue
 		bar.position = Vector3(2.6 + i * 0.85, 0.8, 0.5)
 		bar.rotation_degrees = Vector3(-90, 0, 0)
 		if not bar.material_override:
@@ -374,7 +479,8 @@ func _apply_scale_by_type():
 
 
 func create_wireframe_cube():
-	if not wire_cube: return
+	if not wire_cube:
+		return
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_LINES)
 	var s := 1.0
@@ -413,13 +519,14 @@ func _get_strength() -> float:
 
 
 func _aggregate_from_battalions(bn_list: Array):
-	# Originalen Code aus deiner alten Datei hier einfügen
+	# TODO: Originalen Aggregations-Code aus alter Version hier einfügen (soft_attack, etc. aus Battalions berechnen)
 	pass
 
 
 func _load_battalion_templates() -> Dictionary:
 	var path = "res://data/battalion_types.json"
-	if not FileAccess.file_exists(path): return {}
+	if not FileAccess.file_exists(path):
+		return {}
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json = JSON.new()
 	json.parse(file.get_as_text())

@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://digf0ec65c4ic"]
+
+[ext_resource type="Script" uid="uid://ceu0hloerj26d" path="res://scripts/military/GroundEntity.gd" id="1_wih7h"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fxqpt"]
+size = Vector2(0.3, 2.2)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wih7h"]
+size = Vector2(0.3, 2.2)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_qn474"]
+size = Vector2(0.3, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x2pih"]
+
+[node name="GroundEntity" type="Node3D" unique_id=1037498520]
+script = ExtResource("1_wih7h")
+
+[node name="WireCube" type="MeshInstance3D" parent="." unique_id=766213875]
+
+[node name="NameLabel" type="Label3D" parent="." unique_id=632514719]
+
+[node name="Bars" type="Node3D" parent="." unique_id=1847546734]
+
+[node name="OrgBar" type="MeshInstance3D" parent="Bars" unique_id=782593917]
+mesh = SubResource("PlaneMesh_fxqpt")
+
+[node name="ManBar" type="MeshInstance3D" parent="Bars" unique_id=411998671]
+mesh = SubResource("PlaneMesh_wih7h")
+
+[node name="SupBar" type="MeshInstance3D" parent="Bars" unique_id=1211551737]
+mesh = SubResource("PlaneMesh_qn474")
+
+[node name="ClickArea" type="Area3D" parent="." unique_id=1178130843]
+
+[node name="CollisionArea" type="Area3D" parent="." unique_id=328529593]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionArea" unique_id=2073385809]
+shape = SubResource("BoxShape3D_x2pih")
+debug_color = Color(0, 0.59607846, 0.7019608, 0)
+debug_fill = false
