@@ -22,6 +22,7 @@ InputManager="*uid://bgqwxijs0nhn0"
 PopManager="*uid://cl68jriavhp1p"
 TimeManager="*uid://cnqr1j3lml61f"
 EquipmentManager="*uid://7u7qn138l825"
+DiplomacyManager="*uid://df21amkm1uqah"
 
 [display]
 
