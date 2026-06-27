@@ -13,7 +13,6 @@ func _ready():
 	add_child(_mesh_instance)
 	_mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
-# points_list = Array von Arrays (jedes innere Array = ein zusammenhängendes Liniensegment)
 func set_segments(segments: Array):
 	_rebuild_mesh(segments)
 
@@ -29,12 +28,16 @@ func _rebuild_mesh(segments: Array):
 	var half_w = line_width * 0.5
 
 	for segment in segments:
-		if segment.size() < 2:
+		if typeof(segment) != TYPE_ARRAY or segment.size() < 2:
 			continue
 
 		for i in range(segment.size() - 1):
-			var p1 = segment[i].normalized() * (1002.0 + height_offset)
-			var p2 = segment[i + 1].normalized() * (1002.0 + height_offset)
+			var raw1 = segment[i]
+			var raw2 = segment[i + 1]
+
+			# Stelle sicher, dass es Vector3 sind
+			var p1 = _to_vector3(raw1).normalized() * (1002.0 + height_offset)
+			var p2 = _to_vector3(raw2).normalized() * (1002.0 + height_offset)
 
 			var right = p1.cross(p2).normalized()
 			if right.length() < 0.01:
@@ -57,3 +60,10 @@ func _rebuild_mesh(segments: Array):
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_mesh_instance.material_override = mat
+
+func _to_vector3(v) -> Vector3:
+	if typeof(v) == TYPE_VECTOR3:
+		return v
+	if typeof(v) == TYPE_ARRAY and v.size() >= 2:
+		return Vector3(v[0], v[1], v[2] if v.size() > 2 else 0.0)
+	return Vector3.ZERO
