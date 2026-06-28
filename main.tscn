@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dp85gfa1hrlk5"]
 
+[ext_resource type="Script" uid="uid://cw0delwir74yw" path="res://scripts/military/FrontlineManager.gd" id="1_5vw27"]
 [ext_resource type="Script" uid="uid://bu3t0komn7ckl" path="res://scripts/states/Regions.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://bk1te7uud1n0x" path="res://scripts/camera/camera_controller.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://d3kjmg4b2o6q3" path="res://scripts/states/ClickHandler.gd" id="2_h2yge"]
@@ -27,6 +28,9 @@ glow_intensity = 0.5
 glow_bloom = 0.18
 
 [node name="World" type="Node3D" unique_id=808408397]
+
+[node name="FrontlineManager" type="Node3D" parent="." unique_id=2124410894]
+script = ExtResource("1_5vw27")
 
 [node name="PlanetBody" type="MeshInstance3D" parent="." unique_id=991339030]
 transform = Transform3D(-0.9999999, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.9999999, 0, 0, 0)

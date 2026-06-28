@@ -5,17 +5,19 @@ extends Node3D
 @onready var input_manager: Node = get_node_or_null("/root/InputManager")
 
 func _input(event: InputEvent):
+	# ====================== NEU: Placement Mode ignorieren ======================
+	if input_manager and input_manager.frontline_placement_mode:
+		return
+
 	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
 		return
 
 	# === STARKER BLOCK: Kein Klick durch UI ===
 	var viewport = get_viewport()
 	
-	# Block 1: Hover über Control
 	if viewport.gui_get_hovered_control() != null:
 		return
 	
-	# Block 2: Irgendein UI-Element hat Fokus
 	if viewport.gui_get_focus_owner() != null:
 		return
 
@@ -59,7 +61,6 @@ func _input(event: InputEvent):
 	viewport.set_input_as_handled()
 
 
-# --- Rest bleibt gleich wie in deiner alten Version ---
 func handle_click(hit_region: Dictionary):
 	var province_id = hit_region.get("index", 0) as int + 1
 	var region_name = hit_region.get("name", "Unbekannt")
