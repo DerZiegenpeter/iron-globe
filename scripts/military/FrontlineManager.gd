@@ -1,13 +1,13 @@
 # scripts/military/FrontlineManager.gd
-# Stabile Version mit Fallback (kein Crash mehr)
+# Dynamische Frontlinie (stark spürbar durch Einheiten)
 extends Node3D
 class_name FrontlineManager
 
 @export var frontline_color: Color = Color(0.95, 0.25, 0.15)
 @export var frontline_emission: float = 5.0
 @export var line_width: float = 2.2
-@export var influence_radius: float = 50.0
-@export var push_strength: float = 14.0
+@export var influence_radius: float = 55.0
+@export var push_strength: float = 22.0          # Deutlich stärker
 
 var frontlines: Dictionary = {}
 var next_id: int = 1
@@ -23,104 +23,97 @@ func _ready():
 	mesh_instance.name = "FrontlineMesh"
 	add_child(mesh_instance)
 
-	# Versuche automatische Frontlinien zu erzeugen (falls möglich)
-	call_deferred("try_generate_frontlines")
-
-
-func try_generate_frontlines():
-	var diplomacy = get_node_or_null("/root/DiplomacyManager")
-	if not diplomacy:
-		print(">>> [Frontline] DiplomacyManager nicht gefunden – automatische Frontlinien deaktiviert")
-		return
-
-	# Versuche verschiedene mögliche Variablennamen
-	var wars = {}
-	if diplomacy.has_method("get_current_wars"):
-		wars = diplomacy.get_current_wars()
-	elif "current_wars" in diplomacy:
-		wars = diplomacy.current_wars
-	elif "wars" in diplomacy:
-		wars = diplomacy.wars
-	else:
-		print(">>> [Frontline] DiplomacyManager hat keine wars-Variable → automatische Frontlinien übersprungen")
-		return
-
-	if wars.is_empty():
-		print(">>> [Frontline] Keine aktiven Kriege gefunden")
-		return
-
-	for nation_a in wars.keys():
-		for nation_b in wars[nation_a]:
-			generate_frontlines_between_nations(nation_a, nation_b)
-
-
-func generate_frontlines_between_nations(nation_a: String, nation_b: String):
-	var game_data = get_node_or_null("/root/GameData")
-	var regions = get_node_or_null("/root/World/Regions")
-	if not game_data or not regions or not ("region_polygons" in regions):
-		return
-
-	var provinces_a := []
-	var provinces_b := []
-
-	for pid in game_data.province_to_owner.keys():
-		var owner = game_data.province_to_owner[pid]
-		if owner == nation_a:
-			provinces_a.append(pid)
-		elif owner == nation_b:
-			provinces_b.append(pid)
-
-	var coords_b := {}
-	for pid in provinces_b:
-		for region in regions.region_polygons:
-			if region.get("id") != pid and region.get("index", -1) + 1 != pid:
-				continue
-			for ring in region.get("rings", []):
-				for coord in ring:
-					var key = "%0.4f_%0.4f" % [coord[0], coord[1]]
-					coords_b[key] = true
-
-	for pid_a in provinces_a:
-		var segments = _get_border_segments(pid_a)
-		var shared := []
-		for seg in segments:
-			var p1 = seg[0]
-			var p2 = seg[1]
-			var lat1 = rad_to_deg(asin(p1.y / 1002.0))
-			var lon1 = rad_to_deg(atan2(p1.x, p1.z))
-			var lat2 = rad_to_deg(asin(p2.y / 1002.0))
-			var lon2 = rad_to_deg(atan2(p2.x, p2.z))
-
-			var key1 = "%0.4f_%0.4f" % [lon1, lat1]
-			var key2 = "%0.4f_%0.4f" % [lon2, lat2]
-
-			if coords_b.has(key1) or coords_b.has(key2):
-				shared.append(seg)
-
-		if shared.size() > 0:
-			_create_frontline_entry(nation_a, nation_b, shared)
-
-
-func _create_frontline_entry(nation_a: String, nation_b: String, segments: Array):
-	var id = next_id
-	next_id += 1
-
-	frontlines[id] = {
-		"id": id,
-		"nation_a": nation_a,
-		"nation_b": nation_b,
-		"base_segments": segments,
-		"current_segments": segments.duplicate(true)
-	}
-
-	print("✅ Automatische Frontlinie #%d zwischen %s und %s (%d Segmente)" % [id, nation_a, nation_b, segments.size()])
-
 
 func _process(_delta):
 	_update_frontline_dynamics()
 	_rebuild_mesh()
 
 
+func create_frontline(unit: GroundEntity, target_province_id: int, target_province_name: String = "") -> int:
+	if unit.assigned_frontline_id != 0:
+		remove_frontline(unit.assigned_frontline_id)
+
+	var game_data = get_node_or_null("/root/GameData")
+	if not game_data:
+		return 0
+
+	var current_nation = game_data.current_nation
+	if current_nation == "GER":
+		var owners = game_data.province_to_owner.values()
+		if not owners.has("GER") and owners.has("DEU"):
+			current_nation = "DEU"
+
+	var player_provinces: Array = []
+	for pid in game_data.province_to_owner.keys():
+		if game_data.province_to_owner[pid] == current_nation:
+			player_provinces.append(pid)
+
+	if player_provinces.is_empty():
+		return 0
+
+	var regions = get_node_or_null("/root/World/Regions")
+	if not regions or not ("region_polygons" in regions):
+		return 0
+
+	var player_coords_set := {}
+	for pid in player_provinces:
+		for region in regions.region_polygons:
+			if region.get("id") != pid and region.get("index", -1) + 1 != pid:
+				continue
+			for ring in region.get("rings", []):
+				for coord in ring:
+					var key = "%0.4f_%0.4f" % [coord[0], coord[1]]
+					player_coords_set[key] = true
+
+	var all_segments = _get_border_segments(target_province_id)
+	if all_segments.is_empty():
+		return 0
+
+	var shared_segments: Array = []
+	for seg in all_segments:
+		var p1 = seg[0]
+		var p2 = seg[1]
+		var lat1 = rad_to_deg(asin(p1.y / 1002.0))
+		var lon1 = rad_to_deg(atan2(p1.x, p1.z))
+		var lat2 = rad_to_deg(asin(p2.y / 1002.0))
+		var lon2 = rad_to_deg(atan2(p2.x, p2.z))
+
+		var key1 = "%0.4f_%0.4f" % [lon1, lat1]
+		var key2 = "%0.4f_%0.4f" % [lon2, lat2]
+
+		if player_coords_set.has(key1) or player_coords_set.has(key2):
+			shared_segments.append(seg)
+
+	if shared_segments.is_empty():
+		shared_segments = all_segments
+
+	var id = next_id
+	next_id += 1
+
+	frontlines[id] = {
+		"id": id,
+		"nation_a": current_nation,
+		"nation_b": target_province_name,
+		"base_segments": shared_segments,
+		"current_segments": shared_segments.duplicate(true)
+	}
+
+	unit.assigned_frontline_id = id
+	print("✅ Frontlinie #%d erstellt (dynamisch)" % id)
+	return id
+
+
+func remove_frontline(frontline_id: int):
+	if not frontlines.has(frontline_id):
+		return
+	var data = frontlines[frontline_id]
+	var unit = _get_unit_by_id(data.get("owning_unit_id", ""))
+	if unit:
+		unit.assigned_frontline_id = 0
+	frontlines.erase(frontline_id)
+
+
+# ====================== ECHTE DYNAMIK ======================
 func _update_frontline_dynamics():
 	var all_units = get_tree().get_nodes_in_group("ground_entities")
 
@@ -133,28 +126,40 @@ func _update_frontline_dynamics():
 			var p2 = seg[1]
 			var mid = (p1 + p2) * 0.5
 
-			var friendly := 0.0
-			var enemy := 0.0
+			var friendly_force := 0.0
+			var enemy_force := 0.0
 
 			for unit in all_units:
 				if not is_instance_valid(unit):
 					continue
+
 				var dist = mid.distance_to(unit.global_position)
 				if dist > influence_radius:
 					continue
 
 				var influence = (influence_radius - dist) / influence_radius
+				var dir = (unit.global_position - mid).normalized()
 
-				if unit.nation_code == data.nation_a:
-					friendly += influence
-				elif unit.nation_code == data.nation_b:
-					enemy += influence
+				# Hier vereinfacht: GER/DEU = freundlich, alles andere = feindlich
+				if unit.nation_code == "GER" or unit.nation_code == "DEU":
+					friendly_force += influence * 1.2
+				else:
+					enemy_force += influence
 
-			var net = (friendly - enemy) * push_strength * 0.35
-			var offset = mid.normalized() * net
+			var net_force = (friendly_force - enemy_force) * push_strength
+
+			# Push in die Richtung, in die die Mehrheit der Einheiten "drückt"
+			var push_dir = mid.normalized()
+			if friendly_force > enemy_force * 1.3:
+				push_dir = (mid + Vector3(0, 0.1, 0)).normalized()   # leichter Bias nach außen
+			elif enemy_force > friendly_force * 1.3:
+				push_dir = (mid - Vector3(0, 0.1, 0)).normalized()
+
+			var offset = push_dir * net_force * 0.6
 
 			var np1 = (p1 + offset).normalized() * 1002.0
 			var np2 = (p2 + offset).normalized() * 1002.0
+
 			new_segments.append([np1, np2])
 
 		data.current_segments = new_segments
