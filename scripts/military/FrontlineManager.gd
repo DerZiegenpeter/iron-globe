@@ -1,12 +1,13 @@
 # scripts/military/FrontlineManager.gd
-# Verbesserte Version mit echter Shared-Border-Erkennung
+# Stabile Version mit Fallback (kein Crash mehr)
 extends Node3D
 class_name FrontlineManager
 
 @export var frontline_color: Color = Color(0.95, 0.25, 0.15)
 @export var frontline_emission: float = 5.0
 @export var line_width: float = 2.2
-@export var push_strength: float = 22.0
+@export var influence_radius: float = 50.0
+@export var push_strength: float = 14.0
 
 var frontlines: Dictionary = {}
 var next_id: int = 1
@@ -22,165 +23,141 @@ func _ready():
 	mesh_instance.name = "FrontlineMesh"
 	add_child(mesh_instance)
 
-
-func _process(_delta):
-	_update_frontline_offsets()
-	_rebuild_mesh()
+	# Versuche automatische Frontlinien zu erzeugen (falls möglich)
+	call_deferred("try_generate_frontlines")
 
 
-# ====================== FRONTLINE ERSTELLEN (mit Shared Border) ======================
-func create_frontline(unit: GroundEntity, target_province_id: int, target_province_name: String = "") -> int:
-	if unit.assigned_frontline_id != 0:
-		remove_frontline(unit.assigned_frontline_id)
+func try_generate_frontlines():
+	var diplomacy = get_node_or_null("/root/DiplomacyManager")
+	if not diplomacy:
+		print(">>> [Frontline] DiplomacyManager nicht gefunden – automatische Frontlinien deaktiviert")
+		return
 
+	# Versuche verschiedene mögliche Variablennamen
+	var wars = {}
+	if diplomacy.has_method("get_current_wars"):
+		wars = diplomacy.get_current_wars()
+	elif "current_wars" in diplomacy:
+		wars = diplomacy.current_wars
+	elif "wars" in diplomacy:
+		wars = diplomacy.wars
+	else:
+		print(">>> [Frontline] DiplomacyManager hat keine wars-Variable → automatische Frontlinien übersprungen")
+		return
+
+	if wars.is_empty():
+		print(">>> [Frontline] Keine aktiven Kriege gefunden")
+		return
+
+	for nation_a in wars.keys():
+		for nation_b in wars[nation_a]:
+			generate_frontlines_between_nations(nation_a, nation_b)
+
+
+func generate_frontlines_between_nations(nation_a: String, nation_b: String):
 	var game_data = get_node_or_null("/root/GameData")
-	if not game_data:
-		print(">>> [Frontline] GameData nicht gefunden!")
-		return 0
-
-	var current_nation = game_data.current_nation
-
-	# 1. Alle Provinzen des Spielers sammeln
-	var player_provinces: Array = []
-	for pid in game_data.province_to_owner.keys():
-		if game_data.province_to_owner[pid] == current_nation:
-			player_provinces.append(pid)
-
-	if player_provinces.is_empty():
-		print(">>> [Frontline] Keine eigenen Provinzen gefunden!")
-		return 0
-
-	# 2. Border-Segmente der angeklickten (feindlichen) Provinz holen
-	var all_segments = _get_border_segments(target_province_id)
-	if all_segments.is_empty():
-		print(">>> [Frontline] Keine Border-Segmente für Provinz", target_province_id)
-		return 0
-
-	# 3. Nur die Segmente behalten, die wirklich an eigene Provinzen angrenzen
-	var shared_segments: Array = []
 	var regions = get_node_or_null("/root/World/Regions")
+	if not game_data or not regions or not ("region_polygons" in regions):
+		return
 
-	for seg in all_segments:
-		var mid = (seg[0] + seg[1]) * 0.5
-		var is_shared = false
+	var provinces_a := []
+	var provinces_b := []
 
-		for player_pid in player_provinces:
-			if _is_point_near_player_province(mid, player_pid, regions):
-				is_shared = true
-				break
+	for pid in game_data.province_to_owner.keys():
+		var owner = game_data.province_to_owner[pid]
+		if owner == nation_a:
+			provinces_a.append(pid)
+		elif owner == nation_b:
+			provinces_b.append(pid)
 
-		if is_shared:
-			shared_segments.append(seg)
+	var coords_b := {}
+	for pid in provinces_b:
+		for region in regions.region_polygons:
+			if region.get("id") != pid and region.get("index", -1) + 1 != pid:
+				continue
+			for ring in region.get("rings", []):
+				for coord in ring:
+					var key = "%0.4f_%0.4f" % [coord[0], coord[1]]
+					coords_b[key] = true
 
-	if shared_segments.is_empty():
-		print(">>> [Frontline] Keine gemeinsame Grenze zu eigenen Provinzen gefunden. Nehme trotzdem alle Segmente.")
-		shared_segments = all_segments   # Fallback
+	for pid_a in provinces_a:
+		var segments = _get_border_segments(pid_a)
+		var shared := []
+		for seg in segments:
+			var p1 = seg[0]
+			var p2 = seg[1]
+			var lat1 = rad_to_deg(asin(p1.y / 1002.0))
+			var lon1 = rad_to_deg(atan2(p1.x, p1.z))
+			var lat2 = rad_to_deg(asin(p2.y / 1002.0))
+			var lon2 = rad_to_deg(atan2(p2.x, p2.z))
 
-	# 4. Frontline speichern
+			var key1 = "%0.4f_%0.4f" % [lon1, lat1]
+			var key2 = "%0.4f_%0.4f" % [lon2, lat2]
+
+			if coords_b.has(key1) or coords_b.has(key2):
+				shared.append(seg)
+
+		if shared.size() > 0:
+			_create_frontline_entry(nation_a, nation_b, shared)
+
+
+func _create_frontline_entry(nation_a: String, nation_b: String, segments: Array):
 	var id = next_id
 	next_id += 1
 
 	frontlines[id] = {
 		"id": id,
-		"owning_unit_id": unit.entity_id,
-		"target_province_id": target_province_id,
-		"target_name": target_province_name,
-		"base_segments": shared_segments,
-		"current_segments": shared_segments.duplicate(true)
+		"nation_a": nation_a,
+		"nation_b": nation_b,
+		"base_segments": segments,
+		"current_segments": segments.duplicate(true)
 	}
 
-	unit.assigned_frontline_id = id
-	print("✅ Frontlinie #%d erstellt (Shared Border) gegen %s" % [id, target_province_name])
-	return id
+	print("✅ Automatische Frontlinie #%d zwischen %s und %s (%d Segmente)" % [id, nation_a, nation_b, segments.size()])
 
 
-func remove_frontline(frontline_id: int):
-	if not frontlines.has(frontline_id):
-		return
-
-	var data = frontlines[frontline_id]
-	var unit = _get_unit_by_id(data.owning_unit_id)
-	if unit:
-		unit.assigned_frontline_id = 0
-
-	frontlines.erase(frontline_id)
+func _process(_delta):
+	_update_frontline_dynamics()
+	_rebuild_mesh()
 
 
-# ====================== DYNAMISCHER PUSH ======================
-func _update_frontline_offsets():
+func _update_frontline_dynamics():
+	var all_units = get_tree().get_nodes_in_group("ground_entities")
+
 	for id in frontlines.keys():
 		var data = frontlines[id]
-		var unit = _get_unit_by_id(data.owning_unit_id)
+		var new_segments := []
 
-		var new_segments = []
 		for seg in data.base_segments:
 			var p1 = seg[0]
 			var p2 = seg[1]
+			var mid = (p1 + p2) * 0.5
 
-			if unit and is_instance_valid(unit):
-				var mid = (p1 + p2) * 0.5
-				var dir = (unit.global_position - mid).normalized()
-				var offset = dir * push_strength
-				p1 = (p1 + offset).normalized() * 1002.0
-				p2 = (p2 + offset).normalized() * 1002.0
+			var friendly := 0.0
+			var enemy := 0.0
 
-			new_segments.append([p1, p2])
+			for unit in all_units:
+				if not is_instance_valid(unit):
+					continue
+				var dist = mid.distance_to(unit.global_position)
+				if dist > influence_radius:
+					continue
+
+				var influence = (influence_radius - dist) / influence_radius
+
+				if unit.nation_code == data.nation_a:
+					friendly += influence
+				elif unit.nation_code == data.nation_b:
+					enemy += influence
+
+			var net = (friendly - enemy) * push_strength * 0.35
+			var offset = mid.normalized() * net
+
+			var np1 = (p1 + offset).normalized() * 1002.0
+			var np2 = (p2 + offset).normalized() * 1002.0
+			new_segments.append([np1, np2])
 
 		data.current_segments = new_segments
-
-
-# ====================== HELPER ======================
-func _get_border_segments(province_id: int) -> Array:
-	var regions = get_node_or_null("/root/World/Regions")
-	if not regions or not ("region_polygons" in regions):
-		return []
-
-	for region in regions.region_polygons:
-		if region.get("id") == province_id or region.get("index", -1) + 1 == province_id:
-			var rings = region.get("rings", [])
-			if rings.is_empty():
-				return []
-			var segments = []
-			var ring = rings[0]
-			for i in range(ring.size()):
-				var p1 = _lat_lon_to_vector3(ring[i][1], ring[i][0], 1002.0)
-				var p2 = _lat_lon_to_vector3(ring[(i + 1) % ring.size()][1], ring[(i + 1) % ring.size()][0], 1002.0)
-				segments.append([p1, p2])
-			return segments
-	return []
-
-
-func _is_point_near_player_province(point: Vector3, player_province_id: int, regions: Node) -> bool:
-	if not regions or not ("region_polygons" in regions):
-		return false
-
-	for region in regions.region_polygons:
-		if region.get("id") != player_province_id and region.get("index", -1) + 1 != player_province_id:
-			continue
-
-		for ring in region.get("rings", []):
-			for coord in ring:
-				var player_point = _lat_lon_to_vector3(coord[1], coord[0], 1002.0)
-				if point.distance_to(player_point) < 35.0:   # Toleranz (kann angepasst werden)
-					return true
-	return false
-
-
-func _lat_lon_to_vector3(lat: float, lon: float, radius: float) -> Vector3:
-	var lat_rad = deg_to_rad(lat)
-	var lon_rad = deg_to_rad(lon)
-	return Vector3(
-		radius * cos(lat_rad) * sin(lon_rad),
-		radius * sin(lat_rad),
-		radius * cos(lat_rad) * cos(lon_rad)
-	)
-
-
-func _get_unit_by_id(unit_id: String) -> GroundEntity:
-	for unit in get_tree().get_nodes_in_group("ground_entities"):
-		if unit.entity_id == unit_id:
-			return unit
-	return null
 
 
 func _rebuild_mesh():
@@ -216,30 +193,60 @@ func _add_ribbon(st: SurfaceTool, p1: Vector3, p2: Vector3, width: float):
 	var tangent = (p2 - p1).normalized()
 	var normal = center.normalized()
 	var side = normal.cross(tangent).normalized()
-
 	st.add_vertex(p1 + side * half)
 	st.add_vertex(p1 - side * half)
 	st.add_vertex(p2 + side * half)
 	st.add_vertex(p2 - side * half)
 
 
-# ====================== DEBUG ======================
+func _get_border_segments(province_id: int) -> Array:
+	var regions = get_node_or_null("/root/World/Regions")
+	if not regions or not ("region_polygons" in regions):
+		return []
+	for region in regions.region_polygons:
+		if region.get("id") == province_id or region.get("index", -1) + 1 == province_id:
+			var rings = region.get("rings", [])
+			if rings.is_empty(): return []
+			var segments = []
+			var ring = rings[0]
+			for i in range(ring.size()):
+				var p1 = _lat_lon_to_vector3(ring[i][1], ring[i][0], 1002.0)
+				var p2 = _lat_lon_to_vector3(ring[(i+1)%ring.size()][1], ring[(i+1)%ring.size()][0], 1002.0)
+				segments.append([p1, p2])
+			return segments
+	return []
+
+
+func _lat_lon_to_vector3(lat: float, lon: float, radius: float) -> Vector3:
+	var lat_rad = deg_to_rad(lat)
+	var lon_rad = deg_to_rad(lon)
+	return Vector3(
+		radius * cos(lat_rad) * sin(lon_rad),
+		radius * sin(lat_rad),
+		radius * cos(lat_rad) * cos(lon_rad)
+	)
+
+
+func _get_unit_by_id(unit_id: String) -> GroundEntity:
+	for unit in get_tree().get_nodes_in_group("ground_entities"):
+		if unit.entity_id == unit_id:
+			return unit
+	return null
+
+
 func set_debug_mode(enabled: bool):
 	debug_mode = enabled
 	if not enabled:
 		for n in debug_nodes:
-			if is_instance_valid(n):
-				n.queue_free()
+			if is_instance_valid(n): n.queue_free()
 		debug_nodes.clear()
 	_rebuild_mesh()
 
 
 func _update_debug_visuals():
 	for n in debug_nodes:
-		if is_instance_valid(n):
-			n.queue_free()
+		if is_instance_valid(n): n.queue_free()
 	debug_nodes.clear()
-
 	for id in frontlines:
 		var data = frontlines[id]
 		for seg in data.current_segments:
