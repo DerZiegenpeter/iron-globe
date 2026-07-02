@@ -9,75 +9,62 @@ var pending_frontline_unit: GroundEntity = null
 func _input(event):
 	# ====================== FRONTLINE PLACEMENT ======================
 	if frontline_placement_mode and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		print(">>> [FRONTLINE] Placement Mode + Klick erkannt")
-
 		get_viewport().set_input_as_handled()
 
 		if pending_frontline_unit == null:
-			print(">>> [FRONTLINE] Keine pending unit")
 			frontline_placement_mode = false
 			return
 
 		var regions = get_node_or_null("/root/World/Regions")
-		if not regions:
-			print(">>> [FRONTLINE] Regions Node nicht gefunden")
-			frontline_placement_mode = false
-			return
-
-		# Korrekte Prüfung (nicht .has())
-		if not ("region_polygons" in regions):
-			print(">>> [FRONTLINE] region_polygons existiert nicht auf Regions")
+		if not regions or not ("region_polygons" in regions):
 			frontline_placement_mode = false
 			return
 
 		var camera = get_viewport().get_camera_3d()
-		if not camera:
-			return
+		if not camera: return
 
 		var from = camera.project_ray_origin(event.position)
 		var ray_dir = camera.project_ray_normal(event.position)
 		var hit_point = _intersect_ray_sphere(from, ray_dir, Vector3.ZERO, 1000.0)
 
 		if hit_point == Vector3.INF:
-			print(">>> [FRONTLINE] Kein Treffer auf Globe")
+			print("[Frontline] Kein Treffer auf Globe")
 			frontline_placement_mode = false
 			return
 
 		var lat_lon = _vector3_to_lat_lon(hit_point)
 
-		# Region finden
 		var hit_region = null
 		for region in regions.region_polygons:
 			for ring in region.get("rings", []):
 				if _point_in_polygon(lat_lon.lat, lat_lon.lon, ring):
 					hit_region = region
 					break
-			if hit_region:
-				break
+			if hit_region: break
 
 		if hit_region == null or hit_region.is_empty():
-			print(">>> [FRONTLINE] Keine Region unter dem Klick gefunden")
+			print("[Frontline] Keine Region gefunden")
 			frontline_placement_mode = false
 			return
 
-		print(">>> [FRONTLINE] Region gefunden:", hit_region.get("name"), "ID:", hit_region.get("id", hit_region.get("index", -1)))
+		var province_id = hit_region.get("id", hit_region.get("index", 0) + 1)
+		var province_name = hit_region.get("name", "Unknown")
 
 		var fl_manager = get_node_or_null("/root/World/FrontlineManager")
 		if fl_manager and fl_manager.has_method("create_frontline"):
-			fl_manager.create_frontline(
-				pending_frontline_unit,
-				hit_region.get("id", hit_region.get("index", 0) + 1),
-				hit_region.get("name", "Unknown")
-			)
-			print(">>> [FRONTLINE] Frontline erfolgreich erstellt!")
+			var result = fl_manager.create_frontline(pending_frontline_unit, province_id, province_name)
+			if result == 0:
+				print("❌ [Frontline] Platzierung fehlgeschlagen - keine gültige Nachbarprovinz!")
+			else:
+				print("✅ [Frontline] Frontlinie erfolgreich platziert!")
 		else:
-			print(">>> [FRONTLINE] FrontlineManager nicht gefunden oder falsche Methode")
+			print("[Frontline] FrontlineManager nicht gefunden")
 
 		frontline_placement_mode = false
 		pending_frontline_unit = null
 		return
 
-	# ====================== TEST: F-Taste ======================
+	# ====================== F-Taste ======================
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F:
 		if selected_entity is GroundEntity:
 			start_frontline_placement(selected_entity)
@@ -87,16 +74,13 @@ func _input(event):
 
 
 func _unhandled_input(event):
-	if frontline_placement_mode:
-		return
+	if frontline_placement_mode: return
 
-	if not (event is InputEventMouseButton and event.pressed):
-		return
+	if not (event is InputEventMouseButton and event.pressed): return
 
 	var button = event.button_index
 	var camera = get_viewport().get_camera_3d()
-	if not camera:
-		return
+	if not camera: return
 
 	var from = camera.project_ray_origin(event.position)
 	var ray_dir = camera.project_ray_normal(event.position)
@@ -120,16 +104,14 @@ func _unhandled_input(event):
 			_deselect()
 
 	elif button == MOUSE_BUTTON_RIGHT:
-		if selected_entity == null:
-			return
+		if selected_entity == null: return
 
 		var target_world_pos: Vector3
 		if result:
 			target_world_pos = result.position
 		else:
 			var hit_point = _intersect_ray_sphere(from, ray_dir, Vector3.ZERO, 1000.0)
-			if hit_point == Vector3.INF:
-				return
+			if hit_point == Vector3.INF: return
 			target_world_pos = hit_point
 
 		_issue_move_order(target_world_pos)
@@ -138,7 +120,8 @@ func _unhandled_input(event):
 func start_frontline_placement(unit: GroundEntity):
 	frontline_placement_mode = true
 	pending_frontline_unit = unit
-	print("🟥 Frontline Placement Mode aktiviert für:", unit.entity_name)
+	print("🟥 Frontline Placement Mode aktiviert für: ", unit.entity_name)
+	print("Klicke jetzt auf eine direkte Nachbarprovinz von Deutschland!")
 
 
 func _select(entity: Node):
@@ -163,8 +146,7 @@ func _deselect():
 
 
 func _issue_move_order(world_pos: Vector3):
-	if selected_entity == null:
-		return
+	if selected_entity == null: return
 	if selected_entity.has_method("move_to"):
 		var target_pos = world_pos.normalized() * 1002.0
 		var new_lat = rad_to_deg(asin(target_pos.y / 1002.0))
@@ -178,29 +160,24 @@ func _intersect_ray_sphere(ray_origin: Vector3, ray_dir: Vector3, sphere_center:
 	var b = 2.0 * oc.dot(ray_dir)
 	var c = oc.dot(oc) - sphere_radius * sphere_radius
 	var discriminant = b * b - 4.0 * a * c
-	if discriminant < 0:
-		return Vector3.INF
+	if discriminant < 0: return Vector3.INF
 	var t = (-b - sqrt(discriminant)) / (2.0 * a)
-	if t > 0:
-		return ray_origin + ray_dir * t
+	if t > 0: return ray_origin + ray_dir * t
 	t = (-b + sqrt(discriminant)) / (2.0 * a)
-	if t > 0:
-		return ray_origin + ray_dir * t
+	if t > 0: return ray_origin + ray_dir * t
 	return Vector3.INF
 
 
 func _vector3_to_lat_lon(pos: Vector3) -> Dictionary:
 	var mag = pos.length()
-	if mag == 0:
-		return {"lat": 0.0, "lon": 0.0}
+	if mag == 0: return {"lat": 0.0, "lon": 0.0}
 	var lat = rad_to_deg(asin(pos.y / mag))
 	var lon = rad_to_deg(atan2(pos.x, pos.z))
 	return {"lat": lat, "lon": lon}
 
 
 func _point_in_polygon(lat: float, lon: float, ring: Array) -> bool:
-	if ring.size() < 3:
-		return false
+	if ring.size() < 3: return false
 	var inside = false
 	var n = ring.size()
 	var j = n - 1
